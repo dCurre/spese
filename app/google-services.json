@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "77892010372",
+    "project_id": "spese-curreli-bullita",
+    "storage_bucket": "spese-curreli-bullita.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77892010372:android:496cde9dc0473e9467ddd1",
+        "android_client_info": {
+          "package_name": "com.dcurreli.spese"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77892010372-80totje998k34gknt2datgmvk3uiqgh9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuWukbPJsRLzvKdwawQIGxPqa5jIXSCF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77892010372-80totje998k34gknt2datgmvk3uiqgh9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
