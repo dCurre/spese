@@ -26,14 +26,23 @@ public class SpesaUtils {
     private static String getMonthAsText(String mese){
         Log.i(TAG,"Mese: "+mese);
         switch (mese){
+            case "1":
             case "01": return "Gennaio";
+            case "2":
             case "02": return "Febbraio";
+            case "3":
             case "03": return "Marzo";
+            case "4":
             case "04": return "Aprile";
+            case "5":
             case "05": return "Maggio";
+            case "6":
             case "06": return "Giugno";
+            case "7":
             case "07": return "Luglio";
+            case "8":
             case "08": return "Agosto";
+            case "9":
             case "09": return "Settembre";
             case "10": return "Ottobre";
             case "11": return "Novembre";
