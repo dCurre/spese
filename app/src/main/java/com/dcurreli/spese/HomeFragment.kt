@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.databinding.HomeFragmentBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
 
 class HomeFragment : Fragment() {
 
     private var _binding: HomeFragmentBinding? = null
+    private lateinit var db: DatabaseReference
+    private var queryRes: DataSnapshot? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.

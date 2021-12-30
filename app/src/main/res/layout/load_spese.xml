@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddSpesaFragment">
+    tools:context=".LoadSpeseFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/spese_list"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:listitem="@layout/single_spesa_list_item"
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/backHomeButton"
@@ -18,12 +29,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@color/black"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:hint="LOAD"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

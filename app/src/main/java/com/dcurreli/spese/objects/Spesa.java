@@ -1,13 +1,18 @@
 package com.dcurreli.spese.objects;
 
-public class Spesa {
+import com.dcurreli.spese.utils.MeseUtils;
+import com.dcurreli.spese.utils.SpesaUtils;
 
+public class Spesa {
+    private int id;
+    private Integer lastId;
     private String luogo;
     private double importo;
     private String data;
     private String pagatore;
 
-    public Spesa(String luogo, double importo, String data, String pagatore){
+    public Spesa(int id, String luogo, double importo, String data, String pagatore){
+        this.id = id;
         this.luogo = luogo;
         this.importo = importo;
         this.data = data;
@@ -15,6 +20,19 @@ public class Spesa {
     }
 
     public Spesa(){
+    }
+
+    public String extractMensilitaAnno(){
+        String[] dataSpesa = this.data.split("/");
+        return MeseUtils.Static.getMonthAsText(dataSpesa[1])+ " " + dataSpesa[2];
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLuogo() {

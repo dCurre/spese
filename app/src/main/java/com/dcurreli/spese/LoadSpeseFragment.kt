@@ -6,19 +6,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.databinding.LoadSpeseBinding
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.DatabaseReference
 import android.view.View as View1
 
 class LoadSpeseFragment : Fragment() {
 
     private var _binding: LoadSpeseBinding? = null
-    private val db = Firebase.firestore
-    private val path = "spese"
+    private lateinit var db: DatabaseReference
+    private val TAG = javaClass.simpleName
 
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -35,7 +31,6 @@ class LoadSpeseFragment : Fragment() {
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val spese = db.collection(path)
 
         binding.backHomeButton.setOnClickListener {
             findNavController().navigate(R.id.action_loadSpeseFragment_to_HomeFragment)

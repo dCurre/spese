@@ -1,28 +1,26 @@
 package com.dcurreli.spese
 
 import android.app.DatePickerDialog
-import android.content.ContentValues
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.databinding.AddSpesaBinding
-import com.dcurreli.spese.objects.Spesa
 import com.dcurreli.spese.utils.SpesaUtils
-import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import org.jetbrains.anko.support.v4.toast
 import java.text.SimpleDateFormat
 import java.util.*
 import android.view.View as View1
 
 class AddSpesaFragment : Fragment() {
 
+    private val TAG = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
-    private val db = Firebase.firestore
-    private val path = "spese"
-
+    private lateinit var db: DatabaseReference
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -41,6 +39,8 @@ class AddSpesaFragment : Fragment() {
 
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        db = Firebase.database.reference
+
         //Calendario
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -67,20 +67,9 @@ class AddSpesaFragment : Fragment() {
             val importo = binding.editTextImporto.text.toString().replace(",",".")
             val data = binding.textViewData.text.toString()
             val pagatore = binding.editTextPagatore.text.toString()
-
-            val spesa = Spesa(
-                luogo,
-                importo.toDouble(),
-                data,
-                pagatore
-            )
-            db.collection(path).document(SpesaUtils.getSpesaPath(spesa)).set(spesa)
-                .addOnSuccessListener {
-                    Log.d(ContentValues.TAG, "Spesa aggiunta! | Spesa: " + spesa.luogo + ", Importo: " + spesa.importo + ", Data: " + spesa.data + ", Pagatore: " + spesa.pagatore)
-                }
-                .addOnFailureListener { e ->
-                    Log.w(ContentValues.TAG, "Error adding document", e)
-                }
+            SpesaUtils.creaSepsa(db, luogo, importo, data, pagatore)
+            toast("Spesa creata : )")
+            findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)
         }
 
         binding.backHomeButton.setOnClickListener {
