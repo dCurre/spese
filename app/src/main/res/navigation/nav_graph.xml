@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/HomeFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/HomeFragment"
+        android:id="@+id/homeFragment"
         android:name="com.dcurreli.spese.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/home_fragment">
@@ -26,8 +26,8 @@
 
         <action
             android:id="@+id/action_AddSpesaFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment"
-            app:popUpTo="@id/HomeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -36,6 +36,11 @@
         android:label="Riepilogo spese" >
         <action
             android:id="@+id/action_loadSpeseFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
+            app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.dcurreli.spese.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/settings_fragment" />
 </navigation>

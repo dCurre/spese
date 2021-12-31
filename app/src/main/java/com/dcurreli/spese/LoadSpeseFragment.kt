@@ -9,7 +9,7 @@ import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.google.firebase.database.DatabaseReference
 import android.view.View as View1
 
-class LoadSpeseFragment : Fragment() {
+class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private var _binding: LoadSpeseBinding? = null
     private lateinit var db: DatabaseReference
