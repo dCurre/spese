@@ -31,6 +31,10 @@ public class Spesa {
         return id;
     }
 
+    public String getIdAsText() {
+        return ""+id;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -45,6 +49,9 @@ public class Spesa {
 
     public double getImporto() {
         return importo;
+    }
+    public String getImportoAsText() {
+        return ""+importo;
     }
 
     public void setImporto(double importo) {

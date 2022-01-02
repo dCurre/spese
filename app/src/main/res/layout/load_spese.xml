@@ -6,10 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".LoadSpeseFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista_spese"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <ListView
-        android:id="@+id/spese_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
