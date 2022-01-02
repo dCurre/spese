@@ -43,4 +43,13 @@
         android:name="com.dcurreli.spese.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/settings_fragment" />
+
+    <action
+            android:id="@+id/action_To_SettingsFragment"
+            app:destination="@id/settingsFragment" />
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.dcurreli.spese.CalendarFragment"
+        android:label="Calendario"
+        tools:layout="@layout/calendar_fragment" />
 </navigation>

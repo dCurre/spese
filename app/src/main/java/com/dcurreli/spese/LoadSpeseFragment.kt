@@ -31,7 +31,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.backHomeButton.setOnClickListener {
             findNavController().navigate(R.id.action_loadSpeseFragment_to_HomeFragment)
         }

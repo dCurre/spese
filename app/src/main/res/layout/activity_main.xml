@@ -1,32 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainActivity"
+    android:id="@+id/drawerMainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.Spese.PopupOverlay" />
+            android:layout_height="wrap_content">
 
-        <include
-            android:id="@+id/include_main"
-            layout="@layout/content_main"
-            android:layout_width="match_parent"
+                <!-- TOOLBAR -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/Theme.Spese.PopupOverlay" />
+
+                <!-- FRAGMENT VISUALIZZATI -->
+                <include
+                    android:id="@+id/include_main"
+                    layout="@layout/content_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/toolbar"
+                    android:layout_above="@id/bottom_nav" />
+
+                <!-- MENU INFERIORE -->
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottom_nav"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_alignParentBottom="true"
+                    app:menu="@menu/drawer_bottom_nav_menu"
+                    />
+        </RelativeLayout>
+
+        <!-- MENU LATERALE -->
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/lateral_nav_view"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
-            android:layout_above="@id/bottom_nav" />
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nav"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentBottom="true"
-            app:menu="@menu/drawer_bottom_nav_menu"
+            android:layout_gravity="start"
+            app:menu="@menu/menu_laterale"
             />
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
