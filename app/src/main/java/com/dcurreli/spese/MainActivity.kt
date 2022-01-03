@@ -1,9 +1,11 @@
 package com.dcurreli.spese
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,12 +16,17 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.databinding.ActivityMainBinding
+import com.dcurreli.spese.objects.DataForQuery
+import com.dcurreli.spese.utils.GenericUtils
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var  navController : NavController
+    private lateinit var navController : NavController
+    private var dataItem : String = ""
+    private lateinit var dataForQuery : DataForQuery
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -63,6 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ResourceType")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
@@ -70,13 +78,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 true
             }
             R.id.loadSpeseFragment -> {
+                dataItem = "Dicembre 2021"
+                var pattern : String = "yyyy-MM-dd"
+
+                //Passo le date per la query a LoadSpeseFragment
+                dataForQuery = DataForQuery(
+                    GenericUtils.dateStringToTimestampSeconds(
+                        GenericUtils.firstDayOfMonth(dataItem),
+                        pattern
+                    ).toDouble(),
+                    GenericUtils.dateStringToTimestampSeconds(
+                        GenericUtils.lastDayOfMonth(dataItem),
+                        pattern).toDouble()
+                )
+
                 navController.navigate(R.id.loadSpeseFragment)
                 var drawerLayout : DrawerLayout = findViewById(R.id.drawerMainActivity)
                 binding.drawerMainActivity.closeDrawer(GravityCompat.START)
+
+
                 true
             }
             else -> true
         }
 
     }
+
+    fun getDataForQuery(): DataForQuery = dataForQuery
 }

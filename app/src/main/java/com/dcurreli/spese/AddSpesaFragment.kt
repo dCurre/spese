@@ -58,7 +58,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         binding.buttonShowCalendar.setOnClickListener{
             val datePickerDialog = DatePickerDialog(this.requireContext(),DatePickerDialog.OnDateSetListener{ view, mYear, mMonth, mDay ->
                 //Setto nella text view
-                binding.textViewData.setText(""+mDay+"/"+(mMonth+1)+"/"+mYear)
+                binding.textViewData.text = "${String.format("%02d",mDay)}/${String.format("%02d",(mMonth+1))}/$mYear"
             }, year, month, day)
             datePickerDialog.show()
         }

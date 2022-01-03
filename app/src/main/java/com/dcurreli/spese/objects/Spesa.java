@@ -1,20 +1,28 @@
 package com.dcurreli.spese.objects;
 
+import com.dcurreli.spese.utils.GenericUtils;
 import com.dcurreli.spese.utils.MeseUtils;
 import com.dcurreli.spese.utils.SpesaUtils;
+import com.google.firebase.Timestamp;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Spesa {
     private int id;
-    private String luogo;
+    private String spesa;
     private double importo;
     private String data;
+    private Long timestamp;
     private String pagatore;
 
-    public Spesa(int id, String luogo, double importo, String data, String pagatore){
+    public Spesa(int id, String spesa, double importo, String data, String pattern, String pagatore) throws ParseException {
         this.id = id;
-        this.luogo = luogo;
+        this.spesa = spesa;
         this.importo = importo;
         this.data = data;
+        this.timestamp = GenericUtils.INSTANCE.dateStringToTimestampSeconds(data, pattern);
         this.pagatore = pagatore;
     }
 
@@ -38,17 +46,18 @@ public class Spesa {
         this.id = id;
     }
 
-    public String getLuogo() {
-        return luogo;
+    public String getSpesa() {
+        return spesa;
     }
 
-    public void setLuogo(String luogo) {
-        this.luogo = luogo;
+    public void setSpesa(String spesa) {
+        this.spesa = spesa;
     }
 
     public double getImporto() {
         return importo;
     }
+
     public String importoAsText() {
         return ""+importo;
     }
@@ -62,6 +71,10 @@ public class Spesa {
     public void setData(String data) {
         this.data = data;
     }
+
+    public Long getTimestamp() { return timestamp; }
+
+    public void setTimestamp(Long timestamp) { this.timestamp = timestamp; }
 
     public String getPagatore() {
         return pagatore;

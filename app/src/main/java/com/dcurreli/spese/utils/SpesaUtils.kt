@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.adapters.SpesaAdapter
+import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -29,7 +30,7 @@ object SpesaUtils {
                 }
             }
             //Nuova spesa
-            val spesa = Spesa(newId,luogo,importo.toDouble(),data,pagatore)
+            val spesa = Spesa(newId,luogo,importo.toDouble(),data,"dd/MM/yyyy",pagatore)
 
             //Creo spesa
             db.child("spesa").child(newId.toString()).setValue(spesa)
@@ -43,17 +44,16 @@ object SpesaUtils {
         }
     }
 
-   fun printSpesa(db : DatabaseReference, recyclerView : RecyclerView, context : Context, spesaArray : ArrayList<Spesa>){
+   fun printSpesa(db : DatabaseReference, recyclerView : RecyclerView, context : Context, spesaArray : ArrayList<Spesa>, dataForQuery: DataForQuery){
        recyclerView.setHasFixedSize(true)
        recyclerView.layoutManager = LinearLayoutManager(context)
        spesaAdapter = SpesaAdapter(context, spesaArray)
 
        recyclerView.adapter = spesaAdapter
 
-       db.addValueEventListener(object : ValueEventListener {
+       db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble()).endBefore(dataForQuery.endsAt.toDouble()).addValueEventListener(object : ValueEventListener {
            override fun onDataChange(dataSnapshot: DataSnapshot){
-               spesaArray.clear()
-               for (snapshot : DataSnapshot in dataSnapshot.children){
+               for (snapshot : DataSnapshot in dataSnapshot.children.reversed()){
                    spesa = snapshot.getValue(Spesa::class.java) as Spesa
                    spesaArray.add(spesa)
                }

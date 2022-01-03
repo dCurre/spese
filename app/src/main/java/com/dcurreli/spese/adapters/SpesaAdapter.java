@@ -39,7 +39,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Spesa spesa = speseList.get(position);
         //holder.id.setText(spesa.getIdAsText());
-        holder.spesa.setText(spesa.getLuogo());
+        holder.spesa.setText(spesa.getSpesa());
         holder.importo.setText(spesa.importoAsText());
         holder.data.setText(spesa.getData());
         holder.pagatore.setText(spesa.getPagatore());
