@@ -40,7 +40,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         Spesa spesa = speseList.get(position);
         //holder.id.setText(spesa.getIdAsText());
         holder.spesa.setText(spesa.getLuogo());
-        holder.importo.setText(spesa.getImportoAsText());
+        holder.importo.setText(spesa.importoAsText());
         holder.data.setText(spesa.getData());
         holder.pagatore.setText(spesa.getPagatore());
     }

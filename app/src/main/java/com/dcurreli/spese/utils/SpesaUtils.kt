@@ -11,62 +11,58 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 
-class SpesaUtils {
-    companion object Static {
-        protected val TAG = javaClass.simpleName
-        private lateinit var spesa : Spesa
-        private lateinit var spesaAdapter : SpesaAdapter
+object SpesaUtils {
+    private val TAG = javaClass.simpleName
+    private lateinit var spesa : Spesa
+    private lateinit var spesaAdapter : SpesaAdapter
 
-        fun creaSepsa(db: DatabaseReference, luogo: String, importo: String, data: String, pagatore: String ) {
-            val methodName: String = "creaSpesa"
-            Log.i(TAG, ">>$methodName")
-            db.child("spesa").orderByChild("id").limitToLast(1).get().addOnSuccessListener {
-                var newId: Int = 1
+    fun creaSepsa(db: DatabaseReference, luogo: String, importo: String, data: String, pagatore: String ) {
+        val methodName: String = "creaSpesa"
+        Log.i(TAG, ">>$methodName")
+        db.child("spesa").orderByChild("id").limitToLast(1).get().addOnSuccessListener {
+            var newId: Int = 1
 
-                if(it.exists()) {
-                    var id: Int? =  it.children.first().child("id").value.toString().toInt()
-                    if (id != null) {
-                        newId = (id + 1)
-                    }
+            if(it.exists()) {
+                var id: Int? =  it.children.first().child("id").value.toString().toInt()
+                if (id != null) {
+                    newId = (id + 1)
                 }
-                //Nuova spesa
-                val spesa = Spesa(newId,luogo,importo.toDouble(),data,pagatore)
-
-                //Creo spesa
-                db.child("spesa").child(newId.toString()).setValue(spesa)
-                //Creo mese
-                MeseUtils.creaMese(db, spesa)
-
-
-                Log.i(TAG, "<<$methodName")
-            }.addOnFailureListener{
-                Log.e(TAG, "<<$methodName Error getting spesa", it)
             }
+            //Nuova spesa
+            val spesa = Spesa(newId,luogo,importo.toDouble(),data,pagatore)
+
+            //Creo spesa
+            db.child("spesa").child(newId.toString()).setValue(spesa)
+            //Creo mese
+            MeseUtils.creaMese(db, spesa)
+
+
+            Log.i(TAG, "<<$methodName")
+        }.addOnFailureListener{
+            Log.e(TAG, "<<$methodName Error getting spesa", it)
         }
-
-       fun printSpesa(db : DatabaseReference, recyclerView : RecyclerView, context : Context, spesaArray : ArrayList<Spesa>){
-           recyclerView.setHasFixedSize(true)
-           recyclerView.layoutManager = LinearLayoutManager(context)
-           spesaAdapter = SpesaAdapter(context, spesaArray)
-
-           recyclerView.adapter = spesaAdapter
-
-           db.addValueEventListener(object : ValueEventListener {
-               override fun onDataChange(dataSnapshot: DataSnapshot){
-                   for (snapshot : DataSnapshot in dataSnapshot.children){
-                       spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                       spesaArray.add(spesa)
-
-                       Log.i(TAG, "Ciclo : ${spesa.id} \n")
-                   }
-
-                   Log.i(TAG, "ESTRAZIONE - Size: ${spesaArray.size}")
-                   spesaAdapter.notifyDataSetChanged()
-               }
-               override fun onCancelled(error: DatabaseError) {
-                   Log.e(TAG, "Failed to read value.", error.toException())
-               }
-           })
-       }
     }
+
+   fun printSpesa(db : DatabaseReference, recyclerView : RecyclerView, context : Context, spesaArray : ArrayList<Spesa>){
+       recyclerView.setHasFixedSize(true)
+       recyclerView.layoutManager = LinearLayoutManager(context)
+       spesaAdapter = SpesaAdapter(context, spesaArray)
+
+       recyclerView.adapter = spesaAdapter
+
+       db.addValueEventListener(object : ValueEventListener {
+           override fun onDataChange(dataSnapshot: DataSnapshot){
+               spesaArray.clear()
+               for (snapshot : DataSnapshot in dataSnapshot.children){
+                   spesa = snapshot.getValue(Spesa::class.java) as Spesa
+                   spesaArray.add(spesa)
+               }
+               spesaAdapter.notifyDataSetChanged()
+           }
+           override fun onCancelled(error: DatabaseError) {
+               Log.e(TAG, "Failed to read value.", error.toException())
+           }
+       })
+   }
+
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.databinding.AddSpesaBinding
+import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
@@ -16,7 +17,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.view.View as View1
 
-class AddSpesaFragment : Fragment() {
+
+class AddSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val TAG = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
@@ -69,6 +71,10 @@ class AddSpesaFragment : Fragment() {
             val pagatore = binding.editTextPagatore.text.toString()
             SpesaUtils.creaSepsa(db, luogo, importo, data, pagatore)
             toast("Spesa creata : )")
+
+            //Chiudo la tastiera
+            GenericUtils.hideSoftKeyBoard(requireContext(), view)
+
             findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)
         }
 

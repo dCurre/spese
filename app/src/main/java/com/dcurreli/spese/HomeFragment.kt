@@ -10,6 +10,9 @@ import com.dcurreli.spese.databinding.HomeFragmentBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 
+
+
+
 class HomeFragment : Fragment() {
 
     private var _binding: HomeFragmentBinding? = null
@@ -22,8 +25,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+            savedInstanceState: Bundle?): View? {
 
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
         return binding.root
@@ -31,7 +33,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.addSpesaButton.setOnClickListener {
             findNavController().navigate(R.id.action_HomeFragment_to_AddSpesaFragment)
         }

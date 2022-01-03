@@ -5,7 +5,6 @@ import com.dcurreli.spese.utils.SpesaUtils;
 
 public class Spesa {
     private int id;
-    private Integer lastId;
     private String luogo;
     private double importo;
     private String data;
@@ -24,14 +23,14 @@ public class Spesa {
 
     public String extractMensilitaAnno(){
         String[] dataSpesa = this.data.split("/");
-        return MeseUtils.Static.getMonthAsText(dataSpesa[1])+ " " + dataSpesa[2];
+        return MeseUtils.INSTANCE.getMonthAsText(dataSpesa[1])+ " " + dataSpesa[2];
     }
 
     public int getId() {
         return id;
     }
 
-    public String getIdAsText() {
+    public String idTextAsString() {
         return ""+id;
     }
 
@@ -50,7 +49,7 @@ public class Spesa {
     public double getImporto() {
         return importo;
     }
-    public String getImportoAsText() {
+    public String importoAsText() {
         return ""+importo;
     }
 
