@@ -73,34 +73,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ResourceType")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
-            R.id.homeFragment -> {
-                true
-            }
+        var bool : Boolean = true;
+
+        when(item.itemId){
+            R.id.homeFragment -> { bool = true }
             R.id.loadSpeseFragment -> {
                 dataItem = "Dicembre 2021"
-                var pattern : String = "yyyy-MM-dd"
-
-                //Passo le date per la query a LoadSpeseFragment
-                dataForQuery = DataForQuery(
-                    GenericUtils.dateStringToTimestampSeconds(
-                        GenericUtils.firstDayOfMonth(dataItem),
-                        pattern
-                    ).toDouble(),
-                    GenericUtils.dateStringToTimestampSeconds(
-                        GenericUtils.lastDayOfMonth(dataItem),
-                        pattern).toDouble()
-                )
-
-                navController.navigate(R.id.loadSpeseFragment)
-                var drawerLayout : DrawerLayout = findViewById(R.id.drawerMainActivity)
-                binding.drawerMainActivity.closeDrawer(GravityCompat.START)
-
-
-                true
+                bool = true
             }
             else -> true
         }
+        var pattern : String = "yyyy-MM-dd" //Pattern mezzo inutile
+
+        //Passo le date per la query a LoadSpeseFragment
+        dataForQuery = DataForQuery(
+            GenericUtils.dateStringToTimestampSeconds(
+                GenericUtils.firstDayOfMonth(dataItem),
+                pattern
+            ).toDouble(),
+            GenericUtils.dateStringToTimestampSeconds(
+                GenericUtils.lastDayOfMonth(dataItem),
+                pattern).toDouble()
+        )
+
+        navController.navigate(R.id.loadSpeseFragment)
+        var drawerLayout : DrawerLayout = findViewById(R.id.drawerMainActivity)
+        binding.drawerMainActivity.closeDrawer(GravityCompat.START)
+
+        return bool;
 
     }
 
