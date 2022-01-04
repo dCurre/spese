@@ -1,7 +1,9 @@
 package com.dcurreli.spese.utils
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.adapters.MeseAdapter
@@ -23,12 +25,13 @@ object MeseUtils {
     private lateinit var meseArray : ArrayList<Mese>
     private lateinit var db: DatabaseReference
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun creaMese(db: DatabaseReference, spesa: Spesa, ) {
         val methodName: String = "creaMese"
         Log.i(TAG, ">>$methodName")
 
         //Vedo se il mese già esiste
-        db.child("mese").orderByChild("nome").equalTo(spesa.extractMensilitaAnno()).get().addOnSuccessListener {
+        db.child("mese").child(spesa.extractMensilitaAnno()).get().addOnSuccessListener {
             //Se non esiste cerco l'id dell'ultimo mese creato
             if(!it.exists()) {
                 db.child("mese").orderByChild("id").limitToLast(1).get().addOnSuccessListener {
@@ -45,7 +48,6 @@ object MeseUtils {
                     //Creo mese
                     val mese = Mese(newId,spesa.extractMensilitaAnno())
                     db.child("mese").child(newId.toString()).setValue(mese)
-
                 }.addOnFailureListener{
                     Log.e(TAG, "<<$methodName Error getting existing month", it)
                 }
@@ -64,7 +66,7 @@ object MeseUtils {
         binding.listaMese.adapter = meseAdapter
 
         db = Firebase.database.reference.child("mese")
-        db.orderByChild("id").addValueEventListener(object : ValueEventListener {
+        db.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot){
                 meseArray.clear()
                 for (snapshot : DataSnapshot in dataSnapshot.children.reversed()){

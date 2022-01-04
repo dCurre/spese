@@ -1,7 +1,9 @@
 package com.dcurreli.spese.utils
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.adapters.SpesaAdapter
@@ -18,6 +20,7 @@ object SpesaUtils {
     private lateinit var spesa : Spesa
     private lateinit var spesaAdapter : SpesaAdapter
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun creaSepsa(db: DatabaseReference, binding: AddSpesaBinding) {
         val methodName: String = "creaSpesa"
         Log.i(TAG, ">>$methodName")
@@ -37,10 +40,10 @@ object SpesaUtils {
                 binding.editTextPagatore.text.toString()
             )
 
+            //Creo mese, e se va bene
+            MeseUtils.creaMese(db, spesa)
             //Creo spesa
             db.child("spesa").child(newId.toString()).setValue(spesa)
-            //Creo mese
-            MeseUtils.creaMese(db, spesa)
 
             Log.i(TAG, "<<$methodName")
         }.addOnFailureListener{

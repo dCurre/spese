@@ -1,14 +1,24 @@
 package com.dcurreli.spese.objects;
 
+import android.os.Build;
+import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
+import com.dcurreli.spese.utils.GenericUtils;
+
 public class Mese {
     private int id;
     private String nome;// we're using the name as id
     private boolean saldato;
+    private Long timestamp;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Mese(int id, String nome){
         this.id = id;
         this.nome = nome;
         this.saldato = false;
+        this.timestamp = GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.firstDayOfMonth(nome), "yyyy-MM-dd");
     }
 
     public Mese(){}
@@ -33,12 +43,13 @@ public class Mese {
         return saldato;
     }
 
-    public void setSaldato(boolean saldato) {
-        this.saldato = saldato;
-    }
+    public void setSaldato(boolean saldato) { this.saldato = saldato; }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
+    public Long getTimestamp() { return timestamp; }
+
+    public void setTimestamp(Long timestamp) { this.timestamp = timestamp; }
+
+    public void salda(){ this.saldato = true; }
+
+
 }
