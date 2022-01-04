@@ -39,11 +39,12 @@ class MainActivity : AppCompatActivity(){
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        //Stampo la lista mesi
+        MeseUtils.printMese(this, binding, navController)
+
         //Abilita il menu inferiore
         binding.bottomNav.setupWithNavController(navController)
 
-        //Stampo la lista mesi
-        MeseUtils.printMese(this, binding, navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

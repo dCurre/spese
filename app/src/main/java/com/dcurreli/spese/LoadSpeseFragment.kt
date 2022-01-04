@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.objects.Spesa
@@ -44,10 +43,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
             //Stampo la lista delle spese
             SpesaUtils.printSpesa(db, binding.listaSpese, requireContext(), spesaArray, dataForQuery)
-        }
-
-        binding.backHomeButton.setOnClickListener {
-            findNavController().navigate(R.id.action_loadSpeseFragment_to_HomeFragment)
         }
     }
 

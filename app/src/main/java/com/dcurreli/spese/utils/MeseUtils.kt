@@ -67,7 +67,7 @@ object MeseUtils {
         db.orderByChild("id").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot){
                 meseArray.clear()
-                for (snapshot : DataSnapshot in dataSnapshot.children){
+                for (snapshot : DataSnapshot in dataSnapshot.children.reversed()){
                     mese = snapshot.getValue(Mese::class.java) as Mese
                     meseArray.add(mese)
                 }

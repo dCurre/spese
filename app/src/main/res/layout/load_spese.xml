@@ -22,17 +22,4 @@
         tools:ignore="MissingConstraints"
         />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/backHomeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/black"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -58,8 +58,8 @@ public class Spesa {
         return importo;
     }
 
-    public String importoAsText() {
-        return ""+importo;
+    public String importoAsTextEuro() {
+        return ""+importo+"€";
     }
 
     public void setImporto(double importo) {
