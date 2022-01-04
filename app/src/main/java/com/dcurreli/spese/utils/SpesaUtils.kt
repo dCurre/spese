@@ -53,7 +53,7 @@ object SpesaUtils {
 
        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble()).endBefore(dataForQuery.endsAt.toDouble()).addValueEventListener(object : ValueEventListener {
            override fun onDataChange(dataSnapshot: DataSnapshot){
-               for (snapshot : DataSnapshot in dataSnapshot.children.reversed()){
+               for (snapshot : DataSnapshot in dataSnapshot.children){
                    spesa = snapshot.getValue(Spesa::class.java) as Spesa
                    spesaArray.add(spesa)
                }

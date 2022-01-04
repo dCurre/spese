@@ -2,21 +2,26 @@ package com.dcurreli.spese.utils
 
 import android.content.Context
 import android.util.Log
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.adapters.MeseAdapter
+import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.objects.Mese
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 object MeseUtils {
     private val TAG = javaClass.simpleName
     private lateinit var mese: Mese
     private lateinit var meseAdapter : MeseAdapter
+    private lateinit var meseArray : ArrayList<Mese>
+    private lateinit var db: DatabaseReference
 
     fun creaMese(db: DatabaseReference, spesa: Spesa, ) {
         val methodName: String = "creaMese"
@@ -49,17 +54,20 @@ object MeseUtils {
             Log.e(TAG, "<<$methodName Error getting mese", it)
         }
     }
-    //TODO gestire mesi nella barra laterale
-    fun printMese(db : DatabaseReference, recyclerView : RecyclerView, context : Context, meseArray : ArrayList<Mese>){
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        meseAdapter = MeseAdapter(context, meseArray)
 
-        recyclerView.adapter = meseAdapter
+    fun printMese(context: Context,binding: ActivityMainBinding,navController: NavController){
+        binding.listaMese.setHasFixedSize(true)
+        binding.listaMese.layoutManager = LinearLayoutManager(context)
+        meseArray = ArrayList()
+        meseAdapter = MeseAdapter(context, meseArray, binding,navController)
 
-        db.orderByChild("nome").addValueEventListener(object : ValueEventListener {
+        binding.listaMese.adapter = meseAdapter
+
+        db = Firebase.database.reference.child("mese")
+        db.orderByChild("id").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot){
-                for (snapshot : DataSnapshot in dataSnapshot.children.reversed()){
+                meseArray.clear()
+                for (snapshot : DataSnapshot in dataSnapshot.children){
                     mese = snapshot.getValue(Mese::class.java) as Mese
                     meseArray.add(mese)
                 }

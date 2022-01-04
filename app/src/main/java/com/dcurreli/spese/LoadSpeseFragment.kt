@@ -31,19 +31,20 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         _binding = LoadSpeseBinding.inflate(inflater, container, false)
 
         return binding.root
-
     }
 
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //Recupero i dati da stampare per le spese
-        dataForQuery = (activity as MainActivity).getDataForQuery()
-        db = Firebase.database.reference.child("spesa")
-        spesaArray = ArrayList<Spesa>()
+        if(arguments != null){
+            dataForQuery = DataForQuery(arguments?.getString("startsAt")?.toDouble(), arguments?.getString("endsAt")?.toDouble())
+            db = Firebase.database.reference.child("spesa")
+            spesaArray = ArrayList<Spesa>()
 
-        //Stampo la lista delle spese
-        SpesaUtils.printSpesa(db, binding.listaSpese, requireContext(), spesaArray, dataForQuery)
+            //Stampo la lista delle spese
+            SpesaUtils.printSpesa(db, binding.listaSpese, requireContext(), spesaArray, dataForQuery)
+        }
 
         binding.backHomeButton.setOnClickListener {
             findNavController().navigate(R.id.action_loadSpeseFragment_to_HomeFragment)

@@ -1,19 +1,23 @@
 package com.dcurreli.spese.adapters;
 
 import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.view.GravityCompat;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcurreli.spese.R;
+import com.dcurreli.spese.databinding.ActivityMainBinding;
 import com.dcurreli.spese.objects.Mese;
+import com.dcurreli.spese.utils.GenericUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,12 +25,16 @@ import java.util.ArrayList;
 
 public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> {
 
-    Context context;
-    ArrayList<Mese> meseList;
+    private Context context;
+    private ArrayList<Mese> meseList;
+    private ActivityMainBinding binding;
+    private NavController navController;
 
-    public MeseAdapter(Context context, ArrayList<Mese> meseList) {
+    public MeseAdapter(Context context, ArrayList<Mese> meseList, ActivityMainBinding binding, NavController navController) {
         this.context = context;
         this.meseList = meseList;
+        this.binding = binding;
+        this.navController = navController;
     }
 
     @NonNull
@@ -40,6 +48,31 @@ public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Mese mese = meseList.get(position);
         holder.nomeMese.setText(mese.getNome());
+
+        //gestisco l'evento on click
+        holder.nomeMese.setOnClickListener(new View.OnClickListener()
+        {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            public void onClick(View view)
+            {
+                //Log.i("Mese Adapter", "Stampo: " + holder.nomeMese.getText());
+                String nomeMese = holder.nomeMese.getText().toString(), pattern = "yyyy-MM-dd";
+
+                String startsAt = ""+GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.firstDayOfMonth(nomeMese),pattern);
+                String endsAt = ""+GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.lastDayOfMonth(nomeMese),pattern);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("startsAt", startsAt);
+                bundle.putString("endsAt", endsAt);
+
+                //Chiudo il menu
+                binding.drawerMainActivity.closeDrawer(GravityCompat.START);
+
+                //Navigo sul fragment successivo passandogli il bundle
+                navController.navigate(R.id.loadSpeseFragment, bundle);
+            }
+        });
+
     }
 
     @Override
