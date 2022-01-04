@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.adapters.SpesaAdapter
+import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
@@ -17,26 +18,29 @@ object SpesaUtils {
     private lateinit var spesa : Spesa
     private lateinit var spesaAdapter : SpesaAdapter
 
-    fun creaSepsa(db: DatabaseReference, luogo: String, importo: String, data: String, pagatore: String ) {
+    fun creaSepsa(db: DatabaseReference, binding: AddSpesaBinding) {
         val methodName: String = "creaSpesa"
         Log.i(TAG, ">>$methodName")
         db.child("spesa").orderByChild("id").limitToLast(1).get().addOnSuccessListener {
             var newId: Int = 1
 
             if(it.exists()) {
-                var id: Int? =  it.children.first().child("id").value.toString().toInt()
-                if (id != null) {
-                    newId = (id + 1)
-                }
+                var id: Int =  it.children.first().child("id").value.toString().toInt()
+                newId = (id + 1)
             }
             //Nuova spesa
-            val spesa = Spesa(newId,luogo,importo.toDouble(),data,"dd/MM/yyyy",pagatore)
+            val spesa = Spesa(
+                newId,
+                binding.editTextSpesa.text.toString(),
+                binding.editTextImporto.text.toString().replace(",",".").toDouble(),
+                binding.textViewData.text.toString(),
+                binding.editTextPagatore.text.toString()
+            )
 
             //Creo spesa
             db.child("spesa").child(newId.toString()).setValue(spesa)
             //Creo mese
             MeseUtils.creaMese(db, spesa)
-
 
             Log.i(TAG, "<<$methodName")
         }.addOnFailureListener{
@@ -64,5 +68,12 @@ object SpesaUtils {
            }
        })
    }
+
+    fun areSpesaFieldValid(binding: AddSpesaBinding): Boolean {
+        if(binding.editTextSpesa.text == null){
+
+        }
+        return true;
+    }
 
 }

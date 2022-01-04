@@ -3,6 +3,7 @@ package com.dcurreli.spese
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -12,10 +13,14 @@ import com.dcurreli.spese.utils.SpesaUtils
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import org.jetbrains.anko.support.v4.toast
 import java.text.SimpleDateFormat
 import java.util.*
-import android.view.View as View1
+
+
+
+
+
+
 
 
 class AddSpesaFragment : Fragment(R.layout.add_spesa) {
@@ -32,14 +37,14 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View1? {
+    ): View? {
 
         _binding = AddSpesaBinding.inflate(inflater, container, false)
         return binding.root
 
     }
 
-    override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = Firebase.database.reference
 
@@ -56,30 +61,35 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         binding.textViewData.text = todayDate
 
         binding.buttonShowCalendar.setOnClickListener{
-            val datePickerDialog = DatePickerDialog(this.requireContext(),DatePickerDialog.OnDateSetListener{ view, mYear, mMonth, mDay ->
+            val datePickerDialog = DatePickerDialog(this.requireContext(),DatePickerDialog.OnDateSetListener{ _, mYear, mMonth, mDay ->
                 //Setto nella text view
                 binding.textViewData.text = "${String.format("%02d",mDay)}/${String.format("%02d",(mMonth+1))}/$mYear"
             }, year, month, day)
             datePickerDialog.show()
         }
 
-        binding.buttonAddSpesa.setOnClickListener {
-            //Recupero dati dall'xml
-            val luogo = binding.editTextSpesa.text.toString()
-            val importo = binding.editTextImporto.text.toString().replace(",",".")
-            val data = binding.textViewData.text.toString()
-            val pagatore = binding.editTextPagatore.text.toString()
-            SpesaUtils.creaSepsa(db, luogo, importo, data, pagatore)
-            toast("Spesa creata : )")
+        //binding.buttonAddSpesa.isEnabled = false
 
-            //Chiudo la tastiera
+        SpesaUtils.areSpesaFieldValid(binding)
+
+
+        binding.buttonAddSpesa.setOnClickListener {
+            //Chiudo la tastiera come prima cosa
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
-            findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)
-        }
+            if(binding.editTextSpesa.text.isNullOrBlank()){
+                GenericUtils.showSnackbarError("Campo spesa non popolato !", binding)
+            }else if(binding.editTextImporto.text.isNullOrBlank()){
+                GenericUtils.showSnackbarError("Campo importo non popolato !", binding)
+            }else if(binding.editTextPagatore.text.isNullOrBlank()){
+                GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding)
+            }else{
+                //Recupero dati dall'xml
+                SpesaUtils.creaSepsa(db, binding)
+                GenericUtils.showSnackbarOK("Spesa creata : )", binding)
 
-        binding.backHomeButton.setOnClickListener {
-            findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)
+                findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)
+            }
         }
     }
 

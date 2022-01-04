@@ -31,12 +31,10 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         navController = findNavController(R.id.nav_host_fragment_content_main)
-
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerMainActivity)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         //Stampo la lista mesi
@@ -44,7 +42,6 @@ class MainActivity : AppCompatActivity(){
 
         //Abilita il menu inferiore
         binding.bottomNav.setupWithNavController(navController)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

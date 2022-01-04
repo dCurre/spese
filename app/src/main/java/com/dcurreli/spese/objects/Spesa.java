@@ -17,12 +17,12 @@ public class Spesa {
     private Long timestamp;
     private String pagatore;
 
-    public Spesa(int id, String spesa, double importo, String data, String pattern, String pagatore) throws ParseException {
+    public Spesa(int id, String spesa, double importo, String data, String pagatore) throws ParseException {
         this.id = id;
         this.spesa = spesa;
         this.importo = importo;
         this.data = data;
-        this.timestamp = GenericUtils.INSTANCE.dateStringToTimestampSeconds(data, pattern);
+        this.timestamp = GenericUtils.INSTANCE.dateStringToTimestampSeconds(data, "dd/MM/yyyy");
         this.pagatore = pagatore;
     }
 

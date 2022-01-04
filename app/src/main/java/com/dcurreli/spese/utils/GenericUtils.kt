@@ -1,10 +1,14 @@
 package com.dcurreli.spese.utils
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import com.dcurreli.spese.R
+import com.dcurreli.spese.databinding.AddSpesaBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.time.YearMonth
@@ -42,6 +46,20 @@ object GenericUtils {
     fun firstDayOfMonth(dataItem: String): String {
         var arrayData : List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
         return ""+ YearMonth.of(arrayData[1].toInt(), MeseUtils.getMonthAsNumber(arrayData[0]).toString().toInt()).atDay(1)
+    }
+
+    fun showSnackbarError(message: String, binding: AddSpesaBinding) {
+        val snackbar = Snackbar.make(binding.addSpesaRootLayout, message, Snackbar.LENGTH_LONG)
+        snackbar.view.setBackgroundColor(Color.rgb(180,0,0))
+        snackbar.setAnchorView(R.id.bottom_nav)
+        snackbar.show()
+    }
+
+    fun showSnackbarOK(message: String, binding: AddSpesaBinding) {
+        val snackbar = Snackbar.make(binding.addSpesaRootLayout, message, Snackbar.LENGTH_LONG)
+        snackbar.view.setBackgroundColor(Color.rgb(0,128,0))
+        snackbar.setAnchorView(R.id.bottom_nav)
+        snackbar.show()
     }
 
 }

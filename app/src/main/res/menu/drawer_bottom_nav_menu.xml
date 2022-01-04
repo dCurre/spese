@@ -7,6 +7,12 @@
         android:background="?attr/colorPrimary"
         />
     <item
+        android:id="@+id/addSpesaFragment"
+        android:title="Aggiungi spesa"
+        android:icon="@drawable/ic_plus"
+        android:background="?attr/colorPrimary"
+        />
+    <item
         android:id="@+id/calendarFragment"
         android:title="Calendario"
         android:icon="@drawable/ic_calendar"

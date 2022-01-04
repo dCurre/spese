@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.databinding.HomeFragmentBinding
 
 
@@ -28,10 +27,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.addSpesaButton.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_AddSpesaFragment)
-        }
     }
 
     override fun onDestroyView() {

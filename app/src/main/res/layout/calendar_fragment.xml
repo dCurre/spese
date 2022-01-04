@@ -7,14 +7,11 @@
     android:fadeScrollbars="false"
     tools:context=".CalendarFragment">
 
-    <TextView
-        android:id="@+id/calendarFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ciao, sono il tuo calendario!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="600dp"
+        android:src="@drawable/work_in_progress_dog"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"  />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
