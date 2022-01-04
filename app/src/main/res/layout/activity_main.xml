@@ -44,6 +44,26 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            app:menu="@menu/menu_laterale"
-            />
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/menu_laterale_items">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lista_mese"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="MissingConstraints">
+
+                </androidx.recyclerview.widget.RecyclerView>
+                <ListView
+                    android:id="@+id/list_slidermenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:choiceMode="singleChoice"
+                    android:divider="@color/black"
+                    android:dividerHeight="1dp"
+                    android:listSelector="@drawable/ic_calendar"
+                    android:textColor="#424242"/>
+        </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

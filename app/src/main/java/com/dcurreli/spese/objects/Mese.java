@@ -11,6 +11,8 @@ public class Mese {
         this.saldato = false;
     }
 
+    public Mese(){}
+
     public void setId(int id) {
         this.id = id;
     }

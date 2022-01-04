@@ -17,8 +17,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.objects.DataForQuery
+import com.dcurreli.spese.objects.Mese
 import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.utils.MeseUtils
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -26,7 +31,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var navController : NavController
     private var dataItem : String = ""
     private lateinit var dataForQuery : DataForQuery
+    private lateinit var db: DatabaseReference
+    private val TAG = javaClass.simpleName
+    private lateinit var meseArray : ArrayList<Mese>
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -46,6 +55,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //Abilita il menu laterale
         //binding.lateralNavView.setupWithNavController(navController)
 
+        //VEDERE SE FUNGE
+
+        db = Firebase.database.reference.child("mese")
+        meseArray = ArrayList()
+
+        //Stampo la lista mesi
+        MeseUtils.printMese(db, binding.listaMese, this, meseArray)
+
+        //TODO da togliere
+        dataItem = "Dicembre 2021"
+
+        var pattern : String = "yyyy-MM-dd" //Pattern mezzo inutile
+
+        //Passo le date per la query a LoadSpeseFragment
+        dataForQuery = DataForQuery(
+            GenericUtils.dateStringToTimestampSeconds(
+                GenericUtils.firstDayOfMonth(dataItem),
+                pattern
+            ).toDouble(),
+            GenericUtils.dateStringToTimestampSeconds(
+                GenericUtils.lastDayOfMonth(dataItem),
+                pattern).toDouble()
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -14,7 +14,6 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
-
     </androidx.recyclerview.widget.RecyclerView>
 
     <ListView

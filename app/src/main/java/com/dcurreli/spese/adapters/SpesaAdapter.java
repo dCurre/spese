@@ -19,19 +19,17 @@ import java.util.ArrayList;
 public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder> {
 
     Context context;
+    ArrayList<Spesa> speseList;
 
     public SpesaAdapter(Context context, ArrayList<Spesa> speseList) {
         this.context = context;
         this.speseList = speseList;
     }
 
-    ArrayList<Spesa> speseList;
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View v = LayoutInflater.from(context).inflate(R.layout.spese_list, parent, false);
-
         return new MyViewHolder(v);
     }
 

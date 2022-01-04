@@ -20,7 +20,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private lateinit var db: DatabaseReference
     private val TAG = javaClass.simpleName
     private lateinit var spesaArray : ArrayList<Spesa>
-    private lateinit var activity : MainActivity
     private lateinit var dataForQuery : DataForQuery
     private val binding get() = _binding!!
 
@@ -38,8 +37,8 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Recupero i dati da stampare
-        dataForQuery = (getActivity() as MainActivity).getDataForQuery()
+        //Recupero i dati da stampare per le spese
+        dataForQuery = (activity as MainActivity).getDataForQuery()
         db = Firebase.database.reference.child("spesa")
         spesaArray = ArrayList<Spesa>()
 

@@ -2,8 +2,6 @@ package com.dcurreli.spese.utils
 
 import android.content.Context
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.adapters.MeseAdapter
@@ -52,17 +50,16 @@ object MeseUtils {
         }
     }
     //TODO gestire mesi nella barra laterale
-    fun printMese(db : DatabaseReference, recyclerView : RecyclerView, context : Context, meseArray : ArrayList<Mese>, menuInflater: MenuInflater, menu : Menu){
+    fun printMese(db : DatabaseReference, recyclerView : RecyclerView, context : Context, meseArray : ArrayList<Mese>){
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        meseAdapter = MeseAdapter(context, meseArray, menuInflater, menu)
+        meseAdapter = MeseAdapter(context, meseArray)
 
-        recyclerView.adapter = MeseUtils.meseAdapter
+        recyclerView.adapter = meseAdapter
 
-        db.addValueEventListener(object : ValueEventListener {
+        db.orderByChild("nome").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot){
-                meseArray.clear()
-                for (snapshot : DataSnapshot in dataSnapshot.children){
+                for (snapshot : DataSnapshot in dataSnapshot.children.reversed()){
                     mese = snapshot.getValue(Mese::class.java) as Mese
                     meseArray.add(mese)
                 }
