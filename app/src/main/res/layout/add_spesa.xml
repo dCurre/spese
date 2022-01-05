@@ -5,81 +5,105 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddSpesaFragment"
-    android:id="@+id/add_spesa_root_layout">
+    android:id="@+id/add_spesa_constraint_layout">
 
-    <EditText
-        android:id="@+id/edit_text_spesa"
-        android:inputType="text"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="60dp"
-        android:hint="Spesa"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
+        <ImageView
+            android:id="@+id/spesa_header_image"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:foregroundGravity="center_horizontal">
+        </ImageView>
+        <!-- SPESA -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spesa_spesa_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/spesa_header_image"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/ic_spesa"
+            android:hint="Spesa">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/spesa_spesa_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:inputType="numberDecimal"
-        android:id="@+id/edit_text_importo"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:hint="Importo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_spesa"
-        tools:ignore="MissingConstraints" />
+        <!-- IMPORTO -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spesa_importo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/spesa_spesa_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/ic_importo_euro"
+            app:endIconMode="clear_text"
+            android:hint="Importo">
 
-    <TextView
-        android:id="@+id/text_view_data"
-        android:layout_width="190dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:gravity="center_vertical"
-        android:hint="Data"
-        android:textSize="20sp"
-        android:textStyle=""
-        app:layout_constraintEnd_toStartOf="@+id/button_show_calendar"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_importo" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/spesa_importo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/button_show_calendar"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:text="Seleziona"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.823"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_importo" />
+        <!-- Data -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spesa_data_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spesa_importo_layout"
+            android:layout_marginBottom="10dp"
+            android:hint="Data"
+            app:startIconDrawable="@drawable/ic_calendar"
+            app:endIconMode="custom"
+            app:endIconTint="@color/app_color_main"
+            app:endIconDrawable="@drawable/ic_calendar_plus">
 
-    <EditText
-        android:inputType="text"
-        android:id="@+id/edit_text_pagatore"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:hint="Chi ha pagato?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_data"
-        tools:ignore="MissingConstraints" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/spesa_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:cursorVisible="false"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/button_add_spesa"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:text="Salva"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.823"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_pagatore" />
+        <!-- Pagatore -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spesa_pagatore_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/spesa_data_layout"
+            android:hint="Pagato da"
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/ic_pagatore">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/spesa_pagatore_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:imeOptions="actionDone"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/spesa_button_add_spesa"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/spesa_pagatore_layout"
+            android:text="Aggiungi" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.dcurreli.spese.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcurreli.spese.R;
 import com.dcurreli.spese.objects.Spesa;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,15 +53,16 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView id, spesa, importo, data, pagatore;
+        //TextView id;
+        TextView spesa, importo, data, pagatore;
 
         public MyViewHolder(@NotNull View itemView){
             super(itemView);
             //id = itemView.findViewById(R.id.spesa_id);
             spesa = itemView.findViewById(R.id.spesa_spesa);
-            importo = itemView.findViewById(R.id.spesa_importo);
-            data = itemView.findViewById(R.id.spesa_data);
-            pagatore = itemView.findViewById(R.id.spesa_pagatore);
+            importo =  itemView.findViewById(R.id.spesa_importo);
+            data =  itemView.findViewById(R.id.spesa_data);
+            pagatore =  itemView.findViewById(R.id.spesa_pagatore);
         }
     }
 }

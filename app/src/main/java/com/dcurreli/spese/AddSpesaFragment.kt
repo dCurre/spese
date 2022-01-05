@@ -18,13 +18,6 @@ import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-
-
-
-
-
-
 class AddSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val TAG = javaClass.simpleName
@@ -61,30 +54,36 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         val todayDate: String = formatter.format(Calendar.getInstance().time) //formatta today
 
         //Setto today dentro text view 'data'
-        binding.textViewData.text = todayDate
+        //binding.spesaData.setText(todayDate)
 
-        binding.buttonShowCalendar.setOnClickListener{
+        binding.spesaData.setOnClickListener{
             val datePickerDialog = DatePickerDialog(this.requireContext(),DatePickerDialog.OnDateSetListener{ _, mYear, mMonth, mDay ->
                 //Setto nella text view
-                binding.textViewData.text = "${String.format("%02d",mDay)}/${String.format("%02d",(mMonth+1))}/$mYear"
+                binding.spesaData.setText("${String.format("%02d",mDay)}/${String.format("%02d",(mMonth+1))}/$mYear")
+
+                SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
             }, year, month, day)
             datePickerDialog.show()
         }
 
-        //binding.buttonAddSpesa.isEnabled = false
+        //Se premo lo sfondo
+        binding.addSpesaConstraintLayout.setOnClickListener{
+            GenericUtils.hideSoftKeyBoard(requireContext(), view) //Chiudo la tastiera
+            SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
+        }
 
-        SpesaUtils.areSpesaFieldValid(binding)
-
-
-        binding.buttonAddSpesa.setOnClickListener {
+        //Bottone "Aggiungi"
+        binding.spesaButtonAddSpesa.setOnClickListener {
             //Chiudo la tastiera come prima cosa
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
-            if(binding.editTextSpesa.text.isNullOrBlank()){
+            if(binding.spesaSpesaText.text.isNullOrBlank()){
                 GenericUtils.showSnackbarError("Campo spesa non popolato !", binding)
-            }else if(binding.editTextImporto.text.isNullOrBlank()){
+            }else if(binding.spesaImporto.text.isNullOrBlank()){
                 GenericUtils.showSnackbarError("Campo importo non popolato !", binding)
-            }else if(binding.editTextPagatore.text.isNullOrBlank()){
+            }else if(binding.spesaData.text.isNullOrBlank()){
+                GenericUtils.showSnackbarError("Campo data non popolato !", binding)
+            }else if(binding.spesaPagatoreText.text.isNullOrBlank()){
                 GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding)
             }else{
                 //Recupero dati dall'xml

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:layout_marginLeft="20dp"
+    android:layout_marginLeft="10dp"
     android:layout_marginRight="20dp"
     android:orientation="horizontal"
     tools:context=".MainActivity">
@@ -14,16 +14,27 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         tools:ignore="MissingConstraints">
+
+        <View
+            android:id="@+id/mese_saldato"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="2.5dp"
+            android:background="@drawable/ic_saldato_false"/>
+
         <TextView
             android:id="@+id/mese_nome"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:paddingLeft="50dp"
             android:text="Mese"
             android:textSize="15sp"
-            app:drawableEndCompat="@drawable/ic_arrow_right"
+            app:drawableEndCompat="@drawable/ic_arrow_right" />
 
-            />
+
+
+
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

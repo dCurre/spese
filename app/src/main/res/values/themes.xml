@@ -22,4 +22,11 @@
     <style name="Theme.Spese.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Spese.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Colora toolbar -->
+    <style name="ToolbarColoredBackArrow" parent="Theme.Spese">
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
 </resources>

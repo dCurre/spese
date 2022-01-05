@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,10 @@ public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> 
         Mese mese = meseList.get(position);
         holder.nomeMese.setText(mese.getNome());
 
+        if(mese.isSaldato())
+            holder.saldatoImage.setBackgroundResource(R.drawable.ic_saldato_true);
+
+
         //gestisco l'evento on click
         holder.nomeMese.setOnClickListener(new View.OnClickListener()
         {
@@ -83,10 +88,12 @@ public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView nomeMese;
+        View saldatoImage;
 
         public MyViewHolder(@NotNull View itemView){
             super(itemView);
             nomeMese = itemView.findViewById(R.id.mese_nome);
+            saldatoImage = itemView.findViewById(R.id.mese_saldato);
         }
     }
 }

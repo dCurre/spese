@@ -34,10 +34,10 @@ object SpesaUtils {
             //Nuova spesa
             val spesa = Spesa(
                 newId,
-                binding.editTextSpesa.text.toString(),
-                binding.editTextImporto.text.toString().replace(",",".").toDouble(),
-                binding.textViewData.text.toString(),
-                binding.editTextPagatore.text.toString()
+                binding.spesaSpesaText.text.toString(),
+                binding.spesaImporto.text.toString().replace(",",".").toDouble(),
+                binding.spesaData.text.toString(),
+                binding.spesaPagatoreText.text.toString()
             )
 
             //Creo mese, e se va bene
@@ -72,11 +72,10 @@ object SpesaUtils {
        })
    }
 
-    fun areSpesaFieldValid(binding: AddSpesaBinding): Boolean {
-        if(binding.editTextSpesa.text == null){
-
-        }
-        return true;
+    fun clearTextViewFocus(binding: AddSpesaBinding) {
+        binding.spesaSpesaText.clearFocus()
+        binding.spesaImporto.clearFocus()
+        binding.spesaPagatoreText.clearFocus()
     }
 
 }

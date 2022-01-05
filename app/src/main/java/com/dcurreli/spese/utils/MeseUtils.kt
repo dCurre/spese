@@ -31,7 +31,7 @@ object MeseUtils {
         Log.i(TAG, ">>$methodName")
 
         //Vedo se il mese già esiste
-        db.child("mese").child(spesa.extractMensilitaAnno()).get().addOnSuccessListener {
+        db.child("mese").orderByChild("nome").equalTo(spesa.extractMensilitaAnno()).get().addOnSuccessListener {
             //Se non esiste cerco l'id dell'ultimo mese creato
             if(!it.exists()) {
                 db.child("mese").orderByChild("id").limitToLast(1).get().addOnSuccessListener {

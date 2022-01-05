@@ -50,14 +50,14 @@ object GenericUtils {
     }
 
     fun showSnackbarError(message: String, binding: AddSpesaBinding) {
-        val snackbar = Snackbar.make(binding.addSpesaRootLayout, message, Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(binding.addSpesaConstraintLayout, message, Snackbar.LENGTH_LONG)
         snackbar.view.setBackgroundColor(Color.rgb(180,0,0))
         snackbar.setAnchorView(R.id.bottom_nav)
         snackbar.show()
     }
 
     fun showSnackbarOK(message: String, binding: AddSpesaBinding) {
-        val snackbar = Snackbar.make(binding.addSpesaRootLayout, message, Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(binding.addSpesaConstraintLayout, message, Snackbar.LENGTH_LONG)
         snackbar.view.setBackgroundColor(Color.rgb(0,128,0))
         snackbar.setAnchorView(R.id.bottom_nav)
         snackbar.show()
