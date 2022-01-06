@@ -16,8 +16,8 @@ class CalendarFragment : Fragment(R.layout.calendar_fragment) {
     private val TAG = javaClass.simpleName
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         _binding = CalendarFragmentBinding.inflate(inflater, container, false)

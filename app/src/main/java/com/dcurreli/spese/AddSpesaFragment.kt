@@ -48,18 +48,31 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        binding.spesaData.setOnClickListener{
-            val datePickerDialog = DatePickerDialog(this.requireContext(),DatePickerDialog.OnDateSetListener{ _, mYear, mMonth, mDay ->
-                //Setto la data nella text view
-                binding.spesaData.setText("${String.format("%02d",mDay)}/${String.format("%02d",(mMonth+1))}/$mYear")
+        binding.spesaData.setOnClickListener {
+            val datePickerDialog = DatePickerDialog(
+                this.requireContext(),
+                DatePickerDialog.OnDateSetListener { _, mYear, mMonth, mDay ->
+                    //Setto la data nella text view
+                    binding.spesaData.setText(
+                        "${
+                            String.format(
+                                "%02d",
+                                mDay
+                            )
+                        }/${String.format("%02d", (mMonth + 1))}/$mYear"
+                    )
 
-                SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
-            }, year, month, day)
+                    SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
+                },
+                year,
+                month,
+                day
+            )
             datePickerDialog.show()
         }
 
         //Se premo lo sfondo
-        binding.addSpesaConstraintLayout.setOnClickListener{
+        binding.addSpesaConstraintLayout.setOnClickListener {
             GenericUtils.hideSoftKeyBoard(requireContext(), view) //Chiudo la tastiera
             SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
         }
@@ -69,15 +82,15 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
             //Chiudo la tastiera come prima cosa
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
-            if(binding.spesaSpesaText.text.isNullOrBlank()){
+            if (binding.spesaSpesaText.text.isNullOrBlank()) {
                 GenericUtils.showSnackbarError("Campo spesa non popolato !", binding)
-            }else if(binding.spesaImporto.text.isNullOrBlank()){
+            } else if (binding.spesaImporto.text.isNullOrBlank()) {
                 GenericUtils.showSnackbarError("Campo importo non popolato !", binding)
-            }else if(binding.spesaData.text.isNullOrBlank()){
+            } else if (binding.spesaData.text.isNullOrBlank()) {
                 GenericUtils.showSnackbarError("Campo data non popolato !", binding)
-            }else if(binding.spesaPagatoreText.text.isNullOrBlank()){
+            } else if (binding.spesaPagatoreText.text.isNullOrBlank()) {
                 GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding)
-            }else{
+            } else {
                 //Recupero dati dall'xml
                 SpesaUtils.creaSepsa(binding)
                 GenericUtils.showSnackbarOK("Spesa creata : )", binding)

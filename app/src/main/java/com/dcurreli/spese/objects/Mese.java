@@ -4,7 +4,6 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.dcurreli.spese.MainActivity;
 import com.dcurreli.spese.utils.GenericUtils;
 
 public class Mese {
@@ -14,21 +13,22 @@ public class Mese {
     private Long timestamp;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Mese(int id, String nome){
+    public Mese(int id, String nome) {
         this.id = id;
         this.nome = nome;
         this.saldato = false;
         this.timestamp = GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.firstDayOfMonth(nome), "yyyy-MM-dd");
     }
 
-    public Mese(){}
-
-    public void setId(int id) {
-        this.id = id;
+    public Mese() {
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -43,13 +43,21 @@ public class Mese {
         return saldato;
     }
 
-    public void setSaldato(boolean saldato) { this.saldato = saldato; }
+    public void setSaldato(boolean saldato) {
+        this.saldato = saldato;
+    }
 
-    public Long getTimestamp() { return timestamp; }
+    public Long getTimestamp() {
+        return timestamp;
+    }
 
-    public void setTimestamp(Long timestamp) { this.timestamp = timestamp; }
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
 
-    public void salda(){ this.saldato = true; }
+    public void salda() {
+        this.saldato = true;
+    }
 
 
 }

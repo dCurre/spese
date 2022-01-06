@@ -21,24 +21,25 @@ public class Spesa {
         this.timestamp = GenericUtils.INSTANCE.dateStringToTimestampSeconds(data, "dd/MM/yyyy");
         this.pagatore = pagatore;
     }
-    public Spesa(){
+
+    public Spesa() {
     }
 
-    public String extractMensilitaAnno(){
+    public String extractMensilitaAnno() {
         String[] dataSpesa = this.data.split("/");
-        return MeseUtils.INSTANCE.getMonthAsText(dataSpesa[1])+ " " + dataSpesa[2];
+        return MeseUtils.INSTANCE.getMonthAsText(dataSpesa[1]) + " " + dataSpesa[2];
     }
 
     public int getId() {
         return id;
     }
 
-    public String idTextAsString() {
-        return ""+id;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String idTextAsString() {
+        return "" + id;
     }
 
     public String getSpesa() {
@@ -53,23 +54,29 @@ public class Spesa {
         return importo;
     }
 
-    public String importoAsTextEuro() {
-        return ""+importo+"€";
-    }
-
     public void setImporto(double importo) {
         this.importo = importo;
     }
 
-    public String getData() { return data; }
+    public String importoAsTextEuro() {
+        return "" + importo + "€";
+    }
+
+    public String getData() {
+        return data;
+    }
 
     public void setData(String data) {
         this.data = data;
     }
 
-    public Long getTimestamp() { return timestamp; }
+    public Long getTimestamp() {
+        return timestamp;
+    }
 
-    public void setTimestamp(Long timestamp) { this.timestamp = timestamp; }
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public String getPagatore() {
         return pagatore;

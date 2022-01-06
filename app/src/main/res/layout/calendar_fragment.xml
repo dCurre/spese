@@ -11,7 +11,7 @@
         android:layout_width="300dp"
         android:layout_height="600dp"
         android:src="@drawable/work_in_progress_dog"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"  />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,33 +2,34 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_spesa_constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddSpesaFragment"
-    android:id="@+id/add_spesa_constraint_layout">
+    tools:context=".AddSpesaFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp">
+
         <ImageView
             android:id="@+id/spesa_header_image"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:foregroundGravity="center_horizontal">
-        </ImageView>
+            android:foregroundGravity="center_horizontal"></ImageView>
         <!-- SPESA -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/spesa_spesa_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_below="@id/spesa_header_image"
+            android:layout_marginBottom="10dp"
+            android:hint="Spesa"
             app:endIconMode="clear_text"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconDrawable="@drawable/ic_spesa"
-            android:hint="Spesa">
+            app:startIconDrawable="@drawable/ic_spesa">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/spesa_spesa_text"
                 android:layout_width="match_parent"
@@ -39,20 +40,20 @@
         <!-- IMPORTO -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/spesa_importo_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_below="@id/spesa_spesa_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconDrawable="@drawable/ic_importo_euro"
+            android:layout_marginBottom="10dp"
+            android:hint="Importo"
             app:endIconMode="clear_text"
-            android:hint="Importo">
+            app:startIconDrawable="@drawable/ic_importo_euro">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/spesa_importo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"/>
+                android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Data -->
@@ -64,18 +65,17 @@
             android:layout_below="@id/spesa_importo_layout"
             android:layout_marginBottom="10dp"
             android:hint="Data"
-            app:startIconDrawable="@drawable/ic_calendar"
+            app:endIconDrawable="@drawable/ic_calendar_plus"
             app:endIconMode="custom"
             app:endIconTint="@color/app_color_main"
-            app:endIconDrawable="@drawable/ic_calendar_plus">
+            app:startIconDrawable="@drawable/ic_calendar">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/spesa_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
                 android:cursorVisible="false"
-                />
+                android:focusable="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Pagatore -->
@@ -84,8 +84,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:layout_below="@id/spesa_data_layout"
+            android:layout_marginBottom="10dp"
             android:hint="Pagato da"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_pagatore">
@@ -94,8 +94,8 @@
                 android:id="@+id/spesa_pagatore_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:imeOptions="actionDone"/>
+                android:imeOptions="actionDone"
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton

@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/loadSpeseFragment"
         android:name="com.dcurreli.spese.LoadSpeseFragment"
-        android:label="Riepilogo spese" >
+        android:label="Riepilogo spese">
         <action
             android:id="@+id/action_loadSpeseFragment_to_HomeFragment"
             app:destination="@id/homeFragment" />
@@ -45,8 +45,8 @@
         tools:layout="@layout/settings_fragment" />
 
     <action
-            android:id="@+id/action_To_SettingsFragment"
-            app:destination="@id/settingsFragment" />
+        android:id="@+id/action_To_SettingsFragment"
+        app:destination="@id/settingsFragment" />
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.dcurreli.spese.CalendarFragment"

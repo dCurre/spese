@@ -49,21 +49,19 @@ public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> 
         Mese mese = meseList.get(position);
         holder.nomeMese.setText(mese.getNome());
 
-        if(mese.isSaldato())
+        if (mese.isSaldato())
             holder.saldatoImage.setBackgroundResource(R.drawable.ic_saldato_true);
 
 
         //gestisco l'evento on click
-        holder.nomeMese.setOnClickListener(new View.OnClickListener()
-        {
+        holder.nomeMese.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 //Log.i("Mese Adapter", "Stampo: " + holder.nomeMese.getText());
                 String nomeMese = holder.nomeMese.getText().toString(), pattern = "yyyy-MM-dd";
 
-                String startsAt = ""+GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.firstDayOfMonth(nomeMese),pattern);
-                String endsAt = ""+GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.lastDayOfMonth(nomeMese),pattern);
+                String startsAt = "" + GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.firstDayOfMonth(nomeMese), pattern);
+                String endsAt = "" + GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.lastDayOfMonth(nomeMese), pattern);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("startsAt", startsAt);
@@ -84,12 +82,12 @@ public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> 
         return meseList.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView nomeMese;
         View saldatoImage;
 
-        public MyViewHolder(@NotNull View itemView){
+        public MyViewHolder(@NotNull View itemView) {
             super(itemView);
             nomeMese = itemView.findViewById(R.id.mese_nome);
             saldatoImage = itemView.findViewById(R.id.mese_saldato);

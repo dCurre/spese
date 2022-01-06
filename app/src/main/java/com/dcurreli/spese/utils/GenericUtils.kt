@@ -25,40 +25,48 @@ object GenericUtils {
         }
     }
 
-    fun dateStringToTimestampSeconds(data : String, pattern: String) : Long {
+    fun dateStringToTimestampSeconds(data: String, pattern: String): Long {
         return dateToTimestampSeconds(SimpleDateFormat(pattern).parse(data))
     }
 
-    fun dateToTimestampSeconds(date : Date) : Long {
+    fun dateToTimestampSeconds(date: Date): Long {
         return Timestamp(date).seconds
     }
 
-    fun dateStringToDate(dataString : String, pattern : String) : Date {
+    fun dateStringToDate(dataString: String, pattern: String): Date {
         return SimpleDateFormat(pattern).parse(dataString)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun lastDayOfMonth(dataItem: String): String {
-        var arrayData : List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
-        return ""+ YearMonth.of(arrayData[1].toInt(), MeseUtils.getMonthAsNumber(arrayData[0]).toString().toInt()).atEndOfMonth()
+        var arrayData: List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
+        return "" + YearMonth.of(
+            arrayData[1].toInt(),
+            MeseUtils.getMonthAsNumber(arrayData[0]).toString().toInt()
+        ).atEndOfMonth()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun firstDayOfMonth(dataItem: String): String {
-        var arrayData : List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
-        return ""+ YearMonth.of(arrayData[1].toInt(), MeseUtils.getMonthAsNumber(arrayData[0]).toString().toInt()).atDay(1)
+        var arrayData: List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
+        return "" + YearMonth.of(
+            arrayData[1].toInt(),
+            MeseUtils.getMonthAsNumber(arrayData[0]).toString().toInt()
+        ).atDay(1)
     }
 
     fun showSnackbarError(message: String, binding: AddSpesaBinding) {
-        val snackbar = Snackbar.make(binding.addSpesaConstraintLayout, message, Snackbar.LENGTH_LONG)
-        snackbar.view.setBackgroundColor(Color.rgb(180,0,0))
+        val snackbar =
+            Snackbar.make(binding.addSpesaConstraintLayout, message, Snackbar.LENGTH_LONG)
+        snackbar.view.setBackgroundColor(Color.rgb(180, 0, 0))
         snackbar.setAnchorView(R.id.bottom_nav)
         snackbar.show()
     }
 
     fun showSnackbarOK(message: String, binding: AddSpesaBinding) {
-        val snackbar = Snackbar.make(binding.addSpesaConstraintLayout, message, Snackbar.LENGTH_LONG)
-        snackbar.view.setBackgroundColor(Color.rgb(0,128,0))
+        val snackbar =
+            Snackbar.make(binding.addSpesaConstraintLayout, message, Snackbar.LENGTH_LONG)
+        snackbar.view.setBackgroundColor(Color.rgb(0, 128, 0))
         snackbar.setAnchorView(R.id.bottom_nav)
         snackbar.show()
     }

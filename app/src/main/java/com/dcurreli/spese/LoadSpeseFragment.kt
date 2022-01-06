@@ -16,7 +16,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private var _binding: LoadSpeseBinding? = null
     private val TAG = javaClass.simpleName
-    private lateinit var dataForQuery : DataForQuery
+    private lateinit var dataForQuery: DataForQuery
     private val binding get() = _binding!!
 
     private var _bindingSpeseList: SpeseListBinding? = null
@@ -24,7 +24,8 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View1? {
+        savedInstanceState: Bundle?
+    ): View1? {
 
         _binding = LoadSpeseBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,8 +36,11 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         super.onViewCreated(view, savedInstanceState)
 
         //Recupero i dati da stampare per le spese (dal main activity)
-        if(arguments != null){
-            dataForQuery = DataForQuery(arguments?.getString("startsAt")?.toDouble(), arguments?.getString("endsAt")?.toDouble())
+        if (arguments != null) {
+            dataForQuery = DataForQuery(
+                arguments?.getString("startsAt")?.toDouble(),
+                arguments?.getString("endsAt")?.toDouble()
+            )
 
             //Stampo la lista delle spese
             SpesaUtils.printSpesa(binding, requireContext(), dataForQuery)

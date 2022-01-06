@@ -16,10 +16,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.utils.MeseUtils
 
-open class MainActivity : AppCompatActivity(){
+open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController : NavController
+    private lateinit var navController: NavController
     private val TAG = javaClass.simpleName
 
     @SuppressLint("ResourceType")

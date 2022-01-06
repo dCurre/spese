@@ -58,8 +58,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         holder.deleteButton.setVisibility(View.INVISIBLE);
 
         //Se premo il bottone potrò modificare l'elemento della lista
-        holder.editButton.setOnClickListener(new View.OnClickListener()
-        {
+        holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -67,8 +66,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         });
 
         //Premendo il bottone cancello l'elemento
-        holder.deleteButton.setOnClickListener(new View.OnClickListener()
-        {
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
             @Override
             public void onClick(View view) {
@@ -83,18 +81,18 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         return speseList.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView spesa, importo, data, pagatore, spesaNotFound;
         Button editButton, deleteButton;
 
-        public MyViewHolder(@NotNull View itemView){
+        public MyViewHolder(@NotNull View itemView) {
             super(itemView);
 
             spesa = itemView.findViewById(R.id.spesa_spesa);
-            importo =  itemView.findViewById(R.id.spesa_importo);
-            data =  itemView.findViewById(R.id.spesa_data);
-            pagatore =  itemView.findViewById(R.id.spesa_pagatore);
+            importo = itemView.findViewById(R.id.spesa_importo);
+            data = itemView.findViewById(R.id.spesa_data);
+            pagatore = itemView.findViewById(R.id.spesa_pagatore);
             editButton = itemView.findViewById(R.id.spesa_button_edit_spesa);
             deleteButton = itemView.findViewById(R.id.spesa_button_delete_spesa);
             spesaNotFound = itemView.findViewById(R.id.spese_not_found);

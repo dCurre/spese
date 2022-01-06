@@ -2,26 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
-        android:title="Home"
-        android:icon="@drawable/ic_home"
         android:background="?attr/colorPrimary"
-        />
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
     <item
         android:id="@+id/addSpesaFragment"
-        android:title="Aggiungi spesa"
-        android:icon="@drawable/ic_plus"
         android:background="?attr/colorPrimary"
-        />
+        android:icon="@drawable/ic_plus"
+        android:title="Aggiungi spesa" />
     <item
         android:id="@+id/calendarFragment"
-        android:title="Calendario"
-        android:icon="@drawable/ic_calendar"
         android:background="?attr/colorPrimary"
-        />
+        android:icon="@drawable/ic_calendar"
+        android:title="Calendario" />
     <item
         android:id="@+id/settingsFragment"
-        android:title="Settings"
-        android:icon="@drawable/ic_settings"
         android:background="?attr/colorPrimary"
-        />
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
 </menu>

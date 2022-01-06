@@ -32,15 +32,15 @@ object SpesaUtils {
         db.orderByChild("id").limitToLast(1).get().addOnSuccessListener {
             var newId = 1
 
-            if(it.exists()) {
-                val id: Int =  it.children.first().child("id").value.toString().toInt()
+            if (it.exists()) {
+                val id: Int = it.children.first().child("id").value.toString().toInt()
                 newId = (id + 1)
             }
             //Nuova spesa
             val spesa = Spesa(
                 newId,
                 binding.spesaSpesaText.text.toString(),
-                binding.spesaImporto.text.toString().replace(",",".").toDouble(),
+                binding.spesaImporto.text.toString().replace(",", ".").toDouble(),
                 binding.spesaData.text.toString(),
                 binding.spesaPagatoreText.text.toString()
             )
@@ -51,36 +51,40 @@ object SpesaUtils {
             db.child(newId.toString()).setValue(spesa)
 
             Log.i(TAG, "<<$methodName")
-        }.addOnFailureListener{
+        }.addOnFailureListener {
             Log.e(TAG, "<<$methodName Error getting spesa", it)
         }
     }
 
-   fun printSpesa(binding: LoadSpeseBinding, context: Context, dataForQuery: DataForQuery){
-       binding.listaSpese.layoutManager = LinearLayoutManager(context)
-       val spesaArray = ArrayList<Spesa>()
-       val spesaAdapter = SpesaAdapter(context, spesaArray)
-       binding.listaSpese.adapter = spesaAdapter
+    fun printSpesa(binding: LoadSpeseBinding, context: Context, dataForQuery: DataForQuery) {
+        binding.listaSpese.layoutManager = LinearLayoutManager(context)
+        val spesaArray = ArrayList<Spesa>()
+        val spesaAdapter = SpesaAdapter(context, spesaArray)
+        binding.listaSpese.adapter = spesaAdapter
 
-       db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble()).endBefore(dataForQuery.endsAt.toDouble()).addValueEventListener(object : ValueEventListener {
-           @SuppressLint("NotifyDataSetChanged")
-           override fun onDataChange(dataSnapshot: DataSnapshot){
-               spesaArray.clear()
+        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
+            .endBefore(dataForQuery.endsAt.toDouble())
+            .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    spesaArray.clear()
 
-               //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
-               if(dataSnapshot.childrenCount > 0) binding.speseNotFound.visibility = INVISIBLE else binding.speseNotFound.visibility = View.VISIBLE
+                    //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
+                    if (dataSnapshot.childrenCount > 0) binding.speseNotFound.visibility =
+                        INVISIBLE else binding.speseNotFound.visibility = View.VISIBLE
 
-               for (snapshot : DataSnapshot in dataSnapshot.children){
-                   val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                   spesaArray.add(spesa)
-               }
-               spesaAdapter.notifyDataSetChanged() //Refresh della lista
-           }
-           override fun onCancelled(error: DatabaseError) {
-               Log.e(TAG, "Failed to read value.", error.toException())
-           }
-       })
-   }
+                    for (snapshot: DataSnapshot in dataSnapshot.children) {
+                        val spesa = snapshot.getValue(Spesa::class.java) as Spesa
+                        spesaArray.add(spesa)
+                    }
+                    spesaAdapter.notifyDataSetChanged() //Refresh della lista
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(TAG, "Failed to read value.", error.toException())
+                }
+            })
+    }
 
     fun clearTextViewFocus(binding: AddSpesaBinding) {
         binding.spesaSpesaText.clearFocus()
@@ -94,15 +98,16 @@ object SpesaUtils {
         val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
 
         //Controllo prima che ci sia solo un elemento per quel mese
-        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble()).endBefore(dataForQuery.endsAt.toDouble())
+        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
+            .endBefore(dataForQuery.endsAt.toDouble())
             .get().addOnSuccessListener {
-                if(it.exists() && it.childrenCount <= 1){
+                if (it.exists() && it.childrenCount <= 1) {
                     //Essendoci solo una spesa nel mese posso pure cancellare il mese stesso
                     MeseUtils.deleteMese(spesa)
                 }
-        }.addOnFailureListener{
-            Log.e(TAG, "<< Error getting mese", it)
-        }
+            }.addOnFailureListener {
+                Log.e(TAG, "<< Error getting mese", it)
+            }
 
         //Cancello la spesa
         db.child(spesa.id.toString()).removeValue()
