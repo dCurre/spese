@@ -135,15 +135,14 @@ object MeseUtils {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun deleteMese(spesa : Spesa) {
-        var dataForQuery = createDataForQueryFromSpesa(spesa)
+        var dataForQuery = createDataForQueryFromSpesa(spesa)!!
 
-        db.orderByChild("timestamp").startAfter(dataForQuery!!.startsAt.toDouble()).endBefore(dataForQuery!!.endsAt.toDouble()).get()
+        //Recupero il mese da cancellare
+        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble()).endBefore(dataForQuery.endsAt.toDouble()).get()
             .addOnSuccessListener {
                 if(it.exists()){
-                    for (singleIt in it.children){
-                        val mese = singleIt.getValue(Mese::class.java) as Mese
-                        db.child(mese.id.toString()).removeValue()
-                    }
+                    val mese = it.children.first().getValue(Mese::class.java) as Mese
+                    db.child(mese.id.toString()).removeValue() //Cancello
                 }
             }.addOnFailureListener{
                 Log.e(TAG, "<< Error getting mese", it)

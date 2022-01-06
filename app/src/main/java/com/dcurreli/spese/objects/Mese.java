@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.dcurreli.spese.MainActivity;
 import com.dcurreli.spese.utils.GenericUtils;
 
 public class Mese {

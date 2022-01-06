@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.view.View
+import android.view.View.INVISIBLE
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.AddSpesaBinding
+import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
@@ -26,6 +28,7 @@ object SpesaUtils {
     fun creaSepsa(binding: AddSpesaBinding) {
         val methodName = "creaSpesa"
         Log.i(TAG, ">>$methodName")
+
         db.orderByChild("id").limitToLast(1).get().addOnSuccessListener {
             var newId = 1
 
@@ -53,16 +56,20 @@ object SpesaUtils {
         }
     }
 
-   fun printSpesa(recyclerView : RecyclerView, context : Context, dataForQuery: DataForQuery){
-       recyclerView.layoutManager = LinearLayoutManager(context)
+   fun printSpesa(binding: LoadSpeseBinding, context: Context, dataForQuery: DataForQuery){
+       binding.listaSpese.layoutManager = LinearLayoutManager(context)
        val spesaArray = ArrayList<Spesa>()
        val spesaAdapter = SpesaAdapter(context, spesaArray)
-       recyclerView.adapter = spesaAdapter
+       binding.listaSpese.adapter = spesaAdapter
 
        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble()).endBefore(dataForQuery.endsAt.toDouble()).addValueEventListener(object : ValueEventListener {
            @SuppressLint("NotifyDataSetChanged")
            override fun onDataChange(dataSnapshot: DataSnapshot){
                spesaArray.clear()
+
+               //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
+               if(dataSnapshot.childrenCount > 0) binding.speseNotFound.visibility = INVISIBLE else binding.speseNotFound.visibility = View.VISIBLE
+
                for (snapshot : DataSnapshot in dataSnapshot.children){
                    val spesa = snapshot.getValue(Spesa::class.java) as Spesa
                    spesaArray.add(spesa)
@@ -83,21 +90,22 @@ object SpesaUtils {
 
     @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
-    fun deleteSpesa(spesa : Spesa) {
-        var dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)
+    fun deleteSpesa(spesa: Spesa) {
+        val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
 
-        //Controllo prima che ci sia solo un elemento per quel mese --> poi cancello il mese e in seguito l'elemento
-        db.orderByChild("timestamp").startAfter(dataForQuery!!.startsAt.toDouble()).endBefore(dataForQuery!!.endsAt.toDouble()).get().addOnSuccessListener {
+        //Controllo prima che ci sia solo un elemento per quel mese
+        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble()).endBefore(dataForQuery.endsAt.toDouble())
+            .get().addOnSuccessListener {
                 if(it.exists() && it.childrenCount <= 1){
+                    //Essendoci solo una spesa nel mese posso pure cancellare il mese stesso
                     MeseUtils.deleteMese(spesa)
-            }
+                }
         }.addOnFailureListener{
             Log.e(TAG, "<< Error getting mese", it)
         }
 
-        //Provvedo alla cancellazione della spesa
+        //Cancello la spesa
         db.child(spesa.id.toString()).removeValue()
-
     }
 
 }

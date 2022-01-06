@@ -14,17 +14,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.databinding.ActivityMainBinding
-import com.dcurreli.spese.objects.Mese
 import com.dcurreli.spese.utils.MeseUtils
 
-class MainActivity : AppCompatActivity(){
+open class MainActivity : AppCompatActivity(){
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController : NavController
     private val TAG = javaClass.simpleName
-
-    private lateinit var meseArray : ArrayList<Mese>
-    private var dataItem : String = ""
 
     @SuppressLint("ResourceType")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -64,4 +60,5 @@ class MainActivity : AppCompatActivity(){
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+
 }

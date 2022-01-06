@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/spese_list_cardView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"
-    app:cardElevation="20dp"
-    android:orientation="horizontal">
+    android:layout_marginRight="5dp"
+    android:orientation="horizontal"
+    app:cardElevation="20dp">
 
 
     <RelativeLayout
@@ -81,7 +82,6 @@
             android:layout_alignParentBottom="true"
             android:background="@drawable/ic_delete"
             android:backgroundTint="@color/red"
-            android:visibility="invisible"
             />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -93,12 +93,15 @@
             android:layout_marginBottom="5dp"
             android:layout_toStartOf="@id/spesa_button_delete_spesa"
             android:background="@drawable/ic_pencil_edit"
-            android:backgroundTint="?colorPrimary"
-            android:visibility="invisible"/>
+            android:backgroundTint="?colorPrimary"/>
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+    </RelativeLayout>
 
 
 

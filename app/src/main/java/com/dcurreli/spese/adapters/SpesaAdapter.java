@@ -24,7 +24,6 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
     private Context context;
     private ArrayList<Spesa> speseList;
 
-
     public SpesaAdapter(Context context, ArrayList<Spesa> speseList) {
         this.context = context;
         this.speseList = speseList;
@@ -54,16 +53,20 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         holder.data.setText(spesa.getData());
         holder.pagatore.setText(spesa.getPagatore());
 
+        //Di base nascondo i bottoni così che al refresh della pagina non rimangono attivi su un altra textview
+        holder.editButton.setVisibility(View.INVISIBLE);
+        holder.deleteButton.setVisibility(View.INVISIBLE);
+
         //Se premo il bottone potrò modificare l'elemento della lista
         holder.editButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view) {
+
             }
         });
 
-        //Se premo il bottone potrò cancellare l'elemento della lista
-
+        //Premendo il bottone cancello l'elemento
         holder.deleteButton.setOnClickListener(new View.OnClickListener()
         {
             @SuppressLint("NewApi")
@@ -82,7 +85,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView spesa, importo, data, pagatore;
+        TextView spesa, importo, data, pagatore, spesaNotFound;
         Button editButton, deleteButton;
 
         public MyViewHolder(@NotNull View itemView){
@@ -94,9 +97,10 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
             pagatore =  itemView.findViewById(R.id.spesa_pagatore);
             editButton = itemView.findViewById(R.id.spesa_button_edit_spesa);
             deleteButton = itemView.findViewById(R.id.spesa_button_delete_spesa);
+            spesaNotFound = itemView.findViewById(R.id.spese_not_found);
 
             //Gestisco l'evento on hold
-            itemView.setOnLongClickListener((View.OnLongClickListener) view -> {
+            itemView.setOnLongClickListener(view -> {
                 editButton.setVisibility(View.VISIBLE);//Faccio apparire il bottone edit
                 deleteButton.setVisibility(View.VISIBLE);//Faccio apparire il bottone delete
                 return true;

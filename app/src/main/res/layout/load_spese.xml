@@ -22,4 +22,12 @@
         tools:ignore="MissingConstraints"
         />
 
+    <TextView
+        android:id="@+id/spese_not_found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Non è presente nessuna spesa"
+        android:visibility="visible"
+        android:gravity="center"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
