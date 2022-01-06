@@ -1,5 +1,12 @@
 package com.dcurreli.spese.objects;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import com.dcurreli.spese.utils.GenericUtils;
+import com.dcurreli.spese.utils.MeseUtils;
+
 public class DataForQuery {
 
     private Double startsAt;
@@ -25,4 +32,5 @@ public class DataForQuery {
     public void setEndsAt(Double endsAt) {
         this.endsAt = endsAt;
     }
+
 }

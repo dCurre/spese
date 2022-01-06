@@ -1,5 +1,6 @@
 package com.dcurreli.spese.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.util.Log
@@ -19,9 +20,6 @@ import com.google.firebase.ktx.Firebase
 
 object SpesaUtils {
     private val TAG = javaClass.simpleName
-    private lateinit var spesa : Spesa
-    private lateinit var spesaAdapter : SpesaAdapter
-    private lateinit var spesaArray : ArrayList<Spesa>
     private var db: DatabaseReference = Firebase.database.reference.child("spesa")
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -57,14 +55,16 @@ object SpesaUtils {
 
    fun printSpesa(recyclerView : RecyclerView, context : Context, dataForQuery: DataForQuery){
        recyclerView.layoutManager = LinearLayoutManager(context)
-       spesaArray = ArrayList()
-       spesaAdapter = SpesaAdapter(context, spesaArray)
+       val spesaArray = ArrayList<Spesa>()
+       val spesaAdapter = SpesaAdapter(context, spesaArray)
        recyclerView.adapter = spesaAdapter
 
        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble()).endBefore(dataForQuery.endsAt.toDouble()).addValueEventListener(object : ValueEventListener {
+           @SuppressLint("NotifyDataSetChanged")
            override fun onDataChange(dataSnapshot: DataSnapshot){
+               spesaArray.clear()
                for (snapshot : DataSnapshot in dataSnapshot.children){
-                   spesa = snapshot.getValue(Spesa::class.java) as Spesa
+                   val spesa = snapshot.getValue(Spesa::class.java) as Spesa
                    spesaArray.add(spesa)
                }
                spesaAdapter.notifyDataSetChanged() //Refresh della lista
@@ -81,19 +81,23 @@ object SpesaUtils {
         binding.spesaPagatoreText.clearFocus()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
-    fun deleteSpesa(id : String, recyclerView : RecyclerView, context : Context) {
+    fun deleteSpesa(spesa : Spesa) {
+        var dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)
 
-        Log.i(TAG, recyclerView.toString())
+        //Controllo prima che ci sia solo un elemento per quel mese --> poi cancello il mese e in seguito l'elemento
+        db.orderByChild("timestamp").startAfter(dataForQuery!!.startsAt.toDouble()).endBefore(dataForQuery!!.endsAt.toDouble()).get().addOnSuccessListener {
+                if(it.exists() && it.childrenCount <= 1){
+                    MeseUtils.deleteMese(spesa)
+            }
+        }.addOnFailureListener{
+            Log.e(TAG, "<< Error getting mese", it)
+        }
 
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        spesaArray = ArrayList()
-        spesaAdapter = SpesaAdapter(context, spesaArray)
-        recyclerView.adapter = spesaAdapter
+        //Provvedo alla cancellazione della spesa
+        db.child(spesa.id.toString()).removeValue()
 
-        db.child(id).removeValue()
-
-        spesaAdapter.notifyDataSetChanged() //Refresh della lista
     }
 
 }

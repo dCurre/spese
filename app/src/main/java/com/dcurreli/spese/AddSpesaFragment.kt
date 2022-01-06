@@ -1,5 +1,6 @@
 package com.dcurreli.spese
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
@@ -13,7 +14,6 @@ import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import com.google.firebase.database.DatabaseReference
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddSpesaFragment : Fragment(R.layout.add_spesa) {
@@ -37,6 +37,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
 
     }
 
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,16 +47,10 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        //Genero e formatto today
-        val formatter = SimpleDateFormat("dd/MM/yyyy")
-        val todayDate: String = formatter.format(Calendar.getInstance().time) //formatta today
-
-        //Setto today dentro text view 'data'
-        //binding.spesaData.setText(todayDate)
 
         binding.spesaData.setOnClickListener{
             val datePickerDialog = DatePickerDialog(this.requireContext(),DatePickerDialog.OnDateSetListener{ _, mYear, mMonth, mDay ->
-                //Setto nella text view
+                //Setto la data nella text view
                 binding.spesaData.setText("${String.format("%02d",mDay)}/${String.format("%02d",(mMonth+1))}/$mYear")
 
                 SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni

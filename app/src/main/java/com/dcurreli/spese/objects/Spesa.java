@@ -2,12 +2,8 @@ package com.dcurreli.spese.objects;
 
 import com.dcurreli.spese.utils.GenericUtils;
 import com.dcurreli.spese.utils.MeseUtils;
-import com.dcurreli.spese.utils.SpesaUtils;
-import com.google.firebase.Timestamp;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Spesa {
     private int id;
@@ -25,7 +21,6 @@ public class Spesa {
         this.timestamp = GenericUtils.INSTANCE.dateStringToTimestampSeconds(data, "dd/MM/yyyy");
         this.pagatore = pagatore;
     }
-
     public Spesa(){
     }
 

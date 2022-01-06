@@ -1,7 +1,6 @@
 package com.dcurreli.spese.objects;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 

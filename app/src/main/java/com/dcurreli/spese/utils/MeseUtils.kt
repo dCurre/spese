@@ -8,8 +8,12 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.adapters.MeseAdapter
 import com.dcurreli.spese.databinding.ActivityMainBinding
+import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.objects.Mese
 import com.dcurreli.spese.objects.Spesa
+import com.dcurreli.spese.utils.GenericUtils.dateStringToTimestampSeconds
+import com.dcurreli.spese.utils.GenericUtils.firstDayOfMonth
+import com.dcurreli.spese.utils.GenericUtils.lastDayOfMonth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -26,7 +30,7 @@ object MeseUtils {
     private final var db: DatabaseReference = Firebase.database.reference.child("mese")
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun creaMese(spesa: Spesa, ) {
+    fun creaMese(spesa: Spesa) {
         val methodName: String = "creaMese"
         Log.i(TAG, ">>$methodName")
 
@@ -116,6 +120,12 @@ object MeseUtils {
         }
     }
 
+    fun getNomeMeseFromSpesaData(spesaData : String) : String{
+        var arrayData = spesaData.split("/")// 0 giorno, 1 mese, 2 anno
+
+        return "${getMonthAsText(arrayData[1])} ${arrayData[2]}"
+    }
+
     fun getDataFromString(dataString : String, pattern: String): Date {
         var arrayData : List<String> = dataString.split(" ")// 0 giorno, 1 mese, 2 anno
 
@@ -123,7 +133,29 @@ object MeseUtils {
         return GenericUtils.dateStringToDate(arrayData[0] +"/"+getMonthAsNumber(arrayData[1])+"/"+ arrayData[2], pattern)
     }
 
-    fun deleteMese(id : String) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun deleteMese(spesa : Spesa) {
+        var dataForQuery = createDataForQueryFromSpesa(spesa)
 
+        db.orderByChild("timestamp").startAfter(dataForQuery!!.startsAt.toDouble()).endBefore(dataForQuery!!.endsAt.toDouble()).get()
+            .addOnSuccessListener {
+                if(it.exists()){
+                    for (singleIt in it.children){
+                        val mese = singleIt.getValue(Mese::class.java) as Mese
+                        db.child(mese.id.toString()).removeValue()
+                    }
+                }
+            }.addOnFailureListener{
+                Log.e(TAG, "<< Error getting mese", it)
+            }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    fun createDataForQueryFromSpesa(spesa: Spesa): DataForQuery? {
+        val pattern = "yyyy-MM-dd"
+        val nomeMese = getNomeMeseFromSpesaData(spesa.data)
+        val startsAt = "" + dateStringToTimestampSeconds(firstDayOfMonth(nomeMese), pattern)
+        val endsAt = "" + dateStringToTimestampSeconds(lastDayOfMonth(nomeMese), pattern)
+        return DataForQuery(startsAt.toDouble(), endsAt.toDouble())
     }
 }

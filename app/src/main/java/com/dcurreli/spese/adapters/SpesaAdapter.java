@@ -1,17 +1,18 @@
 package com.dcurreli.spese.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.dcurreli.spese.R;
-import com.dcurreli.spese.databinding.LoadSpeseBinding;
 import com.dcurreli.spese.objects.Spesa;
-import com.dcurreli.spese.utils.MeseUtils;
 import com.dcurreli.spese.utils.SpesaUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,11 +48,31 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Spesa spesa = speseList.get(position);
-        holder.id = String.valueOf(spesa.getId());
+        //holder.id = String.valueOf(spesa.getId());
         holder.spesa.setText(spesa.getSpesa());
         holder.importo.setText(spesa.importoAsTextEuro());
         holder.data.setText(spesa.getData());
         holder.pagatore.setText(spesa.getPagatore());
+
+        //Se premo il bottone potrò modificare l'elemento della lista
+        holder.editButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        //Se premo il bottone potrò cancellare l'elemento della lista
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener()
+        {
+            @SuppressLint("NewApi")
+            @Override
+            public void onClick(View view) {
+                SpesaUtils.deleteSpesa(spesa);
+                notifyItemChanged(spesa.getId());
+            }
+        });
     }
 
     @Override
@@ -60,7 +81,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-        String id;
+
         TextView spesa, importo, data, pagatore;
         Button editButton, deleteButton;
 
@@ -73,26 +94,6 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
             pagatore =  itemView.findViewById(R.id.spesa_pagatore);
             editButton = itemView.findViewById(R.id.spesa_button_edit_spesa);
             deleteButton = itemView.findViewById(R.id.spesa_button_delete_spesa);
-
-            //Se premo il bottone potrò modificare l'elemento della lista
-            editButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view) {
-                }
-            });
-
-            //Se premo il bottone potrò cancellare l'elemento della lista
-            deleteButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view) {
-                    //SpesaUtils.deleteSpesa(id, view.findViewById(R.id.lista_spese), );
-
-
-                    //MeseUtils.deleteMese("prova");
-                }
-            });
 
             //Gestisco l'evento on hold
             itemView.setOnLongClickListener((View.OnLongClickListener) view -> {
