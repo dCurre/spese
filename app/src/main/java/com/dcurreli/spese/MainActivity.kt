@@ -61,4 +61,9 @@ open class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
+    // 2.0 and above
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+    }
+
 }

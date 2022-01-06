@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.databinding.SpeseListBinding
 import com.dcurreli.spese.objects.DataForQuery
+import com.dcurreli.spese.utils.MeseUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import android.view.View as View1
 
@@ -37,13 +38,12 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
         //Recupero i dati da stampare per le spese (dal main activity)
         if (arguments != null) {
-            dataForQuery = DataForQuery(
-                arguments?.getString("startsAt")?.toDouble(),
-                arguments?.getString("endsAt")?.toDouble()
-            )
+            dataForQuery = MeseUtils.createDataForQueryFromMeseAnno(arguments?.getString("toolbarTitle").toString())!!
 
             //Stampo la lista delle spese
             SpesaUtils.printSpesa(binding, requireContext(), dataForQuery)
+            //Inoltre setto il titolo della toolbar al nome del mese mostrato
+            (activity as MainActivity).supportActionBar?.title = arguments?.getString("toolbarTitle")
         }
     }
 

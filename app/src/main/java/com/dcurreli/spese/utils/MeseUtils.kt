@@ -162,4 +162,12 @@ object MeseUtils {
         val endsAt = "" + dateStringToTimestampSeconds(lastDayOfMonth(nomeMese), pattern)
         return DataForQuery(startsAt.toDouble(), endsAt.toDouble())
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    fun createDataForQueryFromMeseAnno(nomeMese: String): DataForQuery? {
+        val pattern = "yyyy-MM-dd"
+        val startsAt = "" + dateStringToTimestampSeconds(firstDayOfMonth(nomeMese), pattern)
+        val endsAt = "" + dateStringToTimestampSeconds(lastDayOfMonth(nomeMese), pattern)
+        return DataForQuery(startsAt.toDouble(), endsAt.toDouble())
+    }
 }

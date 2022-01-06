@@ -57,15 +57,8 @@ public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> 
         holder.nomeMese.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             public void onClick(View view) {
-                //Log.i("Mese Adapter", "Stampo: " + holder.nomeMese.getText());
-                String nomeMese = holder.nomeMese.getText().toString(), pattern = "yyyy-MM-dd";
-
-                String startsAt = "" + GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.firstDayOfMonth(nomeMese), pattern);
-                String endsAt = "" + GenericUtils.INSTANCE.dateStringToTimestampSeconds(GenericUtils.INSTANCE.lastDayOfMonth(nomeMese), pattern);
-
                 Bundle bundle = new Bundle();
-                bundle.putString("startsAt", startsAt);
-                bundle.putString("endsAt", endsAt);
+                bundle.putString("toolbarTitle", holder.nomeMese.getText().toString());
 
                 //Chiudo il menu
                 binding.drawerMainActivity.closeDrawer(GravityCompat.START);

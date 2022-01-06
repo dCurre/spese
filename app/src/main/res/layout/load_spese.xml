@@ -27,6 +27,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="Non è presente nessuna spesa"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
