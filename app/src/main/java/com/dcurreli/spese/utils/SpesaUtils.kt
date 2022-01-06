@@ -56,10 +56,10 @@ object SpesaUtils {
         }
     }
 
-    fun printSpesa(binding: LoadSpeseBinding, context: Context, dataForQuery: DataForQuery) {
-        binding.listaSpese.layoutManager = LinearLayoutManager(context)
+    fun printSpese(binding: LoadSpeseBinding, context: Context, dataForQuery: DataForQuery) {
         val spesaArray = ArrayList<Spesa>()
         val spesaAdapter = SpesaAdapter(context, spesaArray)
+        binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = spesaAdapter
 
         db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
@@ -68,7 +68,7 @@ object SpesaUtils {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     spesaArray.clear()
-
+                    var totaleSpese : Double = 0.0
                     //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
                     if (dataSnapshot.childrenCount > 0) binding.speseNotFound.visibility =
                         INVISIBLE else binding.speseNotFound.visibility = View.VISIBLE
@@ -76,7 +76,10 @@ object SpesaUtils {
                     for (snapshot: DataSnapshot in dataSnapshot.children) {
                         val spesa = snapshot.getValue(Spesa::class.java) as Spesa
                         spesaArray.add(spesa)
+                        totaleSpese += spesa.importo
                     }
+                    //Stampu pure il totale delle spese
+                    binding.listaSpeseHeaderTotaleImporto.text = "${totaleSpese.toString().replace(".",",")}€"
                     spesaAdapter.notifyDataSetChanged() //Refresh della lista
                 }
 
@@ -111,6 +114,41 @@ object SpesaUtils {
 
         //Cancello la spesa
         db.child(spesa.id.toString()).removeValue()
+    }
+
+    fun printTotaleSpese(binding: LoadSpeseBinding, context: Context, dataForQuery: DataForQuery): Double {
+        var totale : Double = 0.0
+        val spesaArray = ArrayList<Spesa>()
+        val spesaAdapter = SpesaAdapter(context, spesaArray)
+        binding.listaSpese.layoutManager = LinearLayoutManager(context)
+        binding.listaSpese.adapter = spesaAdapter
+
+        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
+            .endBefore(dataForQuery.endsAt.toDouble())
+            .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    spesaArray.clear()
+
+                    //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
+                    if (dataSnapshot.childrenCount > 0) binding.speseNotFound.visibility =
+                        INVISIBLE else binding.speseNotFound.visibility = View.VISIBLE
+
+                    for (snapshot: DataSnapshot in dataSnapshot.children) {
+                        val spesa = snapshot.getValue(Spesa::class.java) as Spesa
+                        spesaArray.add(spesa)
+                    }
+                    spesaAdapter.notifyDataSetChanged() //Refresh della lista
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(TAG, "Failed to read value.", error.toException())
+                }
+            })
+
+
+
+        return totale
     }
 
 }
