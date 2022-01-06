@@ -14,21 +14,25 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 object SpesaUtils {
     private val TAG = javaClass.simpleName
     private lateinit var spesa : Spesa
     private lateinit var spesaAdapter : SpesaAdapter
+    private lateinit var spesaArray : ArrayList<Spesa>
+    private var db: DatabaseReference = Firebase.database.reference.child("spesa")
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun creaSepsa(db: DatabaseReference, binding: AddSpesaBinding) {
-        val methodName: String = "creaSpesa"
+    fun creaSepsa(binding: AddSpesaBinding) {
+        val methodName = "creaSpesa"
         Log.i(TAG, ">>$methodName")
-        db.child("spesa").orderByChild("id").limitToLast(1).get().addOnSuccessListener {
-            var newId: Int = 1
+        db.orderByChild("id").limitToLast(1).get().addOnSuccessListener {
+            var newId = 1
 
             if(it.exists()) {
-                var id: Int =  it.children.first().child("id").value.toString().toInt()
+                val id: Int =  it.children.first().child("id").value.toString().toInt()
                 newId = (id + 1)
             }
             //Nuova spesa
@@ -41,9 +45,9 @@ object SpesaUtils {
             )
 
             //Creo mese, e se va bene
-            MeseUtils.creaMese(db, spesa)
+            MeseUtils.creaMese(spesa)
             //Creo spesa
-            db.child("spesa").child(newId.toString()).setValue(spesa)
+            db.child(newId.toString()).setValue(spesa)
 
             Log.i(TAG, "<<$methodName")
         }.addOnFailureListener{
@@ -51,11 +55,10 @@ object SpesaUtils {
         }
     }
 
-   fun printSpesa(db : DatabaseReference, recyclerView : RecyclerView, context : Context, spesaArray : ArrayList<Spesa>, dataForQuery: DataForQuery){
-       recyclerView.setHasFixedSize(true)
+   fun printSpesa(recyclerView : RecyclerView, context : Context, dataForQuery: DataForQuery){
        recyclerView.layoutManager = LinearLayoutManager(context)
+       spesaArray = ArrayList()
        spesaAdapter = SpesaAdapter(context, spesaArray)
-
        recyclerView.adapter = spesaAdapter
 
        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble()).endBefore(dataForQuery.endsAt.toDouble()).addValueEventListener(object : ValueEventListener {
@@ -64,7 +67,7 @@ object SpesaUtils {
                    spesa = snapshot.getValue(Spesa::class.java) as Spesa
                    spesaArray.add(spesa)
                }
-               spesaAdapter.notifyDataSetChanged()
+               spesaAdapter.notifyDataSetChanged() //Refresh della lista
            }
            override fun onCancelled(error: DatabaseError) {
                Log.e(TAG, "Failed to read value.", error.toException())
@@ -76,6 +79,21 @@ object SpesaUtils {
         binding.spesaSpesaText.clearFocus()
         binding.spesaImporto.clearFocus()
         binding.spesaPagatoreText.clearFocus()
+    }
+
+    @JvmStatic
+    fun deleteSpesa(id : String, recyclerView : RecyclerView, context : Context) {
+
+        Log.i(TAG, recyclerView.toString())
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        spesaArray = ArrayList()
+        spesaAdapter = SpesaAdapter(context, spesaArray)
+        recyclerView.adapter = spesaAdapter
+
+        db.child(id).removeValue()
+
+        spesaAdapter.notifyDataSetChanged() //Refresh della lista
     }
 
 }

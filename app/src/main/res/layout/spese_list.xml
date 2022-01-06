@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:id="@+id/spese_list_cardView"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
@@ -9,15 +10,17 @@
     app:cardElevation="20dp"
     android:orientation="horizontal">
 
+
     <RelativeLayout
         android:id="@+id/spesa_list_first_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp">
+
         <TextView
             android:id="@+id/spesa_icon"
-            android:drawableTop="@drawable/ic_calendar"
             android:layout_width="100dp"
-            android:layout_height="100dp"/>
+            android:layout_height="100dp"
+            android:drawableTop="@drawable/ic_calendar" />
 
         <TextView
             android:id="@+id/spesa_spesa"
@@ -68,7 +71,33 @@
             android:textSize="7pt"
             android:textStyle="bold" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/spesa_button_delete_spesa"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/ic_delete"
+            android:backgroundTint="@color/red"
+            android:visibility="invisible"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/spesa_button_edit_spesa"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toStartOf="@id/spesa_button_delete_spesa"
+            android:background="@drawable/ic_pencil_edit"
+            android:backgroundTint="?colorPrimary"
+            android:visibility="invisible"/>
+
     </RelativeLayout>
+
 
 
 

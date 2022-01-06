@@ -13,8 +13,6 @@ import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,7 +40,6 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        db = Firebase.database.reference
 
         //Calendario
         val calendar = Calendar.getInstance()
@@ -87,7 +84,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
                 GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding)
             }else{
                 //Recupero dati dall'xml
-                SpesaUtils.creaSepsa(db, binding)
+                SpesaUtils.creaSepsa(binding)
                 GenericUtils.showSnackbarOK("Spesa creata : )", binding)
 
                 findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)

@@ -23,18 +23,18 @@ object MeseUtils {
     private lateinit var mese: Mese
     private lateinit var meseAdapter : MeseAdapter
     private lateinit var meseArray : ArrayList<Mese>
-    private lateinit var db: DatabaseReference
+    private final var db: DatabaseReference = Firebase.database.reference.child("mese")
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun creaMese(db: DatabaseReference, spesa: Spesa, ) {
+    fun creaMese(spesa: Spesa, ) {
         val methodName: String = "creaMese"
         Log.i(TAG, ">>$methodName")
 
         //Vedo se il mese già esiste
-        db.child("mese").orderByChild("nome").equalTo(spesa.extractMensilitaAnno()).get().addOnSuccessListener {
+        db.orderByChild("nome").equalTo(spesa.extractMensilitaAnno()).get().addOnSuccessListener {
             //Se non esiste cerco l'id dell'ultimo mese creato
             if(!it.exists()) {
-                db.child("mese").orderByChild("id").limitToLast(1).get().addOnSuccessListener {
+                db.orderByChild("id").limitToLast(1).get().addOnSuccessListener {
                     var newId: Int = 1
 
                     //se ho ottenuto qualcosa setto l'id a vecchioID + 1
@@ -47,7 +47,7 @@ object MeseUtils {
 
                     //Creo mese
                     val mese = Mese(newId,spesa.extractMensilitaAnno())
-                    db.child("mese").child(newId.toString()).setValue(mese)
+                    db.child(newId.toString()).setValue(mese)
                 }.addOnFailureListener{
                     Log.e(TAG, "<<$methodName Error getting existing month", it)
                 }
@@ -61,11 +61,10 @@ object MeseUtils {
         binding.listaMese.setHasFixedSize(true)
         binding.listaMese.layoutManager = LinearLayoutManager(context)
         meseArray = ArrayList()
-        meseAdapter = MeseAdapter(context, meseArray, binding,navController)
+        meseAdapter = MeseAdapter(context, meseArray, binding, navController)
 
         binding.listaMese.adapter = meseAdapter
 
-        db = Firebase.database.reference.child("mese")
         db.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot){
                 meseArray.clear()
@@ -73,7 +72,7 @@ object MeseUtils {
                     mese = snapshot.getValue(Mese::class.java) as Mese
                     meseArray.add(mese)
                 }
-                meseAdapter.notifyDataSetChanged()
+                meseAdapter.notifyDataSetChanged() //Se tolgo non stampa
             }
             override fun onCancelled(error: DatabaseError) {
                 Log.e(TAG, "Failed to read value.", error.toException())
@@ -122,5 +121,9 @@ object MeseUtils {
 
         //Log.i(TAG, "Returning: ${arrayData[0] +"/"+getMonthAsNumber(arrayData[1])+"/"+ arrayData[2]}")
         return GenericUtils.dateStringToDate(arrayData[0] +"/"+getMonthAsNumber(arrayData[1])+"/"+ arrayData[2], pattern)
+    }
+
+    fun deleteMese(id : String) {
+
     }
 }

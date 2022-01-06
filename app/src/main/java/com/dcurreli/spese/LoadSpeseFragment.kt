@@ -9,8 +9,6 @@ import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.objects.Spesa
 import com.dcurreli.spese.utils.SpesaUtils
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import android.view.View as View1
 
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
@@ -38,11 +36,9 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         //Recupero i dati da stampare per le spese
         if(arguments != null){
             dataForQuery = DataForQuery(arguments?.getString("startsAt")?.toDouble(), arguments?.getString("endsAt")?.toDouble())
-            db = Firebase.database.reference.child("spesa")
-            spesaArray = ArrayList<Spesa>()
 
             //Stampo la lista delle spese
-            SpesaUtils.printSpesa(db, binding.listaSpese, requireContext(), spesaArray, dataForQuery)
+            SpesaUtils.printSpesa(binding.listaSpese, requireContext(), dataForQuery)
         }
     }
 
