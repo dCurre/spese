@@ -8,7 +8,7 @@
     android:layout_marginTop="10dp"
     android:layout_marginEnd="20dp"
     android:orientation="horizontal"
-    tools:context=".MainActivity">
+    tools:context=".main.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

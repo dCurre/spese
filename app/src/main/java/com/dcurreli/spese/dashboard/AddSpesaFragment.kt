@@ -1,4 +1,4 @@
-package com.dcurreli.spese
+package com.dcurreli.spese.dashboard
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SpesaUtils

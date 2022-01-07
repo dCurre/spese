@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fadeScrollbars="false"
-    tools:context=".HomeFragment">
+    tools:context=".dashboard.HomeFragment">
 
     <TextView
         android:id="@+id/textview_first"

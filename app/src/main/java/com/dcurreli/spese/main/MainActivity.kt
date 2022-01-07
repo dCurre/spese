@@ -1,4 +1,4 @@
-package com.dcurreli.spese
+package com.dcurreli.spese.main
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -13,19 +13,37 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.utils.MeseUtils
+import com.google.firebase.auth.FirebaseAuth
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private lateinit var mAuth: FirebaseAuth
     private val TAG = javaClass.simpleName
 
     @SuppressLint("ResourceType")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mAuth = FirebaseAuth.getInstance()
+        val user = mAuth.currentUser
+/*
+        //Se l'utente non è autenticato, verrà riportato alla pagina di login
+        Handler(Looper.getMainLooper()).postDelayed({
+            if(user!=null){
+                val dashboardIntent = Intent(this, DashboardActivity::class.java)
+                startActivity(dashboardIntent)
+            }else{
+                val signInIntent = Intent(this,SignInActivity::class.java)
+                startActivity(signInIntent)
+            }
+        }, 2000)
+*/
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)

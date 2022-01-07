@@ -1,4 +1,4 @@
-package com.dcurreli.spese
+package com.dcurreli.spese.dashboard
 
 import android.os.Build
 import android.os.Bundle
@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.LoadSpeseBinding
+import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.utils.MeseUtils
 import com.dcurreli.spese.utils.SpesaUtils
