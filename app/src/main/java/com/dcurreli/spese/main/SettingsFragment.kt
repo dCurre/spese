@@ -1,17 +1,20 @@
-package com.dcurreli.spese.dashboard
+package com.dcurreli.spese.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.dcurreli.spese.databinding.HomeFragmentBinding
+import com.dcurreli.spese.R
+import com.dcurreli.spese.databinding.SettingsFragmentBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
 
+class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
-class HomeFragment : Fragment() {
-
-    private var _binding: HomeFragmentBinding? = null
-    private val TAG = javaClass.simpleName
+    private var _binding: SettingsFragmentBinding? = null
+    private lateinit var db: DatabaseReference
+    private var queryRes: DataSnapshot? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,12 +25,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = HomeFragmentBinding.inflate(inflater, container, false)
+        _binding = SettingsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
     }
 
     override fun onDestroyView() {

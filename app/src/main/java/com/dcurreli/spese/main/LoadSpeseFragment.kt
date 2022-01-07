@@ -1,4 +1,4 @@
-package com.dcurreli.spese.dashboard
+package com.dcurreli.spese.main
 
 import android.os.Build
 import android.os.Bundle
@@ -10,19 +10,11 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.LoadSpeseBinding
-import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.utils.MeseUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import org.jetbrains.anko.imageResource
 import android.view.View as View1
-
-
-
-
-
-
-
 
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 

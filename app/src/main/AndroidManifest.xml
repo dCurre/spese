@@ -10,9 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Spese">
         <activity
+            android:name=".login.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Spese.NoActionBar" />
+        <activity
             android:name=".main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Spese.NoActionBar" />
+        <activity
+            android:name=".splash.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Spese.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

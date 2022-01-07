@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fadeScrollbars="false"
-    tools:context=".main.CalendarFragment">
+    tools:context=".splash.SplashActivity"
+    android:background="@color/purple_500">
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="600dp"
-        android:src="@drawable/work_in_progress_dog"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:text="Spese"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

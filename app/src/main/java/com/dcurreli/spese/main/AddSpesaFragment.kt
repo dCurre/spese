@@ -1,4 +1,4 @@
-package com.dcurreli.spese.dashboard
+package com.dcurreli.spese.main
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog

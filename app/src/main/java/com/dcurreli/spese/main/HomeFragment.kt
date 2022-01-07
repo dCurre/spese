@@ -1,27 +1,28 @@
-package com.dcurreli.spese.dashboard
+package com.dcurreli.spese.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.dcurreli.spese.R
-import com.dcurreli.spese.databinding.CalendarFragmentBinding
-import com.google.firebase.database.DatabaseReference
+import com.dcurreli.spese.databinding.HomeFragmentBinding
 
-class CalendarFragment : Fragment(R.layout.calendar_fragment) {
 
-    private var _binding: CalendarFragmentBinding? = null
-    private val binding get() = _binding!! // This property is only valid between onCreateView and onDestroyView.
-    private lateinit var db: DatabaseReference
+class HomeFragment : Fragment() {
+
+    private var _binding: HomeFragmentBinding? = null
     private val TAG = javaClass.simpleName
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = CalendarFragmentBinding.inflate(inflater, container, false)
+        _binding = HomeFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

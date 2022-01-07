@@ -29,21 +29,8 @@ open class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         mAuth = FirebaseAuth.getInstance()
         val user = mAuth.currentUser
-/*
-        //Se l'utente non è autenticato, verrà riportato alla pagina di login
-        Handler(Looper.getMainLooper()).postDelayed({
-            if(user!=null){
-                val dashboardIntent = Intent(this, DashboardActivity::class.java)
-                startActivity(dashboardIntent)
-            }else{
-                val signInIntent = Intent(this,SignInActivity::class.java)
-                startActivity(signInIntent)
-            }
-        }, 2000)
-*/
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -78,10 +65,4 @@ open class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
-
-    // 2.0 and above
-    override fun onBackPressed() {
-        moveTaskToBack(true)
-    }
-
 }

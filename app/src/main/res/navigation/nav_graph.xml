@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.dcurreli.spese.dashboard.HomeFragment"
+        android:name="com.dcurreli.spese.main.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/home_fragment">
 
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/addSpesaFragment"
-        android:name="com.dcurreli.spese.dashboard.AddSpesaFragment"
+        android:name="com.dcurreli.spese.main.AddSpesaFragment"
         android:label="@string/add_spesa_fragment_label"
         tools:layout="@layout/add_spesa">
 
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/loadSpeseFragment"
-        android:name="com.dcurreli.spese.dashboard.LoadSpeseFragment"
+        android:name="com.dcurreli.spese.main.LoadSpeseFragment"
         android:label="Riepilogo spese">
         <action
             android:id="@+id/action_loadSpeseFragment_to_HomeFragment"
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.dcurreli.spese.dashboard.SettingsFragment"
+        android:name="com.dcurreli.spese.main.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/settings_fragment" />
 
@@ -49,7 +49,7 @@
         app:destination="@id/settingsFragment" />
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.dcurreli.spese.dashboard.CalendarFragment"
+        android:name="com.dcurreli.spese.main.CalendarFragment"
         android:label="Calendario"
         tools:layout="@layout/calendar_fragment" />
 </navigation>
