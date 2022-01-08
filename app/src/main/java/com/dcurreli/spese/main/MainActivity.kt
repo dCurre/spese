@@ -17,12 +17,14 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.utils.MeseUtils
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var currentUser : FirebaseUser
     private val TAG = javaClass.simpleName
 
     @SuppressLint("ResourceType")
@@ -30,7 +32,7 @@ open class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
-        val user = mAuth.currentUser
+        currentUser = mAuth.currentUser!!
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -43,6 +45,11 @@ open class MainActivity : AppCompatActivity() {
 
         //Abilita il menu inferiore
         binding.bottomNav.setupWithNavController(navController)
+
+        binding.lateralNavViewHeader.text = "Ciao, ${(currentUser.displayName)?.split(' ')?.get(0)}"
+        //Glide.with(this).load(currentUser?.photoUrl).into(binding.profileImage)
+        //id_txt.text = currentUser?.uid
+        //email_txt.text = currentUser?.email
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

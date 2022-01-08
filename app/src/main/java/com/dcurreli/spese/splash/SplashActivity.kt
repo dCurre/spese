@@ -24,9 +24,11 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
             if(user!=null){
                 val dashboardIntent = Intent(this, MainActivity::class.java)
                 startActivity(dashboardIntent)
+                finish()
             }else{
                 val signInIntent = Intent(this, LoginActivity::class.java)
                 startActivity(signInIntent)
+                finish()
             }
         }, 1000)
 

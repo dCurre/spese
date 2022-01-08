@@ -11,7 +11,7 @@
         android:theme="@style/Theme.Spese">
         <activity
             android:name=".login.LoginActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.Spese.NoActionBar" />
         <activity
             android:name=".main.MainActivity"

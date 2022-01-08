@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dcurreli.spese.R;
 import com.dcurreli.spese.databinding.ActivityMainBinding;
 import com.dcurreli.spese.objects.Mese;
-import com.dcurreli.spese.utils.GenericUtils;
 
 import org.jetbrains.annotations.NotNull;
 
