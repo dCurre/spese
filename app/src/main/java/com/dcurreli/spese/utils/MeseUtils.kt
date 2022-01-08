@@ -1,5 +1,6 @@
 package com.dcurreli.spese.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.util.Log
@@ -25,7 +26,7 @@ import java.util.*
 object MeseUtils {
     private val TAG = javaClass.simpleName
     private lateinit var mese: Mese
-    private lateinit var meseAdapter: MeseAdapter
+    @SuppressLint("StaticFieldLeak") private lateinit var meseAdapter: MeseAdapter
     private lateinit var meseArray: ArrayList<Mese>
     private final var db: DatabaseReference = Firebase.database.reference.child("mese")
 

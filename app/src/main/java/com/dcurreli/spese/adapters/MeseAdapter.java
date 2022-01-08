@@ -39,7 +39,7 @@ public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.menu_laterale_items, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.menu_laterale_item_mese, parent, false);
         return new MyViewHolder(v);
     }
 

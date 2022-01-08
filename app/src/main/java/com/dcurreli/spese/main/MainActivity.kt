@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.utils.DBUtils
+import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.dcurreli.spese.utils.MeseUtils
 import com.google.firebase.auth.FirebaseUser
 
@@ -37,6 +38,9 @@ open class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerMainActivity)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        //Stampo la lista delle spese
+        ListaSpeseUtils.printListe(this, binding, navController)
 
         //Stampo la lista mesi
         MeseUtils.printMese(this, binding, navController)

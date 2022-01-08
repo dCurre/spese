@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:elevation="8dp"
-            app:theme="@style/ToolbarColoredBackArrow"
-            app:titleTextColor="@color/white" />
+            android:theme="@style/ToolbarColoredBackArrow"
+            android:titleTextColor="@color/white" />
 
         <!-- INCLUDE FRAGMENT -->
         <include
@@ -66,27 +66,47 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/lista_mese_header"
+                android:id="@+id/list_liste_spese_header"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/lateral_nav_view_header"
-                android:background="@color/teal_700"
+                android:background="?colorPrimary"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:text="Le tue liste:"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_lista_spese"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/list_liste_spese_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints"/>
+
+            <TextView
+                android:id="@+id/lista_mese_header"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/list_lista_spese"
+                android:background="?colorPrimary"
+                android:textColor="@android:color/white"
                 android:gravity="center_vertical"
                 android:paddingStart="10dp"
                 android:text="Mesi:"
-                android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/lista_mese"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/lista_mese_header"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints">
+                tools:ignore="MissingConstraints"/>
 
-            </androidx.recyclerview.widget.RecyclerView>
         </RelativeLayout>
 
 
