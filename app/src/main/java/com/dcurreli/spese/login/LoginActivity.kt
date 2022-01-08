@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityLoginBinding
 import com.dcurreli.spese.main.MainActivity
+import com.dcurreli.spese.utils.DBUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,15 +23,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private lateinit var binding : ActivityLoginBinding
-    private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var mAuth : FirebaseAuth
     private val TAG = javaClass.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mAuth = FirebaseAuth.getInstance()
+        mAuth = DBUtils.getAuthentication()
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

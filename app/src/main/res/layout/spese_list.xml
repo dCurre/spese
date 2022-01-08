@@ -10,7 +10,6 @@
     android:orientation="horizontal"
     app:cardElevation="20dp">
 
-
     <RelativeLayout
         android:id="@+id/spesa_list_first_layout"
         android:layout_width="match_parent"

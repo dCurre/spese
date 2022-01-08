@@ -8,16 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dcurreli.spese.R
 import com.dcurreli.spese.login.LoginActivity
 import com.dcurreli.spese.main.MainActivity
-import com.google.firebase.auth.FirebaseAuth
+import com.dcurreli.spese.utils.DBUtils
 
 class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
-    private lateinit var mAuth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        mAuth = FirebaseAuth.getInstance()
-        val user = mAuth.currentUser
+        val user = DBUtils.getCurrentUser()
 
         //Se l'utente non è autenticato, verrà riportato alla pagina di login
         Handler(Looper.getMainLooper()).postDelayed({

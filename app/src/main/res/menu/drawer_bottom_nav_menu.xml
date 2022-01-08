@@ -9,7 +9,12 @@
         android:id="@+id/addSpesaFragment"
         android:background="?attr/colorPrimary"
         android:icon="@drawable/ic_plus"
-        android:title="Aggiungi spesa" />
+        android:title="Nuova spesa" />
+    <item
+        android:id="@+id/addListaSpeseFragment"
+        android:background="?attr/colorPrimary"
+        android:icon="@drawable/ic_lista_spese"
+        android:title="Le tue liste" />
     <item
         android:id="@+id/calendarFragment"
         android:background="?attr/colorPrimary"

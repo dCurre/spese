@@ -6,8 +6,8 @@ import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.dcurreli.spese.R
-import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
@@ -55,17 +55,15 @@ object GenericUtils {
         ).atDay(1)
     }
 
-    fun showSnackbarError(message: String, binding: AddSpesaBinding) {
-        val snackbar =
-            Snackbar.make(binding.addSpesaConstraintLayout, message, Snackbar.LENGTH_LONG)
+    fun showSnackbarError(message: String, constraintLayout: ConstraintLayout) {
+        val snackbar = Snackbar.make(constraintLayout, message, Snackbar.LENGTH_LONG)
         snackbar.view.setBackgroundColor(Color.rgb(180, 0, 0))
         snackbar.setAnchorView(R.id.bottom_nav)
         snackbar.show()
     }
 
-    fun showSnackbarOK(message: String, binding: AddSpesaBinding) {
-        val snackbar =
-            Snackbar.make(binding.addSpesaConstraintLayout, message, Snackbar.LENGTH_LONG)
+    fun showSnackbarOK(message: String, constraintLayout: ConstraintLayout) {
+        val snackbar = Snackbar.make(constraintLayout, message, Snackbar.LENGTH_LONG)
         snackbar.view.setBackgroundColor(Color.rgb(0, 128, 0))
         snackbar.setAnchorView(R.id.bottom_nav)
         snackbar.show()

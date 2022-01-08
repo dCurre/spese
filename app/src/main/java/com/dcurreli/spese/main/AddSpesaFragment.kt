@@ -84,17 +84,17 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
             if (binding.spesaSpesaText.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo spesa non popolato !", binding)
+                GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout)
             } else if (binding.spesaImporto.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo importo non popolato !", binding)
+                GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout)
             } else if (binding.spesaData.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo data non popolato !", binding)
+                GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout)
             } else if (binding.spesaPagatoreText.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding)
+                GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout)
             } else {
                 //Recupero dati dall'xml
                 SpesaUtils.creaSepsa(binding)
-                GenericUtils.showSnackbarOK("Spesa creata : )", binding)
+                GenericUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
 
                 findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)
             }

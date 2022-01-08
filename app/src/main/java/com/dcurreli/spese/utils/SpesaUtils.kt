@@ -65,7 +65,7 @@ object SpesaUtils {
         db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
             .endBefore(dataForQuery.endsAt.toDouble())
             .addValueEventListener(object : ValueEventListener {
-                @SuppressLint("NotifyDataSetChanged")
+                @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     spesaArray.clear()
                     var totaleSpese : Double = 0.0

@@ -52,4 +52,13 @@
         android:name="com.dcurreli.spese.main.CalendarFragment"
         android:label="Calendario"
         tools:layout="@layout/calendar_fragment" />
+    <fragment
+        android:id="@+id/addListaSpeseFragment"
+        android:name="com.dcurreli.spese.main.AddListaSpeseFragment"
+        android:label="@string/add_lista_spese_fragment_label"
+        tools:layout="@layout/add_lista_spese">
+        <action
+            android:id="@+id/action_addListaSpeseFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

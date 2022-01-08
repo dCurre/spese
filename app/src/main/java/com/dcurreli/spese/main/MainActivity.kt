@@ -15,15 +15,14 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityMainBinding
+import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.MeseUtils
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var mAuth: FirebaseAuth
     private lateinit var currentUser : FirebaseUser
     private val TAG = javaClass.simpleName
 
@@ -31,8 +30,7 @@ open class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mAuth = FirebaseAuth.getInstance()
-        currentUser = mAuth.currentUser!!
+        currentUser = DBUtils.getCurrentUser()!!
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
