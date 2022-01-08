@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginEnd="20dp"
+    android:layout_marginEnd="10dp"
     android:orientation="horizontal"
     tools:context=".main.MainActivity">
 
@@ -15,24 +14,35 @@
         android:layout_height="40dp"
         tools:ignore="MissingConstraints">
 
-        <View
-            android:id="@+id/lista_icon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="2.5dp"
-            android:background="@drawable/ic_lista_spese" />
-
         <TextView
             android:id="@+id/lista_nome"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:paddingStart="50dp"
+            android:layout_alignParentStart="true"
             android:text="Lista"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
             android:textSize="15sp"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            app:drawableTint="?colorPrimary" />
 
+        <Button
+            android:id="@+id/button_lista_settings"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/lista_nome"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_pencil_edit" />
+
+        <Button
+            android:id="@+id/button_lista_dropdown"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_arrow_down" />
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

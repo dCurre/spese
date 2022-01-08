@@ -18,7 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:elevation="8dp"
             android:theme="@style/ToolbarColoredBackArrow"
-            android:titleTextColor="@color/white" />
+            app:titleTextColor="@color/white" />
 
         <!-- INCLUDE FRAGMENT -->
         <include

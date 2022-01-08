@@ -43,7 +43,8 @@ object ListaSpeseUtils {
             val lista = ListaSpese(
                 newId,
                 binding.listaSpeseNomeText.text.toString(),
-                partecipanti
+                partecipanti,
+                DBUtils.getCurrentUser()?.uid
             )
 
             //Creo spesa

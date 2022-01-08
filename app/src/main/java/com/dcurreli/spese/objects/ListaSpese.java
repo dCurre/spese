@@ -11,11 +11,13 @@ public class ListaSpese {
     private int id = 1;
     private String nome = null;
     private ArrayList<String> partecipanti = null;
+    private String owner;
 
-    public ListaSpese(int id, String nome, ArrayList<String> partecipanti) {
+    public ListaSpese(int id, String nome, ArrayList<String> partecipanti, String owner) {
         this.id = id;
         this.nome = nome;
         this.partecipanti = partecipanti;
+        this.owner = owner;
     }
 
     public ListaSpese() {
