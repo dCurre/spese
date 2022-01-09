@@ -49,8 +49,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
             //var totaleSpesaMensile = SpesaUtils.calcolaTotaleSpese(binding, requireContext(), dataForQuery);
         }
 
-
-
         //Faccio uscire/scomparire un menu a tendina se premo sulla barra sopra la lista
         binding.listaSpeseHeaderLayout.setOnClickListener {
             val lsphLayout = binding.listaSpeseHeaderLayout

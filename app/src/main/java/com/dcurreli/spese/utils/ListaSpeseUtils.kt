@@ -3,7 +3,6 @@ package com.dcurreli.spese.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.adapters.ListaSpeseAdapter
 import com.dcurreli.spese.databinding.ActivityMainBinding
@@ -28,38 +27,28 @@ object ListaSpeseUtils {
     fun creaListaSpese(binding: AddListaSpeseBinding) {
         val methodName = "creaListaSpese"
         Log.i(TAG, ">>$methodName")
+        val newKey = db.push().key!!
+        currentUser = DBUtils.getCurrentUser()!!
+        partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
 
-        db.orderByChild("id").limitToLast(1).get().addOnSuccessListener {
-            var newId = 1
-            currentUser = DBUtils.getCurrentUser()!!
-            partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
+        //Nuova spesa
+        val lista = ListaSpese(
+            newKey,
+            binding.listaSpeseNomeText.text.toString(),
+            partecipanti,
+            DBUtils.getCurrentUser()?.uid
+        )
 
-            if (it.exists()) {
-                val id: Int = it.children.first().child("id").value.toString().toInt()
-                newId = (id + 1)
-            }
+        //Creo lista
+        db.child(newKey.toString()).setValue(lista)
 
-            //Nuova spesa
-            val lista = ListaSpese(
-                newId,
-                binding.listaSpeseNomeText.text.toString(),
-                partecipanti,
-                DBUtils.getCurrentUser()?.uid
-            )
-
-            //Creo spesa
-            db.child(newId.toString()).setValue(lista)
-
-            Log.i(TAG, "<<$methodName")
-        }.addOnFailureListener {
-            Log.e(TAG, "<<$methodName Error getting spesa", it)
-        }
+        Log.i(TAG, "<<$methodName")
     }
     fun clearTextViewFocus(binding: AddListaSpeseBinding) {
         binding.listaSpeseNome.clearFocus()
     }
 
-    fun printListe(context: Context, binding: ActivityMainBinding, navController: NavController) {
+    fun printListe(context: Context, binding: ActivityMainBinding) {
         binding.listListaSpese.setHasFixedSize(true)
         binding.listListaSpese.layoutManager = LinearLayoutManager(context)
 

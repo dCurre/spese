@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListaSpese {
-    private int id = 1;
+    private String id = null;
     private String nome = null;
     private ArrayList<String> partecipanti = null;
     private String owner;
 
-    public ListaSpese(int id, String nome, ArrayList<String> partecipanti, String owner) {
+    public ListaSpese(String id, String nome, ArrayList<String> partecipanti, String owner) {
         this.id = id;
         this.nome = nome;
         this.partecipanti = partecipanti;
@@ -23,11 +23,11 @@ public class ListaSpese {
     public ListaSpese() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

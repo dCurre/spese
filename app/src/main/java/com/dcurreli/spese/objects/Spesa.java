@@ -6,14 +6,14 @@ import com.dcurreli.spese.utils.MeseUtils;
 import java.text.ParseException;
 
 public class Spesa {
-    private int id;
+    private String id;
     private String spesa;
     private double importo;
     private String data;
     private Long timestamp;
     private String pagatore;
 
-    public Spesa(int id, String spesa, double importo, String data, String pagatore) throws ParseException {
+    public Spesa(String id, String spesa, double importo, String data, String pagatore){
         this.id = id;
         this.spesa = spesa;
         this.importo = importo;
@@ -30,11 +30,11 @@ public class Spesa {
         return MeseUtils.INSTANCE.getMonthAsText(dataSpesa[1]) + " " + dataSpesa[2];
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

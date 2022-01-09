@@ -27,7 +27,7 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var currentUser : FirebaseUser
     private val TAG = javaClass.simpleName
 
-    @SuppressLint("ResourceType")
+    @SuppressLint("ResourceType", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,7 @@ open class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         //Stampo la lista delle spese
-        ListaSpeseUtils.printListe(this, binding, navController)
+        ListaSpeseUtils.printListe(this, binding)
 
         //Stampo la lista mesi
         MeseUtils.printMese(this, binding, navController)

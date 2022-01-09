@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.math.BigDecimal
 
 object SpesaUtils {
     private val TAG = javaClass.simpleName
@@ -28,32 +29,23 @@ object SpesaUtils {
     fun creaSepsa(binding: AddSpesaBinding) {
         val methodName = "creaSpesa"
         Log.i(TAG, ">>$methodName")
+        val newKey = db.push().key!!
 
-        db.orderByChild("id").limitToLast(1).get().addOnSuccessListener {
-            var newId = 1
+        //Nuova spesa
+        val spesa = Spesa(
+            newKey,
+            binding.spesaSpesaText.text.toString(),
+            binding.spesaImporto.text.toString().replace(",", ".").toDouble(),
+            binding.spesaData.text.toString(),
+            binding.spesaPagatoreText.text.toString()
+        )
 
-            if (it.exists()) {
-                val id: Int = it.children.first().child("id").value.toString().toInt()
-                newId = (id + 1)
-            }
-            //Nuova spesa
-            val spesa = Spesa(
-                newId,
-                binding.spesaSpesaText.text.toString(),
-                binding.spesaImporto.text.toString().replace(",", ".").toDouble(),
-                binding.spesaData.text.toString(),
-                binding.spesaPagatoreText.text.toString()
-            )
+        //Creo mese, e se va bene
+        MeseUtils.creaMese(spesa)
+        //Creo spesa
+        db.child(newKey).setValue(spesa)
 
-            //Creo mese, e se va bene
-            MeseUtils.creaMese(spesa)
-            //Creo spesa
-            db.child(newId.toString()).setValue(spesa)
-
-            Log.i(TAG, "<<$methodName")
-        }.addOnFailureListener {
-            Log.e(TAG, "<<$methodName Error getting spesa", it)
-        }
+        Log.i(TAG, "<<$methodName")
     }
 
     fun printSpese(binding: LoadSpeseBinding, context: Context, dataForQuery: DataForQuery) {
@@ -68,18 +60,19 @@ object SpesaUtils {
                 @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     spesaArray.clear()
-                    var totaleSpese : Double = 0.0
-                    //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
+                    var totaleSpese : BigDecimal = BigDecimal.ZERO
+
+                    //Se non ci sono spese evito di stampare una finestra vuota
                     if (dataSnapshot.childrenCount > 0) binding.speseNotFound.visibility =
                         INVISIBLE else binding.speseNotFound.visibility = View.VISIBLE
 
                     for (snapshot: DataSnapshot in dataSnapshot.children) {
                         val spesa = snapshot.getValue(Spesa::class.java) as Spesa
                         spesaArray.add(spesa)
-                        totaleSpese += spesa.importo
+                        totaleSpese = totaleSpese.add(spesa.importo.toBigDecimal())
                     }
-                    //Stampu pure il totale delle spese
-                    binding.listaSpeseHeaderTotaleImporto.text = "${totaleSpese.toString().replace(".",",")}€"
+                    //Stampo pure il totale delle spese
+                    binding.listaSpeseHeaderTotaleImporto.text = "${totaleSpese.setScale(2).toString().replace(".",",")}€"
                     spesaAdapter.notifyDataSetChanged() //Refresh della lista
                 }
 
@@ -113,7 +106,7 @@ object SpesaUtils {
             }
 
         //Cancello la spesa
-        db.child(spesa.id.toString()).removeValue()
+        db.child(spesa.id).removeValue()
     }
 
     fun printTotaleSpese(binding: LoadSpeseBinding, context: Context, dataForQuery: DataForQuery): Double {

@@ -7,13 +7,13 @@ import androidx.annotation.RequiresApi;
 import com.dcurreli.spese.utils.GenericUtils;
 
 public class Mese {
-    private int id;
+    private String id;
     private String nome;// we're using the name as id
     private boolean saldato;
     private Long timestamp;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Mese(int id, String nome) {
+    public Mese(String id, String nome) {
         this.id = id;
         this.nome = nome;
         this.saldato = false;
@@ -23,11 +23,11 @@ public class Mese {
     public Mese() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

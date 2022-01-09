@@ -71,7 +71,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
                 SpesaUtils.deleteSpesa(spesa);
-                notifyItemChanged(spesa.getId());
+                notifyDataSetChanged();
             }
         });
     }

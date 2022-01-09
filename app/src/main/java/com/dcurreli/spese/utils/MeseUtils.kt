@@ -39,27 +39,15 @@ object MeseUtils {
         db.orderByChild("nome").equalTo(spesa.extractMensilitaAnno()).get().addOnSuccessListener {
             //Se non esiste cerco l'id dell'ultimo mese creato
             if (!it.exists()) {
-                db.orderByChild("id").limitToLast(1).get().addOnSuccessListener {
-                    var newId: Int = 1
-
-                    //se ho ottenuto qualcosa setto l'id a vecchioID + 1
-                    if (it.exists()) {
-                        var id: Int? = it.children.first().child("id").value.toString().toInt()
-                        if (id != null) {
-                            newId = (id + 1)
-                        }
-                    }
-
-                    //Creo mese
-                    val mese = Mese(newId, spesa.extractMensilitaAnno())
-                    db.child(newId.toString()).setValue(mese)
-                }.addOnFailureListener {
-                    Log.e(TAG, "<<$methodName Error getting existing month", it)
-                }
+                val newKey = db.push().key!!
+                //Creo mese
+                val mese = Mese(newKey, spesa.extractMensilitaAnno())
+                db.child(newKey).setValue(mese)
             }
         }.addOnFailureListener {
             Log.e(TAG, "<<$methodName Error getting mese", it)
         }
+        Log.i(TAG, "<<$methodName")
     }
 
     fun printMese(context: Context, binding: ActivityMainBinding, navController: NavController) {
