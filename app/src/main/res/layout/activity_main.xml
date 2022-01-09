@@ -62,50 +62,63 @@
                 android:paddingLeft="10dp"
                 android:text="HEADER"
                 android:textColor="@android:color/black"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+            <Button
+                android:id="@+id/button_settings"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_settings"
+                android:layout_alignParentEnd="true"
+                android:layout_above="@+id/list_lista_spese_periodiche_header"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"/>
 
             <TextView
-                android:id="@+id/list_liste_spese_header"
+                android:id="@+id/list_lista_spese_periodiche_header"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/lateral_nav_view_header"
                 android:background="?colorPrimary"
                 android:gravity="center_vertical"
                 android:paddingStart="10dp"
-                android:text="Le tue liste:"
+                android:text="Le tue liste periodiche:"
                 android:textColor="@android:color/white"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:ignore="RtlSymmetry" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_lista_spese"
+                android:id="@+id/list_lista_spese_periodiche"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/list_liste_spese_header"
+                android:layout_below="@+id/list_lista_spese_periodiche_header"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints"/>
+                tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/lista_mese_header"
+                android:id="@+id/list_lista_spese_evento_header"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/list_lista_spese"
+                android:layout_below="@+id/list_lista_spese_periodiche"
                 android:background="?colorPrimary"
                 android:textColor="@android:color/white"
                 android:gravity="center_vertical"
                 android:paddingStart="10dp"
-                android:text="Mesi:"
-                android:textSize="20sp" />
+                android:text="Le tue liste evento:"
+                android:textSize="20sp"
+                tools:ignore="RtlSymmetry" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/lista_mese"
+                android:id="@+id/list_lista_spese_evento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/lista_mese_header"
+                android:layout_below="@+id/list_lista_spese_evento_header"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints"/>
+                tools:ignore="MissingConstraints" />
 
         </RelativeLayout>
 

@@ -6,10 +6,13 @@ import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.dcurreli.spese.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
 import java.text.SimpleDateFormat
 import java.time.YearMonth
 import java.util.*
@@ -69,4 +72,17 @@ object GenericUtils {
         snackbar.show()
     }
 
+    // Gestisco preferenze tema scuro/chiaro
+    fun onOffDarkTheme(db: DatabaseReference, user: FirebaseUser, bool: Boolean) {
+        when (bool) {
+            true -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                db.child(user.uid).child("darkTheme").setValue(true)
+            }
+            false -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                db.child(user.uid).child("darkTheme").setValue(false)
+            }
+        }
+    }
 }

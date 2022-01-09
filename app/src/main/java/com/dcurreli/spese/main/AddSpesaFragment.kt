@@ -13,15 +13,14 @@ import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.dcurreli.spese.utils.SpesaUtils
-import com.google.firebase.database.DatabaseReference
 import java.util.*
 
 class AddSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val TAG = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
-    private lateinit var db: DatabaseReference
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,8 +33,14 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
     ): View? {
 
         _binding = AddSpesaBinding.inflate(inflater, container, false)
-        return binding.root
 
+        //Setup lista spesa
+        setupListaSpeseDropdown()
+
+        //Setup calendario
+        setupCalendario()
+
+        return binding.root
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
@@ -43,6 +48,47 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Se premo lo sfondo
+        binding.addSpesaConstraintLayout.setOnClickListener {
+            GenericUtils.hideSoftKeyBoard(requireContext(), view) //Chiudo la tastiera
+            SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
+        }
+
+        //Bottone "Aggiungi"
+        binding.spesaButtonAddSpesa.setOnClickListener {
+            //Chiudo la tastiera come prima cosa
+            GenericUtils.hideSoftKeyBoard(requireContext(), view)
+
+            if (binding.spesaSpesaText.text.isNullOrBlank()) {
+                GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout)
+            } else if (binding.spesaImporto.text.isNullOrBlank()) {
+                GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout)
+            } else if (binding.spesaData.text.isNullOrBlank()) {
+                GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout)
+            } else if (binding.spesaPagatoreText.text.isNullOrBlank()) {
+                GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout)
+            } else if (binding.listaListe.text.isNullOrBlank()) {
+                GenericUtils.showSnackbarError("Campo lista non popolato !", binding.addSpesaConstraintLayout)
+            } else {
+                SpesaUtils.creaSepsa(binding)
+                GenericUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
+
+                findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupListaSpeseDropdown(){
+        ListaSpeseUtils.printListeByUID(requireContext(), binding)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupCalendario() {
         //Calendario
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -71,38 +117,5 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
             )
             datePickerDialog.show()
         }
-
-        //Se premo lo sfondo
-        binding.addSpesaConstraintLayout.setOnClickListener {
-            GenericUtils.hideSoftKeyBoard(requireContext(), view) //Chiudo la tastiera
-            SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
-        }
-
-        //Bottone "Aggiungi"
-        binding.spesaButtonAddSpesa.setOnClickListener {
-            //Chiudo la tastiera come prima cosa
-            GenericUtils.hideSoftKeyBoard(requireContext(), view)
-
-            if (binding.spesaSpesaText.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout)
-            } else if (binding.spesaImporto.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout)
-            } else if (binding.spesaData.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout)
-            } else if (binding.spesaPagatoreText.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout)
-            } else {
-                //Recupero dati dall'xml
-                SpesaUtils.creaSepsa(binding)
-                GenericUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
-
-                findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

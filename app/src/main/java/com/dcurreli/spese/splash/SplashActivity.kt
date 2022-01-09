@@ -9,17 +9,20 @@ import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.dcurreli.spese.R
+import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.login.LoginActivity
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
+import com.dcurreli.spese.utils.GenericUtils
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
-    private var db: DatabaseReference = Firebase.database.reference.child("utente")
+    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value.lowercase())
+    private lateinit var utente : Utente
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +32,14 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
         Handler(Looper.getMainLooper()).postDelayed({
             if(user!=null){
                 db.child(user.uid).get().addOnSuccessListener {
-                    //Se non esiste cerco l'id dell'ultimo mese creato
+                    //Se non esiste creo l'utente nella lista utenti
                     if (!it.exists()) {
-                        //Creo mese
-                        val utente = Utente(user.uid)
-                        db.child(user.uid).setValue(utente)
+                        val uid = Utente(user.uid)
+                        db.child(user.uid).setValue(uid)
+                    }else{
+                        //Altrimenti carico le impostazioni dell'utente
+                        utente = it.getValue(Utente::class.java) as Utente
+                        GenericUtils.onOffDarkTheme(db, user, utente.isDarkTheme) // Gestisco preferenze tema
                     }
                 }.addOnFailureListener {
                     Log.e(TAG, "<<Error getting utente", it)

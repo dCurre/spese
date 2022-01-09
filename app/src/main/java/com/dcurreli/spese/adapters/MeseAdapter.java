@@ -51,7 +51,6 @@ public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> 
         if (mese.isSaldato())
             holder.saldatoImage.setBackgroundResource(R.drawable.ic_saldato_true);
 
-
         //gestisco l'evento on click
         holder.nomeMese.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -66,7 +65,6 @@ public class MeseAdapter extends RecyclerView.Adapter<MeseAdapter.MyViewHolder> 
                 navController.navigate(R.id.loadSpeseFragment, bundle);
             }
         });
-
     }
 
     @Override

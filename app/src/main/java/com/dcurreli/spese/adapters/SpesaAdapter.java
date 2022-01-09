@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcurreli.spese.R;
 import com.dcurreli.spese.objects.Spesa;
+import com.dcurreli.spese.utils.GenericUtils;
 import com.dcurreli.spese.utils.SpesaUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +48,6 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Spesa spesa = speseList.get(position);
-        //holder.id = String.valueOf(spesa.getId());
         holder.spesa.setText(spesa.getSpesa());
         holder.importo.setText(spesa.importoAsTextEuro());
         holder.data.setText(spesa.getData());

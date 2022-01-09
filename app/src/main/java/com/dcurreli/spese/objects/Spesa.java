@@ -3,8 +3,6 @@ package com.dcurreli.spese.objects;
 import com.dcurreli.spese.utils.GenericUtils;
 import com.dcurreli.spese.utils.MeseUtils;
 
-import java.text.ParseException;
-
 public class Spesa {
     private String id;
     private String spesa;
@@ -12,14 +10,16 @@ public class Spesa {
     private String data;
     private Long timestamp;
     private String pagatore;
+    private String listaSpesaID;
 
-    public Spesa(String id, String spesa, double importo, String data, String pagatore){
+    public Spesa(String id, String spesa, double importo, String data, String pagatore, String listaSpesaID){
         this.id = id;
         this.spesa = spesa;
         this.importo = importo;
         this.data = data;
         this.timestamp = GenericUtils.INSTANCE.dateStringToTimestampSeconds(data, "dd/MM/yyyy");
         this.pagatore = pagatore;
+        this.listaSpesaID = listaSpesaID;
     }
 
     public Spesa() {
@@ -85,4 +85,8 @@ public class Spesa {
     public void setPagatore(String pagatore) {
         this.pagatore = pagatore;
     }
+
+    public String getListaSpesaID() { return listaSpesaID; }
+
+    public void setListaSpesaID(String listaSpesaID) { this.listaSpesaID = listaSpesaID; }
 }

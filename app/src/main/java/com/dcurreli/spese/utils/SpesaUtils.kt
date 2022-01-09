@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.databinding.LoadSpeseBinding
+import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
@@ -23,7 +24,7 @@ import java.math.BigDecimal
 
 object SpesaUtils {
     private val TAG = javaClass.simpleName
-    private var db: DatabaseReference = Firebase.database.reference.child("spesa")
+    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun creaSepsa(binding: AddSpesaBinding) {
@@ -37,7 +38,8 @@ object SpesaUtils {
             binding.spesaSpesaText.text.toString(),
             binding.spesaImporto.text.toString().replace(",", ".").toDouble(),
             binding.spesaData.text.toString(),
-            binding.spesaPagatoreText.text.toString()
+            binding.spesaPagatoreText.text.toString(),
+            binding.listaListe.text.toString()
         )
 
         //Creo mese, e se va bene
@@ -86,6 +88,7 @@ object SpesaUtils {
         binding.spesaSpesaText.clearFocus()
         binding.spesaImporto.clearFocus()
         binding.spesaPagatoreText.clearFocus()
+        binding.listaListe.clearFocus()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -138,8 +141,6 @@ object SpesaUtils {
                     Log.e(TAG, "Failed to read value.", error.toException())
                 }
             })
-
-
 
         return totale
     }

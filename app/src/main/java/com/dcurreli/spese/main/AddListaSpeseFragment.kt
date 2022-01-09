@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
+import com.dcurreli.spese.enum.CategoriaListaEnumUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.google.firebase.database.DatabaseReference
@@ -31,6 +33,10 @@ class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
         savedInstanceState: Bundle?
     ): View? {
         _binding = AddListaSpeseBinding.inflate(inflater, container, false)
+
+        //Setup dropdown categoria
+        setupCategoriaDropdown()
+
         return binding.root
     }
 
@@ -45,14 +51,30 @@ class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
             ListaSpeseUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
         }
 
-        //Bottone "Aggiungi"
+        //Setup bottone "Aggiungi"
+        setupAddButton(view)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupCategoriaDropdown(){
+        val categoriaListAdapter = ArrayAdapter(requireContext(),R.layout.add_lista_spese_categoria_item, CategoriaListaEnumUtils.getEnums())
+        binding.listaSpeseCategorieMenu.setAdapter(categoriaListAdapter)
+    }
+
+    private fun setupAddButton(view: View) {
         binding.spesaButtonAddSpesa.setOnClickListener {
             //Chiudo la tastiera come prima cosa
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
             if (binding.listaSpeseNomeText.text.isNullOrBlank()) {
                 GenericUtils.showSnackbarError("Nome lista non inserito !", binding.addListaSpeseConstraintLayout)
-            } else {
+            } else if(binding.listaSpeseCategorieMenu.text.isNullOrBlank()){
+                GenericUtils.showSnackbarError("Nome categoria non inserito !", binding.addListaSpeseConstraintLayout)
+            }else {
                 //Recupero dati dall'xml
                 ListaSpeseUtils.creaListaSpese(binding)
                 GenericUtils.showSnackbarOK("Lista creata : )", binding.addListaSpeseConstraintLayout)
@@ -60,12 +82,6 @@ class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
                 findNavController().navigate(R.id.action_addListaSpeseFragment_to_homeFragment)
 
             }
-
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

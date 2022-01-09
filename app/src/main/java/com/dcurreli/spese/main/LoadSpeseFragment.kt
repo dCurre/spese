@@ -2,7 +2,6 @@ package com.dcurreli.spese.main
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.RelativeLayout
@@ -23,6 +22,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private lateinit var dataForQuery: DataForQuery
     private val binding get() = _binding!!
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,24 +30,19 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     ): View1 {
 
         _binding = LoadSpeseBinding.inflate(inflater, container, false)
+
+        //Setto il nome della toolbar in base al bottone di spesa che ho clickato
+        setupToolbarTitle()
+
         return binding.root
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Recupero i dati da stampare per le spese (dal main activity)
-        if (arguments != null) {
-            dataForQuery = MeseUtils.createDataForQueryFromMeseAnno(arguments?.getString("toolbarTitle").toString())!!
 
-            //Stampo la lista delle spese
-            SpesaUtils.printSpese(binding, requireContext(), dataForQuery)
-            //Inoltre setto il titolo della toolbar al nome del mese mostrato
-            (activity as MainActivity).supportActionBar?.title = arguments?.getString("toolbarTitle")
-
-            //var totaleSpesaMensile = SpesaUtils.calcolaTotaleSpese(binding, requireContext(), dataForQuery);
-        }
 
         //Faccio uscire/scomparire un menu a tendina se premo sulla barra sopra la lista
         binding.listaSpeseHeaderLayout.setOnClickListener {
@@ -55,8 +50,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
             val height = lsphLayout.layoutParams.height
             val width = lsphLayout.layoutParams.width
             var moreLessHeight = 300
-
-            Log.i(TAG, "${lsphLayout.tooltipText}")
 
             //Di default è closed --> apro/chiudo
             if(lsphLayout.tooltipText.contentEquals("closed")) {
@@ -77,5 +70,18 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setupToolbarTitle() {
+        //Recupero i dati da stampare per le spese (dal main activity)
+        if (arguments != null) {
+            dataForQuery = MeseUtils.createDataForQueryFromMeseAnno(arguments?.getString("toolbarTitle").toString())!!
+
+            //Stampo la lista delle spese
+            SpesaUtils.printSpese(binding, requireContext(), dataForQuery)
+            //Inoltre setto il titolo della toolbar al nome del mese mostrato
+            (activity as MainActivity).supportActionBar?.title = arguments?.getString("toolbarTitle")
+        }
     }
 }

@@ -3,10 +3,16 @@ package com.dcurreli.spese.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import android.widget.ArrayAdapter
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ListaSpeseAdapter
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
+import com.dcurreli.spese.databinding.AddSpesaBinding
+import com.dcurreli.spese.enum.CategoriaListaEnum
+import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.ListaSpese
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -17,18 +23,20 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 object ListaSpeseUtils {
-    private val TAG = javaClass.simpleName
-    private var db: DatabaseReference = Firebase.database.reference.child("liste")
+    private val TAG by lazy { javaClass.simpleName }
+    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
     private lateinit var listaSpese: ListaSpese
     private lateinit var currentUser: FirebaseUser
-    private lateinit var listaSpeseArray: java.util.ArrayList<ListaSpese>
-    @SuppressLint("StaticFieldLeak") private lateinit var listaAdapter: ListaSpeseAdapter
+    private lateinit var listaSpesePeriodicaArray: ArrayList<ListaSpese>
+    private lateinit var listaSpeseEventoArray: ArrayList<ListaSpese>
+    @SuppressLint("StaticFieldLeak") private lateinit var listaPeriodicaAdapter: ListaSpeseAdapter
+    @SuppressLint("StaticFieldLeak") private lateinit var listaEventoAdapter: ListaSpeseAdapter
     private var partecipanti : ArrayList<String> = ArrayList()
     fun creaListaSpese(binding: AddListaSpeseBinding) {
         val methodName = "creaListaSpese"
         Log.i(TAG, ">>$methodName")
         val newKey = db.push().key!!
-        currentUser = DBUtils.getCurrentUser()!!
+        currentUser = DBUtils.getCurrentUser()
         partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
 
         //Nuova spesa
@@ -36,37 +44,51 @@ object ListaSpeseUtils {
             newKey,
             binding.listaSpeseNomeText.text.toString(),
             partecipanti,
-            DBUtils.getCurrentUser()?.uid
+            DBUtils.getCurrentUser().uid,
+            binding.listaSpeseCategorieMenu.text.toString()
         )
 
         //Creo lista
-        db.child(newKey.toString()).setValue(lista)
+        db.child(newKey).setValue(lista)
 
         Log.i(TAG, "<<$methodName")
     }
     fun clearTextViewFocus(binding: AddListaSpeseBinding) {
         binding.listaSpeseNome.clearFocus()
+        binding.listaSpeseCategorieMenu.clearFocus()
     }
 
-    fun printListe(context: Context, binding: ActivityMainBinding) {
-        binding.listListaSpese.setHasFixedSize(true)
-        binding.listListaSpese.layoutManager = LinearLayoutManager(context)
+    fun printListe(context: Context, binding: ActivityMainBinding, navController: NavController) {
+        binding.listListaSpesePeriodiche.layoutManager = LinearLayoutManager(context)
+        binding.listListaSpeseEvento.layoutManager = LinearLayoutManager(context)
 
-        listaSpeseArray = ArrayList()
-        listaAdapter = ListaSpeseAdapter(context, listaSpeseArray)
+        listaSpesePeriodicaArray = ArrayList()
+        listaSpeseEventoArray = ArrayList()
+        listaPeriodicaAdapter = ListaSpeseAdapter(context, listaSpesePeriodicaArray, binding, navController)
+        listaEventoAdapter = ListaSpeseAdapter(context, listaSpeseEventoArray, binding, navController)
 
-        binding.listListaSpese.adapter = listaAdapter
+        binding.listListaSpesePeriodiche.adapter = listaPeriodicaAdapter
+        binding.listListaSpeseEvento.adapter = listaEventoAdapter
 
         db.orderByChild("partecipanti").addValueEventListener(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                listaSpeseArray.clear()
+                listaSpesePeriodicaArray.clear()
+                listaSpeseEventoArray.clear()
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
-                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser()?.uid)){
-                        listaSpeseArray.add(listaSpese)
+                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser().uid)){
+                        //Smisto tra periodica o evento
+
+                        Log.i(TAG, ">>${listaSpese.categoria}")
+                        if(listaSpese.categoria.equals(CategoriaListaEnum.PERIODICA.value, ignoreCase = true))
+                            listaSpesePeriodicaArray.add(listaSpese)
+                        else
+                            listaSpeseEventoArray.add(listaSpese)
                     }
                 }
-                listaAdapter.notifyDataSetChanged() //Se tolgo non stampa
+                listaPeriodicaAdapter.notifyDataSetChanged() //Se tolgo non stampa
+                listaEventoAdapter.notifyDataSetChanged() //Se tolgo non stampa
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -75,5 +97,29 @@ object ListaSpeseUtils {
         })
     }
 
+    fun printListeByUID(context: Context, binding: AddSpesaBinding){
+        var arrayListe = ArrayList<ListaSpese>()
 
+        //RECUPERO SOLAMENTE LE LISTE LEGATE ALL'UID LOGGATO
+        db.orderByChild("nome").addValueEventListener(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                arrayListe.clear()
+                listaSpeseEventoArray.clear()
+                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                    listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
+                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser().uid)){
+                        arrayListe.add(listaSpese)
+                    }
+                }
+
+                //TODO trovare un modo per recuperarmi l'id, per ora prendo solo il nome
+                val categoriaListAdapter = ArrayAdapter(context, R.layout.add_lista_spese_categoria_item, arrayListe)
+
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Failed to read value.", error.toException())
+            }
+        })
+    }
 }

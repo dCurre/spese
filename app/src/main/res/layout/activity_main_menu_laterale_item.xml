@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/lista_nome"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:layout_alignParentStart="true"
@@ -25,24 +25,9 @@
             android:textStyle="bold"
             android:textSize="15sp"
             tools:ignore="RtlSymmetry"
-            app:drawableTint="?colorPrimary" />
+            app:drawableTint="?colorPrimary"
+            android:drawableEnd="@drawable/ic_arrow_right"/>
 
-        <Button
-            android:id="@+id/button_lista_settings"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/lista_nome"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ic_pencil_edit" />
-
-        <Button
-            android:id="@+id/button_lista_dropdown"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/ic_arrow_down" />
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

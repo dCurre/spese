@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -17,7 +18,6 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ListaSpeseUtils
-import com.dcurreli.spese.utils.MeseUtils
 import com.google.firebase.auth.FirebaseUser
 
 open class MainActivity : AppCompatActivity() {
@@ -39,19 +39,20 @@ open class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerMainActivity)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        //Stampo la lista delle spese
-        ListaSpeseUtils.printListe(this, binding)
-
-        //Stampo la lista mesi
-        MeseUtils.printMese(this, binding, navController)
-
-        //Abilita il menu inferiore
-        binding.bottomNav.setupWithNavController(navController)
-
+        //Header barra laterale
         binding.lateralNavViewHeader.text = "Ciao, ${(currentUser.displayName)?.split(' ')?.get(0)}"
-        //Glide.with(this).load(currentUser?.photoUrl).into(binding.profileImage)
-        //id_txt.text = currentUser?.uid
-        //email_txt.text = currentUser?.email
+
+        //Bottone settings nell'header della barra laterale
+        binding.buttonSettings.setOnClickListener {
+            binding.drawerMainActivity.closeDrawer(GravityCompat.START) //Chiudo il menu laterale
+            navController.navigate(R.id.action_To_SettingsFragment)
+        }
+
+        //Stampo la lista delle spese nella barra laterale
+        ListaSpeseUtils.printListe(this, binding, navController)
+
+        //Bottom navigation bar
+        binding.bottomNav.setupWithNavController(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

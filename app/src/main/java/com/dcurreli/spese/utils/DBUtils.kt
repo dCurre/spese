@@ -11,8 +11,8 @@ object DBUtils {
     private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var db: DatabaseReference = Firebase.database.reference
 
-    fun getCurrentUser(): FirebaseUser? {
-        return mAuth.currentUser
+    fun getCurrentUser(): FirebaseUser {
+        return mAuth.currentUser!!
     }
 
     fun getAuthentication(): FirebaseAuth {

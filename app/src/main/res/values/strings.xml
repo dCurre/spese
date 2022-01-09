@@ -18,4 +18,10 @@
     //Login - logout
     <string name="sign_in_with_google">Sign in with google</string>
     <string name="sign_out">Sign out</string>
+
+    //Categorie lista spese
+    <string-array name="categorieListe">
+        <item>Periodica</item>
+        <item>Evento</item>
+    </string-array>
 </resources>
