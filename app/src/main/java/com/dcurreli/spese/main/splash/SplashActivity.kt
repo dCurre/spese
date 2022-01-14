@@ -1,4 +1,4 @@
-package com.dcurreli.spese.splash
+package com.dcurreli.spese.main.splash
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
@@ -10,8 +10,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.dcurreli.spese.R
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.login.LoginActivity
 import com.dcurreli.spese.main.MainActivity
+import com.dcurreli.spese.main.login.LoginActivity
 import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
@@ -33,8 +33,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
         Handler(Looper.getMainLooper()).postDelayed({
             if(user!=null){
                 this.db.child(user.uid).get().addOnSuccessListener {
-                    //Se non esiste creo l'utente nella lista utenti
-                    Log.i(TAG, ">>DAVIDE ${it}")
+                    //Se trovo l'utente carico le sue impostazioni
                     if (it.exists()) {
                         utente = it.getValue(Utente::class.java) as Utente
                         GenericUtils.onOffDarkTheme(db, user, utente.isDarkTheme) // Gestisco preferenze tema

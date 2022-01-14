@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.SettingsFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.login.LoginActivity
+import com.dcurreli.spese.main.login.LoginActivity
 import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
@@ -78,9 +78,9 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     }
 
     private fun signOut(){
+        startActivity(Intent(context, LoginActivity::class.java))
+        mAuth.signOut()
         googleSignInClient.signOut()
-        val intent = Intent(context, LoginActivity::class.java)
-        startActivity(intent)
     }
 
     private fun setupSwitchTheme(){

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Spese">
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.dcurreli.spese.main.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Spese.NoActionBar"
             android:launchMode = "singleTop"/>
@@ -22,7 +22,7 @@
             android:theme="@style/Theme.Spese.NoActionBar"
             android:launchMode = "singleTop"/>
         <activity
-            android:name=".splash.SplashActivity"
+            android:name="com.dcurreli.spese.main.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Spese.NoActionBar"

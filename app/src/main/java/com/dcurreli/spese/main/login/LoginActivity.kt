@@ -1,4 +1,4 @@
-package com.dcurreli.spese.login
+package com.dcurreli.spese.main.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -46,16 +46,16 @@ class LoginActivity : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        Log.d(TAG, "signIn()")
         binding.signInBtn.setOnClickListener {
             signIn()
         }
     }
 
     private fun signIn() {
-        Log.d(TAG, "signIn()")
+        Log.d(TAG, ">> signIn()")
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
+        Log.d(TAG, "<< signIn()")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -97,10 +97,10 @@ class LoginActivity : AppCompatActivity() {
                         }
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.d("SignInActivity", "signInWithCredential:failure")
                     }
+                }else {
+                    // If sign in fails, display a message to the user.
+                    Log.d("SignInActivity", "signInWithCredential:failure")
                 }
             }
     }
