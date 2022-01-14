@@ -49,7 +49,7 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        user = DBUtils.getCurrentUser()
+        user = DBUtils.getCurrentUser()!!
         mAuth = DBUtils.getAuthentication()
         // Configure Google Sign out
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -61,8 +61,6 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         //Carico i dati dal db per lo switch del tema
         setupSwitchTheme()
 
-        //Inizializzo il dropdown per la categoria
-
         binding.switchDarkTheme.setOnCheckedChangeListener { _, checkedId ->
             GenericUtils.onOffDarkTheme(db, user, checkedId)
         }
@@ -70,6 +68,8 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         binding.signOutBtn.setOnClickListener {
             signOut()
         }
+
+        binding.uid.text =  "UID: "
     }
 
     override fun onDestroyView() {
@@ -88,8 +88,6 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
             //Se non esiste creo l'utente nella lista utenti
             if (it.exists()) {
                 val utente : Utente = it.getValue(Utente::class.java) as Utente
-                Log.i(TAG, utente.isDarkTheme.toString())
-
                 when (utente.isDarkTheme) {
                     true -> binding.switchDarkTheme.isChecked = true
                     false -> binding.switchDarkTheme.isChecked = false

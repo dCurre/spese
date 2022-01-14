@@ -36,7 +36,7 @@ object ListaSpeseUtils {
         val methodName = "creaListaSpese"
         Log.i(TAG, ">>$methodName")
         val newKey = db.push().key!!
-        currentUser = DBUtils.getCurrentUser()
+        currentUser = DBUtils.getCurrentUser()!!
         partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
 
         //Nuova spesa
@@ -44,7 +44,7 @@ object ListaSpeseUtils {
             newKey,
             binding.listaSpeseNomeText.text.toString(),
             partecipanti,
-            DBUtils.getCurrentUser().uid,
+            DBUtils.getCurrentUser()?.uid,
             binding.listaSpeseCategorieMenu.text.toString()
         )
 
@@ -77,7 +77,9 @@ object ListaSpeseUtils {
                 listaSpeseEventoArray.clear()
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
-                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser().uid)){
+                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(
+                            DBUtils.getCurrentUser()?.uid
+                        )){
                         //Smisto tra periodica o evento
 
                         Log.i(TAG, ">>${listaSpese.categoria}")
@@ -108,7 +110,9 @@ object ListaSpeseUtils {
                 listaSpeseEventoArray.clear()
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
-                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser().uid)){
+                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(
+                            DBUtils.getCurrentUser()?.uid
+                        )){
                         arrayListe.add(listaSpese)
                     }
                 }

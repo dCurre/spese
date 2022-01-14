@@ -28,19 +28,17 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
         super.onCreate(savedInstanceState)
         val user = DBUtils.getCurrentUser()
 
-        //Se l'utente non è autenticato, verrà riportato alla pagina di login
+        //TODO capire come gestire l'accesso dell'utente
+        //ora come ora entra pure se l'ultima volta ha sloggato
         Handler(Looper.getMainLooper()).postDelayed({
             if(user!=null){
-                db.child(user.uid).get().addOnSuccessListener {
+                this.db.child(user.uid).get().addOnSuccessListener {
                     //Se non esiste creo l'utente nella lista utenti
-                    if (!it.exists()) {
-                        val uid = Utente(user.uid)
-                        db.child(user.uid).setValue(uid)
-                    }else{
-                        //Altrimenti carico le impostazioni dell'utente
+                    Log.i(TAG, ">>DAVIDE ${it}")
+                    if (it.exists()) {
                         utente = it.getValue(Utente::class.java) as Utente
                         GenericUtils.onOffDarkTheme(db, user, utente.isDarkTheme) // Gestisco preferenze tema
-                    }
+                   }
                 }.addOnFailureListener {
                     Log.e(TAG, "<<Error getting utente", it)
                 }

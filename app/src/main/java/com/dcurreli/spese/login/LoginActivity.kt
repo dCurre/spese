@@ -6,7 +6,9 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityLoginBinding
+import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
+import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -14,6 +16,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class LoginActivity : AppCompatActivity() {
@@ -26,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var mAuth : FirebaseAuth
     private val TAG = javaClass.simpleName
+    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value.lowercase())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,13 +83,24 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("SignInActivity", "signInWithCredential:success")
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.d("SignInActivity", "signInWithCredential:failure")
+                    Log.d("SignInActivity", "signInWithCredential: success")
+
+                    //DOPO LA LOGIN CREO L'UTENTE SE NON ESITE
+                    val user = DBUtils.getCurrentUser()
+                    if (user != null) {
+                        this.db.child(user.uid).get().addOnSuccessListener {
+                            //Se non esiste creo l'utente nella lista utenti
+                            if (!it.exists()) {
+                                val uid = Utente(user.uid)
+                                db.child(user.uid).setValue(uid)
+                            }
+                        }
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.d("SignInActivity", "signInWithCredential:failure")
+                    }
                 }
             }
     }

@@ -14,13 +14,23 @@
         tools:ignore="MissingConstraints">
 
         <TextView
+            android:id="@+id/uid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="UID: " />
+
+        <TextView
+            android:id="@+id/text_view_tema_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/uid"
             android:text="Tema scuro" />
 
         <Switch
             android:id="@+id/switch_dark_theme"
             android:layout_width="wrap_content"
+            android:layout_toEndOf="@id/text_view_tema_switch"
+            android:layout_below="@id/uid"
             android:layout_alignParentEnd="true"
             android:layout_height="wrap_content"
             tools:ignore="UseSwitchCompatOrMaterialXml"
@@ -32,14 +42,13 @@
             android:layout_height="wrap_content"
             android:text="@string/sign_out"
             android:textAllCaps="false"
-            android:layout_below="@+id/switch_dark_theme"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.463"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="300dp"
-            tools:ignore="MissingConstraints" />
+            android:layout_below="@id/text_view_tema_switch"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="241dp" />
     </RelativeLayout>
-
 
 
 
