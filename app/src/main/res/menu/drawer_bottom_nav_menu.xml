@@ -5,16 +5,16 @@
         android:background="?attr/colorPrimary"
         android:icon="@drawable/ic_home"
         android:title="Home" />
-    <item
+    <!-- <item
         android:id="@+id/addSpesaFragment"
         android:background="?attr/colorPrimary"
         android:icon="@drawable/ic_plus"
-        android:title="Nuova spesa" />
+        android:title="Nuova spesa" /> -->
     <item
         android:id="@+id/addListaSpeseFragment"
         android:background="?attr/colorPrimary"
-        android:icon="@drawable/ic_lista_spese"
-        android:title="Le tue liste" />
+        android:icon="@drawable/ic_list_add"
+        android:title="Nuova lista" />
     <item
         android:id="@+id/calendarFragment"
         android:background="?attr/colorPrimary"

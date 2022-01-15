@@ -1,5 +1,6 @@
 package com.dcurreli.spese.main
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +8,13 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.objects.DataForQuery
-import com.dcurreli.spese.utils.MeseUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import org.jetbrains.anko.imageResource
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import android.view.View as View1
 
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
@@ -31,9 +33,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
         _binding = LoadSpeseBinding.inflate(inflater, container, false)
 
-        //Setto il nome della toolbar in base al bottone di spesa che ho clickato
-        setupToolbarTitle()
-
         return binding.root
     }
 
@@ -42,15 +41,44 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        //Setto il nome della toolbar in base al bottone di spesa che ho clickato
+        setupToolbarTitle()
 
         //Faccio uscire/scomparire un menu a tendina se premo sulla barra sopra la lista
-        binding.listaSpeseHeaderLayout.setOnClickListener {
-            val lsphLayout = binding.listaSpeseHeaderLayout
-            val height = lsphLayout.layoutParams.height
-            val width = lsphLayout.layoutParams.width
-            var moreLessHeight = 300
+        setupMenuATendinaTotale()
 
+        //Configurazione bottone aggiunta spesa
+        setupAddSpesaButton()
+
+        //Stampo le spese
+        SpesaUtils.printSpese(
+            binding,
+            requireContext(),
+            idListaSpese = arguments?.getString("idLista").toString() //id lista
+        )
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupToolbarTitle() {
+        if (arguments != null) {
+            (activity as MainActivity).supportActionBar?.title = arguments?.getString("toolbarTitle")
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private fun setupMenuATendinaTotale(){
+        val lsphLayout = binding.listaSpeseHeaderLayout
+        val height = lsphLayout.layoutParams.height
+        val width = lsphLayout.layoutParams.width
+        var moreLessHeight = 300
+
+        //Faccio uscire/scomparire un menu a tendina se premo sulla barra sopra la lista
+        binding.listaSpeseHeaderLayout.onClick {
             //Di default è closed --> apro/chiudo
             if(lsphLayout.tooltipText.contentEquals("closed")) {
                 lsphLayout.tooltipText = "open"
@@ -64,24 +92,15 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
             val lp : RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(width,height+moreLessHeight)
             lsphLayout.layoutParams = lp
         }
-
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    private fun setupAddSpesaButton() {
+        binding.addSpesaButton.setOnClickListener{
+            val bundle = Bundle()
+            bundle.putString("nomeLista", arguments?.getString("toolbarTitle"))
+            bundle.putString("idLista", arguments?.getString("idLista"))
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setupToolbarTitle() {
-        //Recupero i dati da stampare per le spese (dal main activity)
-        if (arguments != null) {
-            dataForQuery = MeseUtils.createDataForQueryFromMeseAnno(arguments?.getString("toolbarTitle").toString())!!
-
-            //Stampo la lista delle spese
-            SpesaUtils.printSpese(binding, requireContext(), dataForQuery)
-            //Inoltre setto il titolo della toolbar al nome del mese mostrato
-            (activity as MainActivity).supportActionBar?.title = arguments?.getString("toolbarTitle")
+            findNavController().navigate(R.id.addSpesaFragment, bundle)
         }
     }
 }

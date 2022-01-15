@@ -3,10 +3,8 @@ package com.dcurreli.spese.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import android.widget.ArrayAdapter
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ListaSpeseAdapter
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
@@ -116,10 +114,6 @@ object ListaSpeseUtils {
                         arrayListe.add(listaSpese)
                     }
                 }
-
-                //TODO trovare un modo per recuperarmi l'id, per ora prendo solo il nome
-                val categoriaListAdapter = ArrayAdapter(context, R.layout.add_lista_spese_categoria_item, arrayListe)
-
             }
             override fun onCancelled(error: DatabaseError) {
                 Log.e(TAG, "Failed to read value.", error.toException())

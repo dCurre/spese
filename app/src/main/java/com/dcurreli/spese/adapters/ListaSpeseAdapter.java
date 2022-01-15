@@ -1,14 +1,12 @@
 package com.dcurreli.spese.adapters;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,9 +19,9 @@ import java.util.ArrayList;
 public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.MyViewHolder> {
 
     private Context context;
-    private ArrayList<ListaSpese> listaSpeseList;
-    private ActivityMainBinding binding;
-    private NavController navController;
+    private final ArrayList<ListaSpese> listaSpeseList;
+    private final ActivityMainBinding binding;
+    private final NavController navController;
 
     public ListaSpeseAdapter(Context context, ArrayList<ListaSpese> listaSpeseList, ActivityMainBinding binding, NavController navController) {
         this.context = context;
@@ -52,18 +50,16 @@ public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.My
         holder.nome.setText(listaSpese.getNome());
 
         //gestisco l'evento on click
-        holder.nome.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("toolbarTitle", holder.nome.getText().toString());
+        holder.nome.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("toolbarTitle", holder.nome.getText().toString());
+            bundle.putString("idLista", listaSpese.getId());
 
-                //Chiudo il menu
-                binding.drawerMainActivity.closeDrawer(GravityCompat.START);
+            //Chiudo il menu
+            binding.drawerMainActivity.closeDrawer(GravityCompat.START);
 
-                //Navigo sul fragment successivo passandogli il bundle
-                navController.navigate(R.id.settingsFragment, bundle);
-            }
+            //Navigo sul fragment successivo passandogli il bundle
+            navController.navigate(R.id.loadSpeseFragment, bundle);
         });
     }
 

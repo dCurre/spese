@@ -27,7 +27,7 @@ object SpesaUtils {
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun creaSepsa(binding: AddSpesaBinding) {
+    fun creaSepsa(binding: AddSpesaBinding, idLista : String) {
         val methodName = "creaSpesa"
         Log.i(TAG, ">>$methodName")
         val newKey = db.push().key!!
@@ -39,7 +39,7 @@ object SpesaUtils {
             binding.spesaImporto.text.toString().replace(",", ".").toDouble(),
             binding.spesaData.text.toString(),
             binding.spesaPagatoreText.text.toString(),
-            binding.listaListe.text.toString()
+            idLista
         )
 
         //Creo mese, e se va bene
@@ -50,16 +50,39 @@ object SpesaUtils {
         Log.i(TAG, "<<$methodName")
     }
 
-    fun printSpese(binding: LoadSpeseBinding, context: Context, dataForQuery: DataForQuery) {
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+    fun printSpese(binding: LoadSpeseBinding, context: Context, idListaSpese : String) {
         val spesaArray = ArrayList<Spesa>()
         val spesaAdapter = SpesaAdapter(context, spesaArray)
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = spesaAdapter
 
-        db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
-            .endBefore(dataForQuery.endsAt.toDouble())
-            .addValueEventListener(object : ValueEventListener {
-                @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+        db.orderByChild("listaSpesaID").equalTo(idListaSpese).get().addOnSuccessListener {
+
+                //Se non ci sono spese evito di stampare una finestra vuota
+                if (it.exists() && it.childrenCount > 0) {
+                    var totaleSpese : BigDecimal = BigDecimal.ZERO
+                    binding.speseNotFound.visibility = INVISIBLE
+
+                    for( singleIt in it.children){
+                        val spesa = singleIt.getValue(Spesa::class.java) as Spesa
+                        spesaArray.add(spesa)
+                        totaleSpese = totaleSpese.add(spesa.importo.toBigDecimal())
+                    }
+
+                    //Stampo pure il totale delle spese
+                    binding.listaSpeseHeaderTotaleImporto.text = "${totaleSpese.setScale(2).toString().replace(".",",")}€"
+                    spesaAdapter.notifyDataSetChanged() //Refresh della lista
+
+                }else{
+                    binding.speseNotFound.visibility = View.VISIBLE
+                }
+            }.addOnFailureListener {
+                Log.e(TAG, "<< Error getting mese", it)
+            }
+
+               /*
+                }
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     spesaArray.clear()
                     var totaleSpese : BigDecimal = BigDecimal.ZERO
@@ -81,14 +104,14 @@ object SpesaUtils {
                 override fun onCancelled(error: DatabaseError) {
                     Log.e(TAG, "Failed to read value.", error.toException())
                 }
-            })
+
+                 */
     }
 
     fun clearTextViewFocus(binding: AddSpesaBinding) {
         binding.spesaSpesaText.clearFocus()
         binding.spesaImporto.clearFocus()
         binding.spesaPagatoreText.clearFocus()
-        binding.listaListe.clearFocus()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

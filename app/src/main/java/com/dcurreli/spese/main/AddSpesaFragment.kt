@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.utils.GenericUtils
-import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import java.util.*
 
@@ -21,6 +20,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val TAG = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
+    private lateinit var idLista : String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -30,15 +30,17 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = AddSpesaBinding.inflate(inflater, container, false)
 
-        //Setup lista spesa
-        setupListaSpeseDropdown()
+        //Setto il nome della toolbar in base al bottone di spesa che ho clickato
+        setupToolbarTitle()
 
         //Setup calendario
         setupCalendario()
+
+        idLista = arguments?.getString("idLista").toString()
 
         return binding.root
     }
@@ -59,21 +61,17 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
             //Chiudo la tastiera come prima cosa
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
-            if (binding.spesaSpesaText.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout)
-            } else if (binding.spesaImporto.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout)
-            } else if (binding.spesaData.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout)
-            } else if (binding.spesaPagatoreText.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout)
-            } else if (binding.listaListe.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Campo lista non popolato !", binding.addSpesaConstraintLayout)
-            } else {
-                SpesaUtils.creaSepsa(binding)
-                GenericUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
+            when {
+                binding.spesaSpesaText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaImporto.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaData.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaPagatoreText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
+                else -> {
+                    SpesaUtils.creaSepsa(binding, idLista)
+                    GenericUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
 
-                findNavController().navigate(R.id.action_AddSpesaFragment_to_HomeFragment)
+                    findNavController().navigate(R.id.homeFragment)
+                }
             }
         }
     }
@@ -83,8 +81,14 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         _binding = null
     }
 
-    private fun setupListaSpeseDropdown(){
-        ListaSpeseUtils.printListeByUID(requireContext(), binding)
+    private fun setupToolbarTitle() {
+        var nomeLista : String = "Aggiungi una spesa"
+
+        if (arguments != null) {
+            nomeLista = arguments?.getString("nomeLista").toString()
+        }
+
+        (activity as MainActivity).supportActionBar?.title = "Aggiungi a $nomeLista"
     }
 
     @SuppressLint("SetTextI18n")

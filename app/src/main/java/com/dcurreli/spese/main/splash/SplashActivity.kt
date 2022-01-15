@@ -28,8 +28,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
         super.onCreate(savedInstanceState)
         val user = DBUtils.getCurrentUser()
 
-        //TODO capire come gestire l'accesso dell'utente
-        //ora come ora entra pure se l'ultima volta ha sloggato
+        //Fase di login
         Handler(Looper.getMainLooper()).postDelayed({
             if(user!=null){
                 this.db.child(user.uid).get().addOnSuccessListener {
