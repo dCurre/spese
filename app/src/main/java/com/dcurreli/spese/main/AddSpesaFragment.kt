@@ -40,8 +40,6 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         //Setup calendario
         setupCalendario()
 
-        idLista = arguments?.getString("idLista").toString()
-
         return binding.root
     }
 
@@ -67,10 +65,10 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
                 binding.spesaData.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
                 binding.spesaPagatoreText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
                 else -> {
-                    SpesaUtils.creaSepsa(binding, idLista)
+                    SpesaUtils.creaSepsa(binding, arguments?.getString("idLista").toString())
                     GenericUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
 
-                    findNavController().navigate(R.id.homeFragment)
+                    findNavController().navigate(R.id.loadSpeseFragment, arguments)
                 }
             }
         }
@@ -82,7 +80,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
     }
 
     private fun setupToolbarTitle() {
-        var nomeLista : String = "Aggiungi una spesa"
+        var nomeLista = "Aggiungi una spesa"
 
         if (arguments != null) {
             nomeLista = arguments?.getString("nomeLista").toString()
@@ -102,7 +100,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         binding.spesaData.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
                 this.requireContext(),
-                DatePickerDialog.OnDateSetListener { _, mYear, mMonth, mDay ->
+                { _, mYear, mMonth, mDay ->
                     //Setto la data nella text view
                     binding.spesaData.setText(
                         "${

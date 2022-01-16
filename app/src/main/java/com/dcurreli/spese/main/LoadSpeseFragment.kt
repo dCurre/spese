@@ -33,14 +33,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
         _binding = LoadSpeseBinding.inflate(inflater, container, false)
 
-        return binding.root
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         //Setto il nome della toolbar in base al bottone di spesa che ho clickato
         setupToolbarTitle()
 
@@ -49,6 +41,14 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
         //Configurazione bottone aggiunta spesa
         setupAddSpesaButton()
+
+        return binding.root
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //Stampo le spese
         SpesaUtils.printSpese(
@@ -65,9 +65,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     private fun setupToolbarTitle() {
-        if (arguments != null) {
-            (activity as MainActivity).supportActionBar?.title = arguments?.getString("toolbarTitle")
-        }
+        if (arguments != null) { (activity as MainActivity).supportActionBar?.title = arguments?.getString("nomeLista") }
     }
 
     @SuppressLint("NewApi")
@@ -96,11 +94,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private fun setupAddSpesaButton() {
         binding.addSpesaButton.setOnClickListener{
-            val bundle = Bundle()
-            bundle.putString("nomeLista", arguments?.getString("toolbarTitle"))
-            bundle.putString("idLista", arguments?.getString("idLista"))
-
-            findNavController().navigate(R.id.addSpesaFragment, bundle)
+            findNavController().navigate(R.id.addSpesaFragment, arguments)
         }
     }
 }

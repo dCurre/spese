@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.adapters.ListaSpeseAdapter
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
-import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enum.CategoriaListaEnum
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.ListaSpese
@@ -91,30 +90,6 @@ object ListaSpeseUtils {
                 listaEventoAdapter.notifyDataSetChanged() //Se tolgo non stampa
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "Failed to read value.", error.toException())
-            }
-        })
-    }
-
-    fun printListeByUID(context: Context, binding: AddSpesaBinding){
-        var arrayListe = ArrayList<ListaSpese>()
-
-        //RECUPERO SOLAMENTE LE LISTE LEGATE ALL'UID LOGGATO
-        db.orderByChild("nome").addValueEventListener(object : ValueEventListener {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                arrayListe.clear()
-                listaSpeseEventoArray.clear()
-                for (snapshot: DataSnapshot in dataSnapshot.children) {
-                    listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
-                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(
-                            DBUtils.getCurrentUser()?.uid
-                        )){
-                        arrayListe.add(listaSpese)
-                    }
-                }
-            }
             override fun onCancelled(error: DatabaseError) {
                 Log.e(TAG, "Failed to read value.", error.toException())
             }

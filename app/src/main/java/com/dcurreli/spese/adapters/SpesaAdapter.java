@@ -2,6 +2,8 @@ package com.dcurreli.spese.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +11,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcurreli.spese.R;
 import com.dcurreli.spese.objects.Spesa;
-import com.dcurreli.spese.utils.GenericUtils;
 import com.dcurreli.spese.utils.SpesaUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder> {
 
     private Context context;
-    private ArrayList<Spesa> speseList;
+    private final ArrayList<Spesa> speseList;
 
     public SpesaAdapter(Context context, ArrayList<Spesa> speseList) {
         this.context = context;
@@ -45,6 +47,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         return new MyViewHolder(v);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Spesa spesa = speseList.get(position);
@@ -58,22 +61,10 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         holder.deleteButton.setVisibility(View.INVISIBLE);
 
         //Se premo il bottone potrò modificare l'elemento della lista
-        holder.editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        holder.editButton.setOnClickListener(view -> Log.i("SpesaAdapter", ">>ID " + spesa.getId()));
 
         //Premendo il bottone cancello l'elemento
-        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("NewApi")
-            @Override
-            public void onClick(View view) {
-                SpesaUtils.deleteSpesa(spesa);
-                notifyDataSetChanged();
-            }
-        });
+        holder.deleteButton.setOnClickListener(view -> SpesaUtils.deleteSpesa(spesa));
     }
 
     @Override

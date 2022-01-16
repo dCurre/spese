@@ -52,7 +52,7 @@ public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.My
         //gestisco l'evento on click
         holder.nome.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
-            bundle.putString("toolbarTitle", holder.nome.getText().toString());
+            bundle.putString("nomeLista", holder.nome.getText().toString());
             bundle.putString("idLista", listaSpese.getId());
 
             //Chiudo il menu
