@@ -94,13 +94,19 @@ object SpesaUtils {
     @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
     fun deleteSpesa(spesa: Spesa) {
-        //val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
+        val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
 
-        //Controllo prima che ci sia solo un elemento per quel mese
+        //Cancello la spesa
+        db.child(spesa.id).removeValue()
+
+
+        //TODO capire se mi serve cancellare il mese, non penso
+        //In seguito cancello il mese
         /*db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
             .endBefore(dataForQuery.endsAt.toDouble())
             .get().addOnSuccessListener {
-                if (it.exists() && it.childrenCount <= 1) {
+                Log.e(TAG, "<< Children count ${it.childrenCount}")
+                if (it.exists() && it.childrenCount < 1) {
                     //Essendoci solo una spesa nel mese posso pure cancellare il mese stesso
                     MeseUtils.deleteMese(spesa)
                 }
@@ -109,9 +115,6 @@ object SpesaUtils {
             }
 
          */
-
-        //Cancello la spesa
-        db.child(spesa.id).removeValue()
     }
 
 }
