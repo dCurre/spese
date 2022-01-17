@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/loadSpeseFragment"
-        android:name="com.dcurreli.spese.main.LoadSpeseFragment"
+        android:name="com.dcurreli.spese.main.loadspese.LoadSpeseFragment"
         android:label="Riepilogo spese">
         <action
             android:id="@+id/action_loadSpeseFragment_to_HomeFragment"

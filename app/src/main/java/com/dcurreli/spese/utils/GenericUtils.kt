@@ -6,6 +6,7 @@ import android.os.Build
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.dcurreli.spese.R
@@ -84,5 +85,13 @@ object GenericUtils {
                 db.child(user.uid).child("darkTheme").setValue(false)
             }
         }
+    }
+
+    fun setupSottotitoloToolbar(message: String?, activity: AppCompatActivity?){
+        (activity)?.supportActionBar?.subtitle = message
+    }
+
+    fun clearSottotitoloToolbar(activity: AppCompatActivity?){
+        setupSottotitoloToolbar(null, activity)
     }
 }

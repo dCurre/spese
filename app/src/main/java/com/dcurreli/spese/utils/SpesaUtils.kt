@@ -6,10 +6,12 @@ import android.os.Build
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.AddSpesaBinding
-import com.dcurreli.spese.databinding.LoadSpeseBinding
+import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
@@ -48,7 +50,12 @@ object SpesaUtils {
         Log.i(TAG, "<<$methodName")
     }
 
-    fun printSpese(binding: LoadSpeseBinding, context: Context, idListaSpese : String) {
+    fun printSpese(
+        binding: LoadSpeseTabSpeseBinding,
+        context: Context,
+        idListaSpese: String,
+        activity: FragmentActivity?
+    ) {
         val spesaArray = ArrayList<Spesa>()
         val spesaAdapter = SpesaAdapter(context, spesaArray)
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
@@ -58,7 +65,6 @@ object SpesaUtils {
         db.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
                 var totaleSpese : BigDecimal = BigDecimal.ZERO
                 spesaArray.clear()
 
@@ -68,18 +74,22 @@ object SpesaUtils {
                     spesaArray.add(spesa)
                     totaleSpese = totaleSpese.add(spesa.importo.toBigDecimal())
                 }
-                binding.listaSpeseHeaderTotaleImporto.text = "${totaleSpese.setScale(2).toString().replace(".",",")}€"
+
+                //Aggiorno il sottotitolo della toolbar
+                GenericUtils.setupSottotitoloToolbar("Totale: ${totaleSpese.setScale(2).toString().replace(".",",")}€", (activity as AppCompatActivity?))
 
                 //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
                 if (dataSnapshot.childrenCount > 0) {
                     binding.speseNotFound.visibility = View.INVISIBLE
-                    spesaAdapter.notifyDataSetChanged()
                 }
                 else
                     binding.speseNotFound.visibility = View.VISIBLE
+
+                spesaAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
+
                 Log.e(TAG, "Failed to read value.", error.toException())
             }
         })
@@ -98,7 +108,6 @@ object SpesaUtils {
 
         //Cancello la spesa
         db.child(spesa.id).removeValue()
-
 
         //TODO capire se mi serve cancellare il mese, non penso
         //In seguito cancello il mese

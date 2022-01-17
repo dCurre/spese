@@ -4,68 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.LoadSpeseFragment">
+    tools:context=".main.loadspese.LoadSpeseFragment">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
-        <RelativeLayout
-            android:id="@+id/lista_spese_header_layout"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/table_layout_schede"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/purple_500"
-            android:tooltipText="closed">
+            app:tabIconTint="?colorPrimary"
+            app:tabGravity="fill"
+            app:tabInlineLabel="true"
+            app:tabMode="fixed"
+            app:tabTextColor="?colorPrimary"
+            />
 
-            <TextView
-                android:id="@+id/lista_spese_header_totale_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="12dp"
-                android:gravity="bottom"
-                android:paddingStart="10dp"
-                android:text="Totale: "
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:ignore="RtlSymmetry" />
-
-            <TextView
-                android:id="@+id/lista_spese_header_totale_importo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:layout_toRightOf="@id/lista_spese_header_totale_text"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="12dp"
-                android:paddingStart="10dp"
-                android:text="0€"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <ImageView
-                android:id="@+id/lista_spese_header_open_close_menu"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_arrow_down"
-                app:tint="@color/white" />
-        </RelativeLayout>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager_schede"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/table_layout_schede"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_spese"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/lista_spese_header_layout"
+            android:layout_below="@+id/table_layout_schede"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints">
+            app:layout_constraintStart_toStartOf="parent">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -78,16 +49,8 @@
             app:useCompatPadding="true"
             app:srcCompat="@android:drawable/ic_input_add"
             android:backgroundTint="?colorPrimary"
-            app:tint="@color/white"/>
+            app:tint="@color/white"
+            android:contentDescription="Aggiungi spesa" />
     </RelativeLayout>
-
-
-    <TextView
-        android:id="@+id/spese_not_found"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Non ho trovato spese"
-        android:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
