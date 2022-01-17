@@ -51,7 +51,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         //Se premo lo sfondo
         binding.addSpesaConstraintLayout.setOnClickListener {
             GenericUtils.hideSoftKeyBoard(requireContext(), view) //Chiudo la tastiera
-            SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
+            SpesaUtils.clearTextViewFocusAddSpesa(binding) //Tolgo il focus dagli altri bottoni
         }
 
         //Bottone "Aggiungi"
@@ -111,7 +111,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
                         }/${String.format("%02d", (mMonth + 1))}/$mYear"
                     )
 
-                    SpesaUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
+                    SpesaUtils.clearTextViewFocusAddSpesa(binding) //Tolgo il focus dagli altri bottoni
                 },
                 year,
                 month,

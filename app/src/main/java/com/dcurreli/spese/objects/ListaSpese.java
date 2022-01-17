@@ -2,12 +2,7 @@ package com.dcurreli.spese.objects;
 
 import androidx.annotation.NonNull;
 
-import com.dcurreli.spese.utils.GenericUtils;
-import com.dcurreli.spese.utils.MeseUtils;
-
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListaSpese {
     private String id = null;

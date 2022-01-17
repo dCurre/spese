@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.AddSpesaBinding
+import com.dcurreli.spese.databinding.EditSpesaDialogBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.Spesa
@@ -95,7 +96,13 @@ object SpesaUtils {
         })
     }
 
-    fun clearTextViewFocus(binding: AddSpesaBinding) {
+    fun clearTextViewFocusAddSpesa(binding: AddSpesaBinding) {
+        binding.spesaSpesaText.clearFocus()
+        binding.spesaImporto.clearFocus()
+        binding.spesaPagatoreText.clearFocus()
+    }
+
+    fun clearTextViewFocusEditSpesa(binding: EditSpesaDialogBinding) {
         binding.spesaSpesaText.clearFocus()
         binding.spesaImporto.clearFocus()
         binding.spesaPagatoreText.clearFocus()

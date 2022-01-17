@@ -29,16 +29,6 @@
             android:layout_below="@id/table_layout_schede"
             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/lista_spese"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/table_layout_schede"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-        </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_spesa_button"

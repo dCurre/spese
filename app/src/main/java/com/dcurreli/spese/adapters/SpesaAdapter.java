@@ -1,12 +1,13 @@
 package com.dcurreli.spese.adapters;
 
-import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -61,7 +62,10 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         holder.deleteButton.setVisibility(View.INVISIBLE);
 
         //Se premo il bottone potrò modificare l'elemento della lista
-        holder.editButton.setOnClickListener(view -> Log.i("SpesaAdapter", ">>ID " + spesa.getId()));
+        holder.editButton.setOnClickListener(view -> {
+            showDialog();
+            Log.i("SpesaAdapter", ">>ID " + spesa.getId());
+        });
 
         //Premendo il bottone cancello l'elemento
         holder.deleteButton.setOnClickListener(view -> SpesaUtils.deleteSpesa(spesa));
@@ -96,4 +100,11 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
             });
         }
     }
+
+    private void showDialog() {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.edit_spesa_dialog);
+        dialog.show();
+    }
+
 }

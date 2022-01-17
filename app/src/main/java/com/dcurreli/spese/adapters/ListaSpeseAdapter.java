@@ -6,14 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.dcurreli.spese.R;
 import com.dcurreli.spese.databinding.ActivityMainBinding;
 import com.dcurreli.spese.objects.ListaSpese;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.MyViewHolder> {
