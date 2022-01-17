@@ -29,7 +29,6 @@
             android:layout_below="@id/table_layout_schede"
             />
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_spesa_button"
             android:layout_width="wrap_content"

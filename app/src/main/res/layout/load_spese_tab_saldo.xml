@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.loadspese.SpeseTabFragment">
+    tools:context=".main.loadspese.SaldoTabFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lista_spese"
@@ -16,11 +16,11 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/spese_not_found"
+        android:id="@+id/saldatori_not_found"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="Non ho trovato spese"
+        android:text="Non ho trovato dati"
         android:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

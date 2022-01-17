@@ -8,22 +8,22 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.dcurreli.spese.R
-import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
+import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.utils.SpesaUtils
 import android.view.View as View1
 
-class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
+class SaldoTabFragment() : Fragment(R.layout.load_spese_tab_saldo) {
 
     companion object {
-        fun newInstance(args: Bundle?): SpeseTabFragment{
-            val fragment = SpeseTabFragment().apply{
+        fun newInstance(args: Bundle?): SaldoTabFragment{
+            val fragment = SaldoTabFragment().apply{
                 arguments =  args
             }
             return fragment
         }
     }
 
-    private var _binding: LoadSpeseTabSpeseBinding? = null
+    private var _binding: LoadSpeseTabSaldoBinding? = null
     private val TAG = javaClass.simpleName
     private val binding get() = _binding!!
 
@@ -34,8 +34,7 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
         savedInstanceState: Bundle?
     ): View1 {
 
-        _binding = LoadSpeseTabSpeseBinding.inflate(inflater, container, false)
-
+        _binding = LoadSpeseTabSaldoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -46,7 +45,7 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
         Log.i(TAG, ">>DAVIDE ${arguments?.getString("idLista").toString()}")
 
         //Stampo le spese
-        SpesaUtils.printSpese(
+        SpesaUtils.printSaldo(
             binding,
             requireContext(),
             idListaSpese = arguments?.getString("idLista").toString(), //id lista

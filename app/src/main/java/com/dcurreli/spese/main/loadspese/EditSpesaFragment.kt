@@ -34,6 +34,7 @@ class EditSpesaFragment() : Fragment(R.layout.edit_spesa_dialog) {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //TODO gestione edit da fare tutta
 
 
         //Se premo lo sfondo

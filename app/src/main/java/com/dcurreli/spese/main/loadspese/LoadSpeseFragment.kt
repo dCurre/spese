@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ViewPagerAdapter
 import com.dcurreli.spese.databinding.LoadSpeseBinding
-import com.dcurreli.spese.main.CalendarFragment
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.utils.GenericUtils
 import android.view.View as View1
@@ -70,7 +69,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private fun setupTabLayout(){
         val adapter = ViewPagerAdapter(childFragmentManager)
         adapter.addFragment(SpeseTabFragment.newInstance(arguments), "Spese", R.drawable.ic_settings)
-        adapter.addFragment(CalendarFragment(), "Saldo", R.drawable.ic_calendar)
+        adapter.addFragment(SaldoTabFragment.newInstance(arguments), "Saldo", R.drawable.ic_calendar)
         binding.viewPagerSchede.adapter = adapter
         binding.tableLayoutSchede.setupWithViewPager(binding.viewPagerSchede)
 

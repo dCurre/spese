@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -44,7 +43,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.spese_list, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.load_spese_tab_spese_item, parent, false);
         return new MyViewHolder(v);
     }
 

@@ -9,9 +9,11 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dcurreli.spese.adapters.SaldoAdapter
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.databinding.EditSpesaDialogBinding
+import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.Spesa
@@ -96,6 +98,54 @@ object SpesaUtils {
         })
     }
 
+    fun printSaldo(
+        binding: LoadSpeseTabSaldoBinding,
+        context: Context,
+        idListaSpese: String,
+        activity: FragmentActivity?
+    ) {
+        val spesaArray = ArrayList<Spesa>()
+        val saldoAdapter = SaldoAdapter(context, spesaArray)
+        binding.listaSpese.layoutManager = LinearLayoutManager(context)
+        binding.listaSpese.adapter = saldoAdapter
+
+        db.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
+            @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                /*
+                var totaleSpese : BigDecimal = BigDecimal.ZERO
+                spesaArray.clear()
+
+                //Ciclo per ottenere spese e totale
+                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                    val spesa = snapshot.getValue(Spesa::class.java) as Spesa
+                    spesaArray.add(spesa)
+                    totaleSpese = totaleSpese.add(spesa.importo.toBigDecimal())
+                }
+
+                //Aggiorno il sottotitolo della toolbar
+                GenericUtils.setupSottotitoloToolbar("Totale: ${totaleSpese.setScale(2).toString().replace(".",",")}€", (activity as AppCompatActivity?))
+
+
+                saldoAdapter.notifyDataSetChanged()
+                 */
+
+                //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
+                if (dataSnapshot.childrenCount > 0) {
+                    binding.saldatoriNotFound.visibility = View.INVISIBLE
+                }
+                else
+                    binding.saldatoriNotFound.visibility = View.VISIBLE
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+                Log.e(TAG, "Failed to read value.", error.toException())
+            }
+        })
+    }
+
     fun clearTextViewFocusAddSpesa(binding: AddSpesaBinding) {
         binding.spesaSpesaText.clearFocus()
         binding.spesaImporto.clearFocus()
@@ -111,7 +161,7 @@ object SpesaUtils {
     @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
     fun deleteSpesa(spesa: Spesa) {
-        val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
+        //val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
 
         //Cancello la spesa
         db.child(spesa.id).removeValue()
