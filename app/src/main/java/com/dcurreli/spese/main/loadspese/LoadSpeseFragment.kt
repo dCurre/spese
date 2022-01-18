@@ -3,6 +3,8 @@ package com.dcurreli.spese.main.loadspese
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +16,7 @@ import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.utils.GenericUtils
 import android.view.View as View1
+
 
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
@@ -27,11 +30,10 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View1 {
-
         _binding = LoadSpeseBinding.inflate(inflater, container, false)
 
         //Setto il nome della toolbar in base al bottone di spesa che ho clickato
-        setupToolbarTitle()
+        setupToolbar()
 
         //Configurazione bottone aggiunta spesa
         setupAddSpesaButton()
@@ -58,8 +60,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         _binding = null
     }
 
-
-
     private fun setupAddSpesaButton() {
         binding.addSpesaButton.setOnClickListener{
             findNavController().navigate(R.id.addSpesaFragment, arguments)
@@ -79,7 +79,20 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         }
     }
 
-    private fun setupToolbarTitle() {
-        if (arguments != null) { (activity as MainActivity).supportActionBar?.title = arguments?.getString("nomeLista") }
+    private fun setupToolbar() {
+        //Faccio apparire il tasto share
+        setHasOptionsMenu(true)
+
+        //Cambio il titolo della lista
+        val toolbar = (activity as MainActivity).supportActionBar
+        if (arguments != null) { toolbar?.title = arguments?.getString("nomeLista") }
+
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        val item : MenuItem = menu.findItem(R.id.share)
+
+        item.isVisible = true
+        //if (arguments != null) { item.title = arguments?.getString("nomeLista") }
     }
 }

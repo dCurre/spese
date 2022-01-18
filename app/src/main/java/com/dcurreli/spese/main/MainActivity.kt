@@ -56,8 +56,13 @@ open class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //menuInflater.inflate(R.menu.menu_laterale, menu)
+        //Creo il menu ma lo nascondo, l'intenzione è di usarlo solo nel load spese
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+
+        //Nascondo il menu appena creato
+        val item : MenuItem = menu.findItem(R.id.share);
+        item.isVisible = false
+
         return true
     }
 
