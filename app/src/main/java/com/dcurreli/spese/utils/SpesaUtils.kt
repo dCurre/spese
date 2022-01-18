@@ -112,31 +112,32 @@ object SpesaUtils {
         db.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                /*
-                var totaleSpese : BigDecimal = BigDecimal.ZERO
                 spesaArray.clear()
 
                 //Ciclo per ottenere spese e totale
-                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                    spesaArray.add(spesa)
-                    totaleSpese = totaleSpese.add(spesa.importo.toBigDecimal())
+                    var exists = false
+
+                    for(i in 0 until spesaArray.size){
+                        if(!exists && spesa.pagatore.equals(spesaArray[i].pagatore, true)){
+                            spesaArray[i].importo += spesa.importo
+                            exists = true
+                        }
+                    }
+                    if(!exists)
+                        spesaArray.add(spesa)
                 }
-
-                //Aggiorno il sottotitolo della toolbar
-                GenericUtils.setupSottotitoloToolbar("Totale: ${totaleSpese.setScale(2).toString().replace(".",",")}€", (activity as AppCompatActivity?))
-
-
-                saldoAdapter.notifyDataSetChanged()
-                 */
 
                 //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
                 if (dataSnapshot.childrenCount > 0) {
                     binding.saldatoriNotFound.visibility = View.INVISIBLE
                 }
-                else
+                else {
                     binding.saldatoriNotFound.visibility = View.VISIBLE
+                }
 
+                saldoAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
