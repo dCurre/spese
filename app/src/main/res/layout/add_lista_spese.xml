@@ -53,6 +53,45 @@
             android:layout_height="60dp"
             android:layout_below="@id/lista_spese_categorie"
             android:text="Aggiungi" />
+
+
+        <TextView
+            android:id="@+id/text_view_oppure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spesa_button_add_spesa"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="oppure"
+            />
+
+        <!-- JOIN LISTA -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lista_spese_join"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/text_view_oppure"
+            android:hint="Unisciti ad una lista"
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/ic_list_add">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lista_spese_join_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/spesa_button_join_spesa"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/lista_spese_join"
+            android:text="Unisciti" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

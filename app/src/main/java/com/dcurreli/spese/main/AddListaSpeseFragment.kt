@@ -53,6 +53,9 @@ class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
 
         //Setup bottone "Aggiungi"
         setupAddButton(view)
+
+        //Setup botton "Unisciti"
+        setupJoinButton(view)
     }
 
     override fun onDestroyView() {
@@ -78,6 +81,24 @@ class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
                 //Recupero dati dall'xml
                 ListaSpeseUtils.creaListaSpese(binding)
                 GenericUtils.showSnackbarOK("Lista creata : )", binding.addListaSpeseConstraintLayout)
+
+                findNavController().navigate(R.id.action_addListaSpeseFragment_to_homeFragment)
+
+            }
+        }
+    }
+
+    private fun setupJoinButton(view: View) {
+        binding.spesaButtonJoinSpesa.setOnClickListener {
+            //Chiudo la tastiera come prima cosa
+            GenericUtils.hideSoftKeyBoard(requireContext(), view)
+
+            if (binding.listaSpeseJoinText.text.isNullOrBlank()) {
+                GenericUtils.showSnackbarError("Nome lista non inserito !", binding.addListaSpeseConstraintLayout)
+            } else {
+                //Recupero dati dall'xml
+                ListaSpeseUtils.joinListaSpese(binding)
+                GenericUtils.showSnackbarOK("Ti sei aggiunto alla lista : )", binding.addListaSpeseConstraintLayout)
 
                 findNavController().navigate(R.id.action_addListaSpeseFragment_to_homeFragment)
 

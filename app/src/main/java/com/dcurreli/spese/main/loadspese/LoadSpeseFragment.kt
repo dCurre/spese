@@ -1,8 +1,10 @@
 package com.dcurreli.spese.main.loadspese
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -96,7 +98,13 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         //Gestisco gli eventi on click della toolbar su questo fragment
         item.setOnMenuItemClickListener {
             when(it.itemId){
-                R.id.share -> Log.i(TAG, ">>DAVIDE ${arguments?.getString("nomeLista")}")
+                R.id.share ->{
+                    val clipboard: ClipboardManager = activity?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip: ClipData = ClipData.newPlainText("simple text", arguments?.getString("idLista"))
+                    clipboard.setPrimaryClip(clip)
+
+                    GenericUtils.showSnackbarOK("Link copiato : )", binding.root)
+                }
             }
             true
         }

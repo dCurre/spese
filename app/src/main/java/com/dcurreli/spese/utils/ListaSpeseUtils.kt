@@ -29,6 +29,7 @@ object ListaSpeseUtils {
     @SuppressLint("StaticFieldLeak") private lateinit var listaPeriodicaAdapter: ListaSpeseAdapter
     @SuppressLint("StaticFieldLeak") private lateinit var listaEventoAdapter: ListaSpeseAdapter
     private var partecipanti : ArrayList<String> = ArrayList()
+
     fun creaListaSpese(binding: AddListaSpeseBinding) {
         val methodName = "creaListaSpese"
         Log.i(TAG, ">>$methodName")
@@ -50,6 +51,42 @@ object ListaSpeseUtils {
 
         Log.i(TAG, "<<$methodName")
     }
+
+    fun joinListaSpese(binding: AddListaSpeseBinding) {
+        val methodName = "creaListaSpese"
+        Log.i(TAG, ">>$methodName")
+        val newKey = db.push().key!!
+        currentUser = DBUtils.getCurrentUser()!!
+        partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
+
+        binding.listaSpeseJoinText.text
+
+        //var listaSpese = db.child((binding.listaSpeseJoinText.text.toString())
+
+        Log.i(TAG, ">>join spesa ${binding.listaSpeseJoinText.text.toString().replace(" ", "")}")
+
+        //Recupero il mese da cancellare
+        db.orderByChild("id").equalTo(binding.listaSpeseJoinText.text.toString().replace(" ", "")).get()
+            .addOnSuccessListener {
+                if (it.exists()) {
+                    val listaSpese = it.children.first().getValue(ListaSpese::class.java) as ListaSpese
+
+                    Log.i(TAG, ">>join spesa ${listaSpese.partecipanti}")
+
+                    if(!listaSpese.partecipanti.contains(currentUser.uid)) {
+                        listaSpese.partecipanti.add(currentUser.uid)
+                        db.child(binding.listaSpeseJoinText.text.toString().replace(" ", "")).child("partecipanti").setValue(listaSpese.partecipanti)
+                    }
+                }else{
+                    Log.i(TAG, ">>Non esiste una lista ")
+                }
+            }.addOnFailureListener {
+                Log.e(TAG, "<< Error getting mese", it)
+            }
+
+        Log.i(TAG, "<<$methodName")
+    }
+
     fun clearTextViewFocus(binding: AddListaSpeseBinding) {
         binding.listaSpeseNome.clearFocus()
         binding.listaSpeseCategorieMenu.clearFocus()
@@ -78,8 +115,6 @@ object ListaSpeseUtils {
                             DBUtils.getCurrentUser()?.uid
                         )){
                         //Smisto tra periodica o evento
-
-                        Log.i(TAG, ">>${listaSpese.categoria}")
                         if(listaSpese.categoria.equals(CategoriaListaEnum.PERIODICA.value, ignoreCase = true))
                             listaSpesePeriodicaArray.add(listaSpese)
                         else
