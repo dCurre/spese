@@ -94,4 +94,8 @@ object GenericUtils {
     fun clearSottotitoloToolbar(activity: AppCompatActivity?){
         setupSottotitoloToolbar(null, activity)
     }
+
+    fun importoAsEur(double : Double): String {
+        return "${String.format("%.2f", double)} €";
+    }
 }

@@ -2,7 +2,6 @@ package com.dcurreli.spese.main.loadspese
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -42,14 +41,11 @@ class SaldoTabFragment() : Fragment(R.layout.load_spese_tab_saldo) {
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.i(TAG, ">>DAVIDE ${arguments?.getString("idLista").toString()}")
-
         //Stampo le spese
         SpesaUtils.printSaldo(
             binding,
             requireContext(),
-            idListaSpese = arguments?.getString("idLista").toString(), //id lista
-            activity
+            idListaSpese = arguments?.getString("idLista").toString() //id lista
         )
     }
 

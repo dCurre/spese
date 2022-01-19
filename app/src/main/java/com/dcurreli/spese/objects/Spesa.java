@@ -3,6 +3,9 @@ package com.dcurreli.spese.objects;
 import com.dcurreli.spese.utils.GenericUtils;
 import com.dcurreli.spese.utils.MeseUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Spesa {
     private String id;
     private String spesa;
@@ -51,7 +54,8 @@ public class Spesa {
     }
 
     public double getImporto() {
-        return importo;
+        BigDecimal bd = BigDecimal.valueOf(importo);
+        return bd.setScale(2, RoundingMode.HALF_EVEN).doubleValue();
     }
 
     public void setImporto(double importo) {
@@ -59,7 +63,7 @@ public class Spesa {
     }
 
     public String importoAsTextEuro() {
-        return "" + importo + "€";
+        return GenericUtils.INSTANCE.importoAsEur(getImporto()).replace(".",",");
     }
 
     public String getData() {

@@ -6,14 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".main.loadspese.SaldoTabFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lista_spese"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/title_saldo_totale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="TOTALE PER UTENTE:"
+            android:textColor="@color/black"
+            android:textSize="8pt"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_saldo_totale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_saldo_totale"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/title_dare_avere"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Da saldare:"
+            android:layout_margin="10dp"
+            android:layout_below="@id/lista_saldo_totale"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="8pt"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_saldo_dare_avere"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_dare_avere"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/saldatori_not_found"
@@ -21,6 +61,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="Non ho trovato dati"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

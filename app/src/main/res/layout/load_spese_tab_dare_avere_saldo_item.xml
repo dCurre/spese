@@ -4,24 +4,41 @@
     android:id="@+id/spese_list_cardView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dp"
     android:layout_marginTop="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:orientation="horizontal"
     app:cardElevation="20dp">
 
     <RelativeLayout
         android:id="@+id/spesa_list_first_layout"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/saldo_pagatore"
+            android:id="@+id/saldo_dare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Spesa"
+            android:layout_marginStart="20dp"
+            android:text="Dare"
+            android:textColor="@android:color/black"
+            android:textSize="9pt"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/icon_dare_to_avere"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/saldo_dare"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/ic_arrow_right"/>
+
+        <TextView
+            android:id="@+id/saldo_avere"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/icon_dare_to_avere"
+            android:text="Avere"
             android:textColor="@android:color/black"
             android:textSize="9pt"
             android:textStyle="bold" />
@@ -31,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
             android:text="Importo"
             android:textAlignment="textEnd"
@@ -39,14 +55,6 @@
             android:textSize="9pt"
             android:textStyle="bold" />
 
-
     </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </RelativeLayout>
-
 
 </androidx.cardview.widget.CardView>

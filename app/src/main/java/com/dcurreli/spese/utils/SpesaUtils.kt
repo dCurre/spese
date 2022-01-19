@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dcurreli.spese.adapters.DareAvereAdapter
 import com.dcurreli.spese.adapters.SaldoAdapter
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.AddSpesaBinding
@@ -16,6 +17,7 @@ import com.dcurreli.spese.databinding.EditSpesaDialogBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.objects.DareAvere
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -64,7 +66,7 @@ object SpesaUtils {
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = spesaAdapter
 
-
+        //TODO cambiare ordinamento in timestamp
         db.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -101,20 +103,24 @@ object SpesaUtils {
     fun printSaldo(
         binding: LoadSpeseTabSaldoBinding,
         context: Context,
-        idListaSpese: String,
-        activity: FragmentActivity?
+        idListaSpese: String
     ) {
         val spesaArray = ArrayList<Spesa>()
+        val dareAvereArray = ArrayList<DareAvere>()
         val saldoAdapter = SaldoAdapter(context, spesaArray)
-        binding.listaSpese.layoutManager = LinearLayoutManager(context)
-        binding.listaSpese.adapter = saldoAdapter
+        val dareAvereAdapter = DareAvereAdapter(context, dareAvereArray)
+        binding.listaSaldoTotale.layoutManager = LinearLayoutManager(context)
+        binding.listaSaldoDareAvere.layoutManager = LinearLayoutManager(context)
+        binding.listaSaldoTotale.adapter = saldoAdapter
+        binding.listaSaldoDareAvere.adapter = dareAvereAdapter
 
         db.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 spesaArray.clear()
+                dareAvereArray.clear()
 
-                //Ciclo per ottenere spese e totale
+                 //Ciclo per ottenere spese e totale
                  for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val spesa = snapshot.getValue(Spesa::class.java) as Spesa
                     var exists = false
@@ -129,14 +135,32 @@ object SpesaUtils {
                         spesaArray.add(spesa)
                 }
 
+                //Ciclo per il calcolo dare avere
+                for (spesa in spesaArray) {
+                    for (spesaTwo in spesaArray) {
+                        if(spesa.pagatore != spesaTwo.pagatore){
+                            dareAvereArray.add(DareAvere(spesa.pagatore, spesaTwo.pagatore, ((spesa.importo-spesaTwo.importo)/spesaArray.size)))
+                        }
+                    }
+                }
+
                 //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
-                if (dataSnapshot.childrenCount > 0) {
+                if (dataSnapshot.childrenCount > 0){
                     binding.saldatoriNotFound.visibility = View.INVISIBLE
+                    binding.titleSaldoTotale.visibility = View.VISIBLE
+                    binding.titleDareAvere.visibility = View.VISIBLE
+
+                    //Dare avere può essere vuoto se c'è un solo pagatore
+                    if(dareAvereArray.size < 1)
+                        binding.titleDareAvere.visibility = View.INVISIBLE
+
                 }
                 else {
                     binding.saldatoriNotFound.visibility = View.VISIBLE
+                    binding.titleDareAvere.visibility = View.INVISIBLE
+                    binding.titleSaldoTotale.visibility = View.INVISIBLE
                 }
-
+                dareAvereAdapter.notifyDataSetChanged()
                 saldoAdapter.notifyDataSetChanged()
             }
 
@@ -162,12 +186,14 @@ object SpesaUtils {
     @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
     fun deleteSpesa(spesa: Spesa) {
-        //val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
 
         //Cancello la spesa
         db.child(spesa.id).removeValue()
 
+
         //TODO capire se mi serve cancellare il mese, non penso
+        //val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
+
         //In seguito cancello il mese
         /*db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
             .endBefore(dataForQuery.endsAt.toDouble())

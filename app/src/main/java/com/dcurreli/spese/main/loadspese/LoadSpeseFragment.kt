@@ -2,6 +2,7 @@ package com.dcurreli.spese.main.loadspese
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -92,7 +93,15 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     override fun onPrepareOptionsMenu(menu: Menu) {
         val item : MenuItem = menu.findItem(R.id.share)
 
+        //Gestisco gli eventi on click della toolbar su questo fragment
+        item.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.share -> Log.i(TAG, ">>DAVIDE ${arguments?.getString("nomeLista")}")
+            }
+            true
+        }
+
+        //Mostro l'item
         item.isVisible = true
-        //if (arguments != null) { item.title = arguments?.getString("nomeLista") }
     }
 }
