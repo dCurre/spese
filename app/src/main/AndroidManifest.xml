@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dcurreli.spese">
 
     <application
@@ -9,11 +10,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spese">
+
+        <!-- SPLASH SCREEN -->
+        <activity
+            android:name="com.dcurreli.spese.main.splash.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Spese.Splashscreen"
+            android:launchMode = "singleTop"
+            tools:ignore="LockedOrientationActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- LOGIN -->
         <activity
             android:name="com.dcurreli.spese.main.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Spese.NoActionBar"
             android:launchMode = "singleTop"/>
+
+        <!-- MAIN APP -->
         <activity
             android:name=".main.MainActivity"
             android:exported="true"
@@ -21,17 +41,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Spese.NoActionBar"
             android:launchMode = "singleTop"/>
-        <activity
-            android:name="com.dcurreli.spese.main.splash.SplashActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Spese.NoActionBar"
-            android:launchMode = "singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
     </application>
 
 </manifest>

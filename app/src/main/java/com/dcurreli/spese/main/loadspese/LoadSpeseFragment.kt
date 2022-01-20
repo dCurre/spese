@@ -1,8 +1,6 @@
 package com.dcurreli.spese.main.loadspese
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context.CLIPBOARD_SERVICE
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -99,11 +97,15 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         item.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.share ->{
-                    val clipboard: ClipboardManager = activity?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip: ClipData = ClipData.newPlainText("simple text", arguments?.getString("idLista"))
-                    clipboard.setPrimaryClip(clip)
+                    //Gestione dello share
+                    val message = arguments?.getString("idLista")
 
-                    GenericUtils.showSnackbarOK("Link copiato : )", binding.root)
+                    val intent = Intent()
+                    intent.action = Intent.ACTION_SEND
+                    intent.putExtra(Intent.EXTRA_TEXT, message)
+                    intent.type = "text/plain"
+
+                    startActivity(Intent.createChooser(intent, "Condividi la lista con: "))
                 }
             }
             true
