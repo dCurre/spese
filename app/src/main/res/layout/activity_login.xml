@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sign_in_layout"
     android:paddingHorizontal="40dp"
-    android:paddingVertical="100dp"
+    android:paddingBottom="100dp"
+    android:paddingTop="200dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".main.login.LoginActivity">
@@ -13,19 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/welcome_text"
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/sign_in_btn"
-            android:layout_marginBottom="100dp"
+            android:autoSizeTextType="uniform"
+            android:breakStrategy="balanced"
             android:fontFamily="@font/monsterrat_bold"
-            android:gravity="center"
+            android:maxLines="1"
             android:text="@string/login_welcome"
             android:textColor="?colorPrimary"
-            android:textSize="20pt"
-            android:textStyle="bold"
-            tools:ignore="MissingConstraints" />
+            android:textSize="300sp"
+            tools:ignore="UnusedAttribute" />
 
         <Button
             android:id="@+id/sign_in_btn"

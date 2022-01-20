@@ -4,17 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".main.splash.SplashActivity"
-    android:background="@color/purple_500">
+    android:background="?colorPrimary"
+    android:padding="130dp">
 
-
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:textSize="50sp"
+        android:autoSizeTextType="uniform"
+        android:breakStrategy="balanced"
         android:fontFamily="@font/montserrat_light"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
         android:textStyle="bold"
-        android:text="@string/app_name"/>
+        tools:ignore="MissingConstraints,UnusedAttribute" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
