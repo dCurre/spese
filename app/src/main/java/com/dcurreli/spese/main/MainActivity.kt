@@ -1,8 +1,10 @@
 package com.dcurreli.spese.main
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
@@ -19,6 +21,8 @@ import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.ktx.Firebase
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -38,6 +42,23 @@ open class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerMainActivity)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        //DYNAMIC LINK
+        Firebase.dynamicLinks
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                // Get deep link from result (may be null if no link is found)
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                    Log.i(TAG, "PROVAAAA")
+                }else{
+                    Log.i(TAG, "MIERDAAAA")
+                }
+
+
+            }
+            .addOnFailureListener(this) { e -> Log.w(TAG, "getDynamicLink:onFailure", e) }
 
         //Header barra laterale
         binding.lateralNavViewHeader.text = "Ciao, ${(currentUser.displayName)?.split(' ')?.get(0)}"
@@ -60,7 +81,7 @@ open class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
 
         //Nascondo il menu appena creato
-        val item : MenuItem = menu.findItem(R.id.share);
+        val item : MenuItem = menu.findItem(R.id.share)
         item.isVisible = false
 
         return true
