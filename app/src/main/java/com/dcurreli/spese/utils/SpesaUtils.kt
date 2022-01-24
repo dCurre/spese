@@ -61,7 +61,8 @@ object SpesaUtils {
         idListaSpese: String,
         activity: FragmentActivity?
     ) {
-        val spesaArray = ArrayList<Spesa>()
+        var spesaArray = ArrayList<Spesa>()
+        var arrayTemp = ArrayList<Spesa>()
         val spesaAdapter = SpesaAdapter(context, spesaArray)
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = spesaAdapter
@@ -72,13 +73,19 @@ object SpesaUtils {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 var totaleSpese : BigDecimal = BigDecimal.ZERO
                 spesaArray.clear()
+                arrayTemp.clear()
 
                 //Ciclo per ottenere spese e totale
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                    spesaArray.add(spesa)
+                    arrayTemp.add(spesa)
                     totaleSpese = totaleSpese.add(spesa.importo.toBigDecimal())
                 }
+
+                //TODO sort by timestamp
+                spesaArray.addAll(arrayTemp.sortedBy { it.timestamp }.toCollection(ArrayList()))
+
+                Log.i(TAG, ">>join spesa ${spesaArray[0].spesa}")
 
                 //Aggiorno il sottotitolo della toolbar
                 GenericUtils.setupSottotitoloToolbar("Totale: ${totaleSpese.setScale(2).toString().replace(".",",")}€", (activity as AppCompatActivity?))

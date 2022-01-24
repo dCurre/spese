@@ -71,9 +71,6 @@ object ListaSpeseUtils {
                 if (it.exists()) {
                     val listaSpese = it.children.first().getValue(ListaSpese::class.java) as ListaSpese
 
-                    Log.i(TAG, ">>atm ${listaSpese.partecipanti.size}")
-                    Log.i(TAG, ">>max ${binding.counterMaxUsers.text.toString().toInt()}")
-
                     //Se l'utente non è già presente in lista
                     if(!listaSpese.partecipanti.contains(currentUser.uid) ){
                         //Se non ho già raggiunto il numero massimo di utenti
@@ -83,11 +80,10 @@ object ListaSpeseUtils {
                             GenericUtils.showSnackbarOK("Ti sei aggiunto alla lista : )", binding.root)
 
                             navController.navigate(R.id.loadSpeseFragment, GenericUtils.createBundleForListaSpese(listaSpese.id, listaSpese.nome))
-
-                        }else{
+                        }else{//Se ho raggiunto il massimo di utenti
                             GenericUtils.showSnackbarError("Numero massimo di utenti raggiunto!", binding.root)
                         }
-                    }else{
+                    }else{//Se l'utente è già presente in lista
                         GenericUtils.showSnackbarError("Fai già parte della lista!", binding.root)
                     }
                 }else{

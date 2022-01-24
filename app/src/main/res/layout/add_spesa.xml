@@ -42,7 +42,7 @@
             android:layout_marginBottom="10dp"
             android:hint="Importo"
             app:endIconMode="clear_text"
-            app:startIconDrawable="@drawable/ic_importo_euro">
+            app:startIconDrawable="@drawable/ic_euro">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/spesa_importo"

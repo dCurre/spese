@@ -75,8 +75,8 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private fun setupTabLayout(){
         val adapter = ViewPagerAdapter(childFragmentManager)
-        adapter.addFragment(SpeseTabFragment.newInstance(arguments), "Spese", R.drawable.ic_settings)
-        adapter.addFragment(SaldoTabFragment.newInstance(arguments), "Saldo", R.drawable.ic_calendar)
+        adapter.addFragment(SpeseTabFragment.newInstance(arguments), "Spese", R.drawable.ic_shopping_cart)
+        adapter.addFragment(SaldoTabFragment.newInstance(arguments), "Saldo", R.drawable.ic_euro)
         binding.viewPagerSchede.adapter = adapter
         binding.tableLayoutSchede.setupWithViewPager(binding.viewPagerSchede)
 
@@ -108,7 +108,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
                     val intent = Intent()
                     intent.action = Intent.ACTION_SEND
-                    intent.putExtra(Intent.EXTRA_TEXT, "We we, entra nel gruppo ${generateDynamicLink(listID).uri}")
+                    intent.putExtra(Intent.EXTRA_TEXT, "Ciao, entra nel gruppo ${generateDynamicLink(listID).uri}")
                     intent.type = "text/plain"
 
                     startActivity(Intent.createChooser(intent, "Condividi la lista con: "))

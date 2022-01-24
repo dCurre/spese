@@ -57,7 +57,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
 
                     binding.nomeGruppo.text = listaSpese.nome
                     binding.counterCurrentUsers.text = listaSpese.partecipanti.size.toString()
-                    binding.counterMaxUsers.text = "2"
+                    binding.counterMaxUsers.text = "8"
                     binding.joinListaButton.text = "Unisciti"
                 }else{
                     Log.i(TAG, ">>Non esiste una lista ")
@@ -65,8 +65,6 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
             }.addOnFailureListener {
                 Log.e(TAG, "<< Error getting mese", it)
             }
-
-
     }
 
     private fun setupJoinButton(){
