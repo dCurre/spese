@@ -1,7 +1,6 @@
 package com.dcurreli.spese.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dcurreli.spese.R;
 import com.dcurreli.spese.databinding.ActivityMainBinding;
 import com.dcurreli.spese.objects.ListaSpese;
+import com.dcurreli.spese.utils.GenericUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -55,15 +55,11 @@ public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.My
 
         //gestisco l'evento on click
         holder.nome.setOnClickListener(view -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("nomeLista", holder.nome.getText().toString());
-            bundle.putString("idLista", listaSpese.getId());
-
             //Chiudo il menu
             binding.drawerMainActivity.closeDrawer(GravityCompat.START);
 
-            //Navigo sul fragment successivo passandogli il bundle
-            navController.navigate(R.id.loadSpeseFragment, bundle);
+            //Navigo sul fragment successivo passandogli il bundle con id lista e nome lista
+            navController.navigate(R.id.loadSpeseFragment, GenericUtils.INSTANCE.createBundleForListaSpese(listaSpese.getId(), holder.nome.getText().toString()));
         });
     }
 

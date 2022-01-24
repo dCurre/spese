@@ -3,6 +3,7 @@ package com.dcurreli.spese.utils
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
+import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
@@ -97,5 +98,13 @@ object GenericUtils {
 
     fun importoAsEur(double : Double): String {
         return "${String.format("%.2f", double)} €";
+    }
+
+    fun createBundleForListaSpese(idLista: String, nomeLista: String?): Bundle {
+        //Utile per creare un bundle per load spese fragment
+        val bundle : Bundle = Bundle()
+        bundle.putString("idLista", idLista)
+        bundle.putString("nomeLista", nomeLista)
+        return bundle
     }
 }

@@ -5,9 +5,11 @@ import android.content.Context
 import android.util.Log
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ListaSpeseAdapter
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
+import com.dcurreli.spese.databinding.JoinFragmentBinding
 import com.dcurreli.spese.enum.CategoriaListaEnum
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.ListaSpese
@@ -52,30 +54,41 @@ object ListaSpeseUtils {
         Log.i(TAG, "<<$methodName")
     }
 
-    fun joinListaSpese(binding: AddListaSpeseBinding) {
+    fun joinListaSpese(
+        idLista: String,
+        binding: JoinFragmentBinding,
+        navController: NavController
+    ) {
         val methodName = "creaListaSpese"
         Log.i(TAG, ">>$methodName")
         val newKey = db.push().key!!
         currentUser = DBUtils.getCurrentUser()!!
         partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
 
-        binding.listaSpeseJoinText.text
-
-        //var listaSpese = db.child((binding.listaSpeseJoinText.text.toString())
-
-        Log.i(TAG, ">>join spesa ${binding.listaSpeseJoinText.text.toString().replace(" ", "")}")
-
         //Recupero il mese da cancellare
-        db.orderByChild("id").equalTo(binding.listaSpeseJoinText.text.toString().replace(" ", "")).get()
+        db.orderByChild("id").equalTo(idLista.replace(" ", "")).get()
             .addOnSuccessListener {
                 if (it.exists()) {
                     val listaSpese = it.children.first().getValue(ListaSpese::class.java) as ListaSpese
 
-                    Log.i(TAG, ">>join spesa ${listaSpese.partecipanti}")
+                    Log.i(TAG, ">>atm ${listaSpese.partecipanti.size}")
+                    Log.i(TAG, ">>max ${binding.counterMaxUsers.text.toString().toInt()}")
 
-                    if(!listaSpese.partecipanti.contains(currentUser.uid)) {
-                        listaSpese.partecipanti.add(currentUser.uid)
-                        db.child(binding.listaSpeseJoinText.text.toString().replace(" ", "")).child("partecipanti").setValue(listaSpese.partecipanti)
+                    //Se l'utente non è già presente in lista
+                    if(!listaSpese.partecipanti.contains(currentUser.uid) ){
+                        //Se non ho già raggiunto il numero massimo di utenti
+                        if(listaSpese.partecipanti.size < binding.counterMaxUsers.text.toString().toInt()) {
+                            listaSpese.partecipanti.add(currentUser.uid)
+                            db.child(idLista.replace(" ", "")).child("partecipanti").setValue(listaSpese.partecipanti)
+                            GenericUtils.showSnackbarOK("Ti sei aggiunto alla lista : )", binding.root)
+
+                            navController.navigate(R.id.loadSpeseFragment, GenericUtils.createBundleForListaSpese(listaSpese.id, listaSpese.nome))
+
+                        }else{
+                            GenericUtils.showSnackbarError("Numero massimo di utenti raggiunto!", binding.root)
+                        }
+                    }else{
+                        GenericUtils.showSnackbarError("Fai già parte della lista!", binding.root)
                     }
                 }else{
                     Log.i(TAG, ">>Non esiste una lista ")

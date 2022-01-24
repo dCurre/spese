@@ -20,6 +20,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.utils.DBUtils
+import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -100,15 +101,8 @@ open class MainActivity : AppCompatActivity() {
                 }
 
                 if (deepLink != null) {
-                    Log.d(ContentValues.TAG, "EUREKAAA: ${deepLink.getQueryParameter("group")}")
-                    //Se trovo il dynamic link mi sposto su un fragment specifico per la gestione del join group
-
-                    //Creo il bundle da passare al prossimo fragment
-                    var bundle : Bundle = Bundle()
-                    bundle.putString("idLista",deepLink.getQueryParameter("group"))
-
-                    //Navigo sul fragment successivo passandogli il bundle
-                    navController.navigate(R.id.joinFragment, bundle)
+                    //Navigo sul fragment successivo passandogli il bundle con id lista
+                    navController.navigate(R.id.joinFragment, GenericUtils.createBundleForListaSpese(deepLink.getQueryParameter("group")!!, null))
 
                 } else {
                     Log.d(ContentValues.TAG, "getDynamicLink: no link found")

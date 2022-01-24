@@ -1,22 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/join_contraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fadeScrollbars="false"
-    tools:context=".main.join.JoinFragment">
+    tools:context=".main.join.JoinFragment"
+    android:layout_marginHorizontal="50dp"
+    android:layout_marginVertical="200dp">
 
-    <TextView
-        android:id="@+id/textView_prova"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="316dp"
-        android:text="PROVAAAA"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nome_gruppo"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:autoSizeTextType="uniform"
+            android:breakStrategy="balanced"
+            android:fontFamily="@font/monsterrat_bold"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="nome gruppo"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="50dp"
+            android:textColor="?colorPrimary"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints,UnusedAttribute" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/join_lista_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/nome_gruppo"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/counter_current_users"
+            android:text="Join" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/counter_current_users"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/nome_gruppo"
+            android:layout_marginTop="7dp"
+            android:layout_toStartOf="@id/current_max_divider"
+            android:autoSizeTextType="uniform"
+            android:breakStrategy="balanced"
+            android:fontFamily="@font/monsterrat_bold"
+            android:maxLines="1"
+            android:text="0"
+            android:textColor="?colorPrimary"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints,UnusedAttribute" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/current_max_divider"
+            android:layout_below="@id/nome_gruppo"
+            android:layout_width="13dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="7dp"
+            android:autoSizeTextType="uniform"
+            android:breakStrategy="balanced"
+            android:fontFamily="@font/monsterrat_bold"
+            android:maxLines="1"
+            android:text="/"
+            android:layout_toStartOf="@id/counter_max_users"
+            android:textColor="?colorPrimary"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints,UnusedAttribute" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/counter_max_users"
+            android:layout_below="@id/nome_gruppo"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="7dp"
+            android:autoSizeTextType="uniform"
+            android:breakStrategy="balanced"
+            android:fontFamily="@font/monsterrat_bold"
+            android:maxLines="1"
+            android:text="8"
+            android:layout_alignParentEnd="true"
+            android:textColor="?colorPrimary"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints,UnusedAttribute" />
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

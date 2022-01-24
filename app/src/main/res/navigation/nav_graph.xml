@@ -64,7 +64,7 @@
     <fragment
         android:id="@+id/joinFragment"
         android:name="com.dcurreli.spese.main.join.JoinFragment"
-        android:label="join_fragment"
+        android:label="Unisciti ad una lista"
         tools:layout="@layout/join_fragment" />
     <action
         android:id="@+id/action_to_joinFragment"
