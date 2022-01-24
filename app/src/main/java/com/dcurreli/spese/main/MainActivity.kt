@@ -1,6 +1,7 @@
 package com.dcurreli.spese.main
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -43,23 +44,6 @@ open class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerMainActivity)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        //DYNAMIC LINK
-        Firebase.dynamicLinks
-            .getDynamicLink(intent)
-            .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                // Get deep link from result (may be null if no link is found)
-                var deepLink: Uri? = null
-                if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.link
-                    Log.i(TAG, "PROVAAAA")
-                }else{
-                    Log.i(TAG, "MIERDAAAA")
-                }
-
-
-            }
-            .addOnFailureListener(this) { e -> Log.w(TAG, "getDynamicLink:onFailure", e) }
-
         //Header barra laterale
         binding.lateralNavViewHeader.text = "Ciao, ${(currentUser.displayName)?.split(' ')?.get(0)}"
 
@@ -69,11 +53,14 @@ open class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_To_SettingsFragment)
         }
 
+        //Bottom navigation bar
+        binding.bottomNav.setupWithNavController(navController)
+
         //Stampo la lista delle spese nella barra laterale
         ListaSpeseUtils.printListe(this, binding, navController)
 
-        //Bottom navigation bar
-        binding.bottomNav.setupWithNavController(navController)
+        //Controllo se ho un dynamic link attivo
+        checkDynamicLink()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -100,5 +87,33 @@ open class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    private fun checkDynamicLink() {
+        Firebase.dynamicLinks
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                // Get deep link from result (may be null if no link is found)
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                }
+
+                if (deepLink != null) {
+                    Log.d(ContentValues.TAG, "EUREKAAA: ${deepLink.getQueryParameter("group")}")
+                    //Se trovo il dynamic link mi sposto su un fragment specifico per la gestione del join group
+
+                    //Creo il bundle da passare al prossimo fragment
+                    var bundle : Bundle = Bundle()
+                    bundle.putString("idLista",deepLink.getQueryParameter("group"))
+
+                    //Navigo sul fragment successivo passandogli il bundle
+                    navController.navigate(R.id.joinFragment, bundle)
+
+                } else {
+                    Log.d(ContentValues.TAG, "getDynamicLink: no link found")
+                }
+            }
+            .addOnFailureListener(this) { e -> Log.w(ContentValues.TAG, "getDynamicLink:onFailure", e) }
     }
 }

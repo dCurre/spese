@@ -1,6 +1,7 @@
 package com.dcurreli.spese.main.loadspese
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +17,12 @@ import com.dcurreli.spese.adapters.ViewPagerAdapter
 import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.utils.GenericUtils
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import android.view.View as View1
+
+
+
 
 
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
@@ -98,11 +104,11 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
             when(it.itemId){
                 R.id.share ->{
                     //Gestione dello share
-                    val message = arguments?.getString("idLista")
+                    val listID = arguments?.getString("idLista")
 
                     val intent = Intent()
                     intent.action = Intent.ACTION_SEND
-                    intent.putExtra(Intent.EXTRA_TEXT, message)
+                    intent.putExtra(Intent.EXTRA_TEXT, "We we, entra nel gruppo ${generateDynamicLink(listID).uri}")
                     intent.type = "text/plain"
 
                     startActivity(Intent.createChooser(intent, "Condividi la lista con: "))
@@ -113,5 +119,14 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
         //Mostro l'item
         item.isVisible = true
+    }
+
+    private fun generateDynamicLink(listID: String?): DynamicLink {
+        return FirebaseDynamicLinks.getInstance()
+            .createDynamicLink()
+            .setDomainUriPrefix("https://spesedc.page.link/join")
+            .setLink(Uri.parse("https://spesedc.page.link/join"))
+            .setLongLink(Uri.parse("https://spesedc.page.link/?link=https://spesedc.page.link/join?group=$listID&apn=com.dcurreli.spese"))
+            .buildDynamicLink()
     }
 }

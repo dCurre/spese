@@ -9,6 +9,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.dcurreli.spese.R
+import com.dcurreli.spese.databinding.ActivitySplashBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.main.login.LoginActivity
@@ -23,10 +24,12 @@ import com.google.firebase.ktx.Firebase
 class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value.lowercase())
     private lateinit var utente : Utente
+    private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val user = DBUtils.getCurrentUser()
+        binding = ActivitySplashBinding.inflate(layoutInflater)
 
         //Fase di login
         Handler(Looper.getMainLooper()).postDelayed({
