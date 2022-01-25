@@ -12,7 +12,10 @@ import com.dcurreli.spese.databinding.JoinFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.utils.ListaSpeseUtils
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -50,28 +53,27 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
     private fun loadJoinGroupDetails(){
         val idLista = arguments?.getString("idLista").toString()
 
-        db.orderByChild("id").equalTo(idLista.replace(" ", "")).get()
-            .addOnSuccessListener {
-                if (it.exists()) {
-                    val listaSpese = it.children.first().getValue(ListaSpese::class.java) as ListaSpese //singola lista spesa cercata tramite id specifico
+        val listener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Get Post object and use the values to update the UI
+                val listaSpese = dataSnapshot.children.first().getValue(ListaSpese::class.java) as ListaSpese
 
-                    binding.nomeGruppo.text = listaSpese.nome
-                    binding.counterCurrentUsers.text = listaSpese.partecipanti.size.toString()
-                    binding.counterMaxUsers.text = "8"
-                    binding.joinListaButton.text = "Unisciti"
-                }else{
-                    Log.i(TAG, ">>Non esiste una lista ")
-                }
-            }.addOnFailureListener {
-                Log.e(TAG, "<< Error getting mese", it)
+                binding.nomeGruppo.text = listaSpese.nome
+                binding.counterCurrentUsers.text = listaSpese.partecipanti.size.toString()
+                binding.counterMaxUsers.text = "8"
+                binding.joinListaButton.text = "Unisciti"
             }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadSpesa:onCancelled", databaseError.toException())
+            }
+        }
+
+        db.orderByChild("id").equalTo(idLista.replace(" ", "")).addValueEventListener(listener)
     }
 
     private fun setupJoinButton(){
         binding.joinListaButton.setOnClickListener {
-
-            //TODO gestire con un adapter
-
             //In base ad un id list aggiunge un utente ad una spesa
             ListaSpeseUtils.joinListaSpese(arguments?.getString("idLista").toString(), binding, findNavController())
         }

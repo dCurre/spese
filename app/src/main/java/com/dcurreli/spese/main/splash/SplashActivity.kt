@@ -33,6 +33,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
 
         //Fase di login
         Handler(Looper.getMainLooper()).postDelayed({
+            var intent : Intent = Intent()
             if(user!=null){
                 this.db.child(user.uid).get().addOnSuccessListener {
                     //Se trovo l'utente carico le sue impostazioni
@@ -45,15 +46,14 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
                 }
 
                 //Se è tutto ok, vado alla main activity
-                val dashboardIntent = Intent(this, MainActivity::class.java)
-                startActivity(dashboardIntent)
-                finish()
+                intent = Intent(this, MainActivity::class.java)
             }else{
                 //Se non sono loggato, vengo riportato alla pagina di login
-                val signInIntent = Intent(this, LoginActivity::class.java)
-                startActivity(signInIntent)
-                finish()
+                intent = Intent(this, LoginActivity::class.java)
             }
+
+            startActivity(intent)
+            finish()
         }, 2000)
 
     }

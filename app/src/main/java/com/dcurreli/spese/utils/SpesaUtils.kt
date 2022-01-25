@@ -61,8 +61,8 @@ object SpesaUtils {
         idListaSpese: String,
         activity: FragmentActivity?
     ) {
-        var spesaArray = ArrayList<Spesa>()
-        var arrayTemp = ArrayList<Spesa>()
+        val spesaArray = ArrayList<Spesa>()
+        val arrayTemp = ArrayList<Spesa>()
         val spesaAdapter = SpesaAdapter(context, spesaArray)
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = spesaAdapter
@@ -82,10 +82,8 @@ object SpesaUtils {
                     totaleSpese = totaleSpese.add(spesa.importo.toBigDecimal())
                 }
 
-                //TODO sort by timestamp
+                //Riordino la lista temporanea e la carico sulla lista da stampare
                 spesaArray.addAll(arrayTemp.sortedBy { it.timestamp }.toCollection(ArrayList()))
-
-                Log.i(TAG, ">>join spesa ${spesaArray[0].spesa}")
 
                 //Aggiorno il sottotitolo della toolbar
                 GenericUtils.setupSottotitoloToolbar("Totale: ${totaleSpese.setScale(2).toString().replace(".",",")}€", (activity as AppCompatActivity?))
@@ -101,7 +99,6 @@ object SpesaUtils {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
                 Log.e(TAG, "Failed to read value.", error.toException())
             }
         })
