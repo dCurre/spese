@@ -23,6 +23,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:forceDarkAllowed" tools:ignore="NewApi">false</item>
     </style>
 
     <style name="Theme.Spese.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

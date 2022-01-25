@@ -33,7 +33,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
 
         //Fase di login
         Handler(Looper.getMainLooper()).postDelayed({
-            var intent : Intent = Intent()
+            var intent: Intent
             if(user!=null){
                 this.db.child(user.uid).get().addOnSuccessListener {
                     //Se trovo l'utente carico le sue impostazioni

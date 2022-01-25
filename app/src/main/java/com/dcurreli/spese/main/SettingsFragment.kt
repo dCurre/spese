@@ -69,7 +69,6 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
             signOut()
         }
 
-        binding.uid.text =  "UID: "
     }
 
     override fun onDestroyView() {

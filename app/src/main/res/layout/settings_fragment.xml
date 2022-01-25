@@ -13,24 +13,17 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/uid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="UID: " />
 
         <TextView
             android:id="@+id/text_view_tema_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/uid"
             android:text="Tema scuro" />
 
         <Switch
             android:id="@+id/switch_dark_theme"
             android:layout_width="wrap_content"
             android:layout_toEndOf="@id/text_view_tema_switch"
-            android:layout_below="@id/uid"
             android:layout_alignParentEnd="true"
             android:layout_height="wrap_content"
             tools:ignore="UseSwitchCompatOrMaterialXml"
