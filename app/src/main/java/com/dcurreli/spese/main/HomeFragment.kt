@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.HomeFragmentBinding
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(R.layout.home_fragment) {
 
     private var _binding: HomeFragmentBinding? = null
     private val TAG = javaClass.simpleName
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -23,6 +21,7 @@ class HomeFragment : Fragment() {
     ): View? {
 
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 

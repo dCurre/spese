@@ -107,4 +107,5 @@ object GenericUtils {
         bundle.putString("nomeLista", nomeLista)
         return bundle
     }
+
 }

@@ -41,9 +41,11 @@ open class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
         navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerMainActivity)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        setupActionBarWithNavController(navController, appBarConfiguration) //Se tengo nascosto non escono i tasti
 
         //Header barra laterale
         binding.lateralNavViewHeader.text = "Ciao, ${(currentUser.displayName)?.split(' ')?.get(0)}"
@@ -62,6 +64,7 @@ open class MainActivity : AppCompatActivity() {
 
         //Controllo se ho un dynamic link attivo
         checkDynamicLink()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

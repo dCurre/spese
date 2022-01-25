@@ -16,8 +16,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ToolbarTheme"
-            />
+            android:layout_gravity="center_horizontal"
+            android:theme="@style/ToolbarTheme">
+
+        </androidx.appcompat.widget.Toolbar>
 
         <!-- INCLUDE FRAGMENT -->
         <include
