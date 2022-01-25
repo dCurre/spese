@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- tema senza aciton bar -->
     <style name="Theme.Spese.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -31,9 +32,11 @@
     <style name="Theme.Spese.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- Colora toolbar -->
-    <style name="ToolbarColoredBackArrow" parent="Theme.Spese">
-        <item name="android:textColorSecondary">@color/white</item>
-        <item name="android:background">?attr/colorPrimary</item>
+    <style name="ToolbarTheme" parent="Theme.Spese">
+        <item name="android:textColorPrimary">?colorOnPrimary</item> <!-- colora il testo -->
+        <item name="android:textColorSecondary">?colorOnPrimary</item> <!-- colora le icone -->
+        <item name="android:background">?colorPrimary</item> <!-- colore della toolbar -->
+        <item name="homeAsUpIndicator">@drawable/ic_list_add</item>
     </style>
 
 </resources>

@@ -67,7 +67,6 @@ object SpesaUtils {
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = spesaAdapter
 
-        //TODO cambiare ordinamento in timestamp
         db.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {

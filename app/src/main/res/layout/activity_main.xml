@@ -15,10 +15,9 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="8dp"
-            android:theme="@style/ToolbarColoredBackArrow"
-            app:titleTextColor="@color/white" />
+            android:layout_height="wrap_content"
+            android:theme="@style/ToolbarTheme"
+            />
 
         <!-- INCLUDE FRAGMENT -->
         <include
@@ -35,10 +34,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/bottom_nav_style"
-            app:itemIconTint="@color/white"
-            app:itemTextColor="@color/white"
-            android:layout_margin="20dp"
+            android:background="?colorPrimary"
+            app:itemIconTint="?colorOnPrimary"
+            app:itemTextColor="?colorOnPrimary"
             app:menu="@menu/drawer_bottom_nav_menu" />
     </RelativeLayout>
 
