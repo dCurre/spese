@@ -6,6 +6,7 @@
         <entry key="..\:/Coding/spese/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2833333333333333" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/bottom_nav_style.xml" value="0.21822916666666667" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/hover.xml" value="0.21875" />
+        <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic__891031_green_hamburger_list_menu_navigation_icon.xml" value="0.275" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_arrow_right.xml" value="0.209375" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.37864583333333335" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_calendar.xml" value="0.209375" />
@@ -18,6 +19,9 @@
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_plus_reversed.xml" value="0.37864583333333335" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_saldato_false.xml" value="0.37864583333333335" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_saldato_true.xml" value="0.209375" />
+        <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_settings.xml" value="0.275" />
+        <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_share.xml" value="0.67" />
+        <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_shopping_cart.xml" value="0.275" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_welcome.xml" value="0.21770833333333334" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/toolbar_style.xml" value="0.275" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout-v23/activity_login.xml" value="0.3625" />
