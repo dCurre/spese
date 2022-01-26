@@ -59,7 +59,7 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
         )
 
         //Gestisco il cardslider passandogli l'adapter
-        setupCardSlider(spesaAdapter)
+        setupCardSlider(spesaAdapter) //TODO blocco swipe e riposizionamento item se non modifico o cancello
     }
 
     private fun setupCardSlider(spesaAdapter: SpesaAdapter) {
