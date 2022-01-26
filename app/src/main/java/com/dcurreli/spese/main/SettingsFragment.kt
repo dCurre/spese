@@ -78,6 +78,7 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
     private fun signOut(){
         startActivity(Intent(Intent(context, LoginActivity::class.java)))
+        activity?.finish()
         mAuth.signOut()
         googleSignInClient.signOut()
     }
