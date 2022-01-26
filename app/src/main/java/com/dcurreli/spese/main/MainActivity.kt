@@ -2,6 +2,7 @@ package com.dcurreli.spese.main
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -25,6 +26,9 @@ import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
+
+
+
 
 
 
@@ -79,6 +83,11 @@ open class MainActivity : AppCompatActivity() {
         item.isVisible = false
 
         return true
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        checkDynamicLink()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
