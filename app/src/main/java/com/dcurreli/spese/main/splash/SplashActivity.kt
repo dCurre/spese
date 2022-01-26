@@ -47,13 +47,9 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
 
                 //Se è tutto ok, vado alla main activity
                 intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }else{
                 //Se non sono loggato, vengo riportato alla pagina di login
                 intent = Intent(this, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
 
             startActivity(intent)
