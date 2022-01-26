@@ -79,8 +79,8 @@ open class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
 
         //Nascondo il menu appena creato
-        val item : MenuItem = menu.findItem(R.id.share)
-        item.isVisible = false
+        val share : MenuItem = menu.findItem(R.id.share)
+        share.isVisible = false
 
         return true
     }

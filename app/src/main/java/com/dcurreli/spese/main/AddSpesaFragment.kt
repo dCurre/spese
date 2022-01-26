@@ -60,6 +60,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
             when {
+                //TODO max char spesa 20char, pagatore 20 char
                 binding.spesaSpesaText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
                 binding.spesaImporto.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
                 binding.spesaData.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }

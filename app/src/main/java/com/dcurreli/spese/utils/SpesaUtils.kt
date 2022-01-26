@@ -60,7 +60,7 @@ object SpesaUtils {
         context: Context,
         idListaSpese: String,
         activity: FragmentActivity?
-    ) {
+    ): SpesaAdapter {
         val spesaArray = ArrayList<Spesa>()
         val arrayTemp = ArrayList<Spesa>()
         val spesaAdapter = SpesaAdapter(context, spesaArray)
@@ -101,6 +101,8 @@ object SpesaUtils {
                 Log.e(TAG, "Failed to read value.", error.toException())
             }
         })
+
+        return spesaAdapter
     }
 
     fun printSaldo(
@@ -191,7 +193,6 @@ object SpesaUtils {
     fun deleteSpesa(spesa: Spesa) {
 
         //Cancello la spesa
-        db.child(spesa.id).removeValue()
 
 
         //TODO capire se mi serve cancellare il mese, non penso

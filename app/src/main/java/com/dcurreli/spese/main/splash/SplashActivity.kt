@@ -1,7 +1,6 @@
 package com.dcurreli.spese.main.splash
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -25,6 +24,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value.lowercase())
     private lateinit var utente : Utente
     private lateinit var binding: ActivitySplashBinding
+    private val TAG = javaClass.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +33,9 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
 
         //Fase di login
         Handler(Looper.getMainLooper()).postDelayed({
-            var intent: Intent
+            val intent: Intent
             if(user!=null){
+                //TODO gestire in tutto il progetto in caso di connessione mancante
                 this.db.child(user.uid).get().addOnSuccessListener {
                     //Se trovo l'utente carico le sue impostazioni
                     if (it.exists()) {

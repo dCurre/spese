@@ -2,11 +2,15 @@ package com.dcurreli.spese.objects;
 
 import com.dcurreli.spese.utils.GenericUtils;
 import com.dcurreli.spese.utils.MeseUtils;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.ktx.Firebase;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class Spesa {
+    private DatabaseReference db = FirebaseDatabase.getInstance().getReference().getRoot().child("spesa");
     private String id;
     private String spesa;
     private double importo;
@@ -93,4 +97,8 @@ public class Spesa {
     public String getListaSpesaID() { return listaSpesaID; }
 
     public void setListaSpesaID(String listaSpesaID) { this.listaSpesaID = listaSpesaID; }
+
+    public void delete(){
+        db.child(this.id).removeValue();
+    }
 }

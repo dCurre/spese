@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcurreli.spese.R;
@@ -65,9 +66,6 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
             showDialog();
             Log.i("SpesaAdapter", ">>ID " + spesa.getId());
         });
-
-        //Premendo il bottone cancello l'elemento
-        holder.deleteButton.setOnClickListener(view -> SpesaUtils.deleteSpesa(spesa));
     }
 
     @Override
@@ -75,9 +73,15 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         return speseList.size();
     }
 
+    public Spesa getItem(int position){
+        return speseList.get(position);
+    }
+
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView spesa, importo, data, pagatore, spesaNotFound;
+        TextView importo, data, spesaNotFound;
+        AppCompatTextView spesa, pagatore;
         Button editButton, deleteButton;
 
         public MyViewHolder(@NotNull View itemView) {
