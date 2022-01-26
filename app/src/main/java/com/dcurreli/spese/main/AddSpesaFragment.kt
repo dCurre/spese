@@ -85,7 +85,6 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         if (arguments != null) {
             nomeLista = arguments?.getString("nomeLista").toString()
         }
-
         (activity as MainActivity).supportActionBar?.title = "Aggiungi a $nomeLista"
     }
 

@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:theme="@style/ToolbarTheme">
-
         </androidx.appcompat.widget.Toolbar>
 
         <!-- INCLUDE FRAGMENT -->

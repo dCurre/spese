@@ -15,10 +15,9 @@
             android:id="@+id/table_layout_schede"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            app:tabIconTint="?colorPrimary"
-            app:tabGravity="fill"
+            android:backgroundTint="?colorOnPrimary"
             app:tabInlineLabel="true"
-            app:tabMode="fixed"
+            app:tabIconTint="?colorPrimary"
             app:tabTextColor="?colorPrimary"
             />
 

@@ -21,7 +21,6 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     ): View? {
 
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
