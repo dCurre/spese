@@ -1,5 +1,6 @@
 package com.dcurreli.spese.main.loadspese
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Canvas
 import android.os.Build
@@ -67,18 +68,34 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
     private fun setupCardSlider(spesaAdapter: SpesaAdapter) {
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
                 override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+
+                    GenericUtils.showSnackbarOK("ON MOVE", binding.root)
+
                     return false
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     if(direction == ItemTouchHelper.RIGHT){  //Se scorro verso destra modifico
+                        //TODO dialog edit
+
+                        spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition);
                     }
 
                     if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
                         //TODO confirm dialog per delete
 
-                        GenericUtils.showSnackbarOK("SWIPE VERSO DESTRA", binding.root)
-                        //spesaAdapter.getItem(viewHolder.adapterPosition).delete()
+                        AlertDialog.Builder(context)
+                            .setTitle("Conferma")
+                            .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
+                            .setPositiveButton("SI") { _, _ ->
+                                spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).delete()
+                                GenericUtils.showSnackbarOK("Spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa} cancellata", binding.root)
+                            }
+                            .setNegativeButton("NO") { _, _ ->
+                                spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition);
+                            }
+                            .show()
+
                     }
                 }
 
@@ -100,9 +117,13 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
                         .create()
                         .decorate()
 
-                    GenericUtils.showSnackbarOK("SWIPE VERSO DESTRA ${dX}", binding.root)
 
-                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    var newDx = dX
+
+                    if(newDx > "100".toFloat())
+                        newDx = "100".toFloat()
+
+                    super.onChildDraw(c, recyclerView, viewHolder,newDx, dY, actionState, isCurrentlyActive)
                 }
             }
 

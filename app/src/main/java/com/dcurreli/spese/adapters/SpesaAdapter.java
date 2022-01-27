@@ -84,10 +84,4 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         }
     }
 
-    private void showDialog() {
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.edit_spesa_dialog);
-        dialog.show();
-    }
-
 }

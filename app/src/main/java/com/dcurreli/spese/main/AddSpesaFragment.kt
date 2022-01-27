@@ -73,6 +73,29 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
                 }
             }
         }
+
+        //Bottone "Aggiungi"
+        binding.spesaButtonAddSpesa10.setOnClickListener {
+            //Chiudo la tastiera come prima cosa
+            GenericUtils.hideSoftKeyBoard(requireContext(), view)
+
+            when {
+                //TODO max char spesa 20char, pagatore 20 char
+                binding.spesaSpesaText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaImporto.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaData.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaPagatoreText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
+                else -> {
+
+                    for(i in 0 until 10){
+                        SpesaUtils.creaSepsa(binding, arguments?.getString("idLista").toString())
+                    }
+                    GenericUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
+
+                    findNavController().navigate(R.id.loadSpeseFragment, arguments)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
