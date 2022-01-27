@@ -47,7 +47,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         return binding.root
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

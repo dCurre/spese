@@ -56,16 +56,6 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
         holder.importo.setText(spesa.importoAsTextEuro());
         holder.data.setText(spesa.getData());
         holder.pagatore.setText(spesa.getPagatore());
-
-        //Di base nascondo i bottoni così che al refresh della pagina non rimangono attivi su un altra textview
-        holder.editButton.setVisibility(View.INVISIBLE);
-        holder.deleteButton.setVisibility(View.INVISIBLE);
-
-        //Se premo il bottone potrò modificare l'elemento della lista
-        holder.editButton.setOnClickListener(view -> {
-            showDialog();
-            Log.i("SpesaAdapter", ">>ID " + spesa.getId());
-        });
     }
 
     @Override
@@ -82,7 +72,6 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
 
         TextView importo, data, spesaNotFound;
         AppCompatTextView spesa, pagatore;
-        Button editButton, deleteButton;
 
         public MyViewHolder(@NotNull View itemView) {
             super(itemView);
@@ -91,16 +80,7 @@ public class SpesaAdapter extends RecyclerView.Adapter<SpesaAdapter.MyViewHolder
             importo = itemView.findViewById(R.id.spesa_importo);
             data = itemView.findViewById(R.id.spesa_data);
             pagatore = itemView.findViewById(R.id.spesa_pagatore);
-            editButton = itemView.findViewById(R.id.spesa_button_edit_spesa);
-            deleteButton = itemView.findViewById(R.id.spesa_button_delete_spesa);
             spesaNotFound = itemView.findViewById(R.id.spese_not_found);
-
-            //Gestisco l'evento on hold
-            itemView.setOnLongClickListener(view -> {
-                editButton.setVisibility(View.VISIBLE);//Faccio apparire il bottone edit
-                deleteButton.setVisibility(View.VISIBLE);//Faccio apparire il bottone delete
-                return true;
-            });
         }
     }
 

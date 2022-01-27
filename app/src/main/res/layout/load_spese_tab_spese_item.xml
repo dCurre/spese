@@ -92,27 +92,6 @@
             android:textSize="5pt"
             android:textStyle="bold" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/spesa_button_delete_spesa"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/ic_delete"
-            android:backgroundTint="@color/red" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/spesa_button_edit_spesa"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_toStartOf="@id/spesa_button_delete_spesa"
-            android:background="@drawable/ic_pencil_edit"
-            android:backgroundTint="?colorPrimary" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
+import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import android.view.View as View1
+
 
 class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
 
@@ -74,6 +76,8 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
 
                     if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
                         //TODO confirm dialog per delete
+
+                        GenericUtils.showSnackbarOK("SWIPE VERSO DESTRA", binding.root)
                         //spesaAdapter.getItem(viewHolder.adapterPosition).delete()
                     }
                 }
@@ -95,6 +99,8 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
                         .setActionIconTint(ContextCompat.getColor(requireContext(), R.color.onPrimary))
                         .create()
                         .decorate()
+
+                    GenericUtils.showSnackbarOK("SWIPE VERSO DESTRA ${dX}", binding.root)
 
                     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                 }
