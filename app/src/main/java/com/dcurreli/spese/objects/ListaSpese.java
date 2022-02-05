@@ -10,6 +10,7 @@ public class ListaSpese {
     private ArrayList<String> partecipanti = null;
     private String owner;
     private String categoria;
+    private boolean saldato;
 
     public ListaSpese(String id, String nome, ArrayList<String> partecipanti, String owner, String categoria) {
         this.id = id;
@@ -17,6 +18,7 @@ public class ListaSpese {
         this.partecipanti = partecipanti;
         this.owner = owner;
         this.categoria = categoria;
+        this.saldato = false;
     }
 
     public ListaSpese() {
@@ -66,9 +68,11 @@ public class ListaSpese {
         this.categoria = categoria;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return this.nome;
+    public boolean isSaldato() {
+        return saldato;
+    }
+
+    public void setSaldato(boolean saldato) {
+        this.saldato = saldato;
     }
 }

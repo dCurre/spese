@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.HomeFragmentBinding
+import com.dcurreli.spese.utils.ListaSpeseUtils
 
 
 class HomeFragment : Fragment(R.layout.home_fragment) {
@@ -26,6 +28,8 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ListaSpeseUtils.printListe(requireContext(), binding, findNavController())
     }
 
     override fun onDestroyView() {

@@ -7,6 +7,14 @@
     android:fadeScrollbars="false"
     tools:context=".main.HomeFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista_spese"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/textview_first"
         android:layout_width="wrap_content"

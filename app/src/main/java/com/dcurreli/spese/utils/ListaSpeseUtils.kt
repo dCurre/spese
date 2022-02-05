@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.navigation.NavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ListaSpeseAdapter
-import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
+import com.dcurreli.spese.databinding.HomeFragmentBinding
 import com.dcurreli.spese.databinding.JoinFragmentBinding
-import com.dcurreli.spese.enum.CategoriaListaEnum
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.ListaSpese
 import com.google.firebase.auth.FirebaseUser
@@ -26,10 +26,6 @@ object ListaSpeseUtils {
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
     private lateinit var listaSpese: ListaSpese
     private lateinit var currentUser: FirebaseUser
-    private lateinit var listaSpesePeriodicaArray: ArrayList<ListaSpese>
-    private lateinit var listaSpeseEventoArray: ArrayList<ListaSpese>
-    @SuppressLint("StaticFieldLeak") private lateinit var listaPeriodicaAdapter: ListaSpeseAdapter
-    @SuppressLint("StaticFieldLeak") private lateinit var listaEventoAdapter: ListaSpeseAdapter
     private var partecipanti : ArrayList<String> = ArrayList()
 
     fun creaListaSpese(binding: AddListaSpeseBinding) {
@@ -101,37 +97,28 @@ object ListaSpeseUtils {
         binding.listaSpeseCategorieMenu.clearFocus()
     }
 
-    fun printListe(context: Context, binding: ActivityMainBinding, navController: NavController) {
-        binding.listListaSpesePeriodiche.layoutManager = LinearLayoutManager(context)
-        binding.listListaSpeseEvento.layoutManager = LinearLayoutManager(context)
+    fun printListe(context: Context, binding: HomeFragmentBinding, navController: NavController) {
+        binding.listaSpese.layoutManager = LinearLayoutManager(context)
+        binding.listaSpese.apply {
+            layoutManager = GridLayoutManager(context, 3)
+        }
 
-        listaSpesePeriodicaArray = ArrayList()
-        listaSpeseEventoArray = ArrayList()
-        listaPeriodicaAdapter = ListaSpeseAdapter(context, listaSpesePeriodicaArray, binding, navController)
-        listaEventoAdapter = ListaSpeseAdapter(context, listaSpeseEventoArray, binding, navController)
+        val listaSpeseArray = ArrayList<ListaSpese>()
+        val listaSpeseAdapter = ListaSpeseAdapter(context, listaSpeseArray, binding, navController)
 
-        binding.listListaSpesePeriodiche.adapter = listaPeriodicaAdapter
-        binding.listListaSpeseEvento.adapter = listaEventoAdapter
+        binding.listaSpese.adapter = listaSpeseAdapter
 
         db.orderByChild("partecipanti").addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                listaSpesePeriodicaArray.clear()
-                listaSpeseEventoArray.clear()
+                listaSpeseArray.clear()
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
-                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(
-                            DBUtils.getCurrentUser()?.uid
-                        )){
-                        //Smisto tra periodica o evento
-                        if(listaSpese.categoria.equals(CategoriaListaEnum.PERIODICA.value, ignoreCase = true))
-                            listaSpesePeriodicaArray.add(listaSpese)
-                        else
-                            listaSpeseEventoArray.add(listaSpese)
+                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser()?.uid)){
+                        listaSpeseArray.add(listaSpese)
                     }
                 }
-                listaPeriodicaAdapter.notifyDataSetChanged() //Se tolgo non stampa
-                listaEventoAdapter.notifyDataSetChanged() //Se tolgo non stampa
+                listaSpeseAdapter.notifyDataSetChanged() //Se tolgo non stampa
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -139,4 +126,6 @@ object ListaSpeseUtils {
             }
         })
     }
+
+
 }

@@ -4,15 +4,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dcurreli.spese.R;
 import com.dcurreli.spese.databinding.ActivityMainBinding;
+import com.dcurreli.spese.databinding.HomeFragmentBinding;
 import com.dcurreli.spese.objects.ListaSpese;
 import com.dcurreli.spese.utils.GenericUtils;
 
@@ -24,10 +27,10 @@ public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.My
 
     private Context context;
     private final ArrayList<ListaSpese> listaSpeseList;
-    private final ActivityMainBinding binding;
+    private final HomeFragmentBinding binding;
     private final NavController navController;
 
-    public ListaSpeseAdapter(Context context, ArrayList<ListaSpese> listaSpeseList, ActivityMainBinding binding, NavController navController) {
+    public ListaSpeseAdapter(Context context, ArrayList<ListaSpese> listaSpeseList, HomeFragmentBinding binding, NavController navController) {
         this.context = context;
         this.listaSpeseList = listaSpeseList;
         this.binding = binding;
@@ -44,23 +47,26 @@ public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.My
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.activity_main_menu_laterale_item, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.home_fragment_lista_spese, parent, false);
         return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ListaSpese listaSpese = listaSpeseList.get(position);
-        holder.nome.setText(listaSpese.getNome());
+        holder.nomeSpesa.setText(listaSpese.getNome());
 
         //gestisco l'evento on click
-        holder.nome.setOnClickListener(view -> {
-            //Chiudo il menu
-            binding.drawerMainActivity.closeDrawer(GravityCompat.START);
-
+        holder.arrow.setOnClickListener(view -> {
             //Navigo sul fragment successivo passandogli il bundle con id lista e nome lista
-            navController.navigate(R.id.loadSpeseFragment, GenericUtils.INSTANCE.createBundleForListaSpese(listaSpese.getId(), holder.nome.getText().toString()));
+            navController.navigate(R.id.loadSpeseFragment, GenericUtils.INSTANCE.createBundleForListaSpese(listaSpese.getId(), holder.nomeSpesa.getText().toString()));
         });
+
+        if(listaSpese.isSaldato()){
+            holder.saldato.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_green_dark));
+        }else{
+            holder.saldato.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_red_dark));
+        }
     }
 
     @Override
@@ -70,13 +76,15 @@ public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nome;
+        TextView nomeSpesa;
+        ImageView arrow, saldato;
 
         public MyViewHolder(@NotNull View itemView) {
             super(itemView);
-            nome = itemView.findViewById(R.id.lista_nome);
+            nomeSpesa = itemView.findViewById(R.id.nome_spesa);
+            arrow = itemView.findViewById(R.id.navigate_to_list_arrow);
+            saldato = itemView.findViewById(R.id.saldato_bar);
         }
     }
 
 }
-

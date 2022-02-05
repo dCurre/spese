@@ -11,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,9 +19,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityMainBinding
+import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.utils.CRUDUtils
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
-import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
@@ -50,28 +50,22 @@ open class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerMainActivity)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
 
         setupActionBarWithNavController(navController, appBarConfiguration) //Se tengo nascosto non escono i tasti
 
-        //Header barra laterale
-        binding.lateralNavViewHeader.text = "Ciao, ${(currentUser.displayName)?.split(' ')?.get(0)}"
-
         //Bottone settings nell'header della barra laterale
+        /*TODO riutilizzare il button settings
         binding.buttonSettings.setOnClickListener {
             binding.drawerMainActivity.closeDrawer(GravityCompat.START) //Chiudo il menu laterale
             navController.navigate(R.id.action_To_SettingsFragment)
-        }
+        }*/
 
         //Bottom navigation bar
         binding.bottomNav.setupWithNavController(navController)
 
-        //Stampo la lista delle spese nella barra laterale
-        ListaSpeseUtils.printListe(this, binding, navController)
-
         //Controllo se ho un dynamic link attivo
         checkDynamicLink()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
