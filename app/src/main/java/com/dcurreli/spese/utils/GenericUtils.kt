@@ -100,11 +100,20 @@ object GenericUtils {
         return "${String.format("%.2f", double)} €";
     }
 
+
     fun createBundleForListaSpese(idLista: String, nomeLista: String?): Bundle {
         //Utile per creare un bundle per load spese fragment
         val bundle : Bundle = Bundle()
         bundle.putString("idLista", idLista)
         bundle.putString("nomeLista", nomeLista)
+        return bundle
+    }
+
+    fun createBundleForListaSpese(arguments: Bundle?): Bundle {
+        //Utile per creare un bundle per load spese fragment
+        val bundle : Bundle = Bundle()
+        bundle.putString("idLista", arguments?.getString("idLista"))
+        bundle.putString("nomeLista", arguments?.getString("nomeLista"))
         return bundle
     }
 

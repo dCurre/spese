@@ -34,11 +34,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            app:useCompatPadding="true"
-            app:srcCompat="@android:drawable/ic_input_add"
             android:backgroundTint="?colorPrimary"
+            android:contentDescription="Aggiungi spesa"
+            app:srcCompat="@drawable/ic_plus"
             app:tint="@color/white"
-            android:contentDescription="Aggiungi spesa" />
+            app:useCompatPadding="true" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,42 +6,38 @@
     android:layout_height="match_parent"
     android:fadeScrollbars="false"
     android:layout_margin="40dp"
-    tools:context=".main.SettingsFragment">
+    tools:context=".main.ListaSettingsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
-
         <TextView
-            android:id="@+id/text_view_tema_switch"
+            android:id="@+id/text_view_saldato_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:text="Tema scuro" />
+            android:text="Saldato" />
 
         <Switch
-            android:id="@+id/switch_dark_theme"
+            android:id="@+id/switch_saldato"
             android:layout_width="wrap_content"
-            android:layout_toEndOf="@id/text_view_tema_switch"
+            android:layout_toEndOf="@id/text_view_saldato_switch"
             android:layout_alignParentEnd="true"
             android:layout_height="wrap_content"
             tools:ignore="UseSwitchCompatOrMaterialXml"
             />
 
         <Button
-            android:id="@+id/sign_out_btn"
+            android:id="@+id/button_abbandona"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_out"
+            android:text="@string/leave"
             android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_below="@id/text_view_tema_switch"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteY="241dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 
 

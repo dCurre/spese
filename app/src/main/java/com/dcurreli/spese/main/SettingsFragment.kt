@@ -33,8 +33,6 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     private lateinit var user : FirebaseUser
     private lateinit var mAuth: FirebaseAuth
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(

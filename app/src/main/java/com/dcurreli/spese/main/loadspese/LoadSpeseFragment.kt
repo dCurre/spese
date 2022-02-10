@@ -17,9 +17,11 @@ import com.dcurreli.spese.adapters.ViewPagerAdapter
 import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import android.view.View as View1
+
 
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
@@ -93,28 +95,31 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        val item : MenuItem = menu.findItem(R.id.share)
+        val itemShare : MenuItem = menu.findItem(R.id.share)
+        val itemEdit : MenuItem = menu.findItem(R.id.edit)
+        itemShare.isVisible = true
+        itemEdit.isVisible = true
+    }
 
-        //Gestisco gli eventi on click della toolbar su questo fragment
-        item.setOnMenuItemClickListener {
-            when(it.itemId){
-                R.id.share ->{
-                    //Gestione dello share
-                    val listID = arguments?.getString("idLista")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val listID = arguments?.getString("idLista")
+        when (item.itemId) {
+            R.id.share -> {
+                //Gestione dello share
+                val intent = Intent()
+                intent.action = Intent.ACTION_SEND
+                intent.putExtra(Intent.EXTRA_TEXT, "Ciao, entra nel gruppo ${generateDynamicLink(listID).uri}")
+                intent.type = "text/plain"
 
-                    val intent = Intent()
-                    intent.action = Intent.ACTION_SEND
-                    intent.putExtra(Intent.EXTRA_TEXT, "Ciao, entra nel gruppo ${generateDynamicLink(listID).uri}")
-                    intent.type = "text/plain"
-
-                    startActivity(Intent.createChooser(intent, "Condividi la lista con: "))
-                }
+                startActivity(Intent.createChooser(intent, "Condividi la lista con: "))
             }
-            true
+            R.id.edit -> {
+                //Navigo sul fragment successivo passandogli il bundle con id lista e nome lista
+                findNavController().navigate(R.id.listaSettingsFragment, createBundleForListaSpese(arguments))
+            }
         }
 
-        //Mostro l'item
-        item.isVisible = true
+        return super.onOptionsItemSelected(item)
     }
 
     private fun generateDynamicLink(listID: String?): DynamicLink {

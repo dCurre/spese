@@ -19,19 +19,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityMainBinding
-import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.utils.CRUDUtils
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
-
-
-
-
-
-
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -74,7 +66,9 @@ open class MainActivity : AppCompatActivity() {
 
         //Nascondo il menu appena creato
         val share : MenuItem = menu.findItem(R.id.share)
+        val edit : MenuItem = menu.findItem(R.id.edit)
         share.isVisible = false
+        edit.isVisible = false
 
         return true
     }

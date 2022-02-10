@@ -56,10 +56,10 @@ public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.My
         ListaSpese listaSpese = listaSpeseList.get(position);
         holder.nomeSpesa.setText(listaSpese.getNome());
 
-        //gestisco l'evento on click
+        //Gestisco l'evento on click
         holder.arrow.setOnClickListener(view -> {
             //Navigo sul fragment successivo passandogli il bundle con id lista e nome lista
-            navController.navigate(R.id.loadSpeseFragment, GenericUtils.INSTANCE.createBundleForListaSpese(listaSpese.getId(), holder.nomeSpesa.getText().toString()));
+            navController.navigate(R.id.action_HomeFragment_to_loadSpeseFragment, GenericUtils.INSTANCE.createBundleForListaSpese(listaSpese.getId(), holder.nomeSpesa.getText().toString()));
         });
 
         if(listaSpese.isSaldato()){

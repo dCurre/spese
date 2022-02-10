@@ -21,5 +21,4 @@
         android:gravity="center"
         android:text="Non ho trovato spese"
         android:visibility="visible" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

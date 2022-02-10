@@ -91,7 +91,10 @@ class LoginActivity : AppCompatActivity() {
                         this.db.child(user.uid).get().addOnSuccessListener {
                             //Se non esiste creo l'utente nella lista utenti
                             if (!it.exists()) {
-                                val uid = Utente(user.uid)
+                                val uid = Utente(user.uid,user.displayName, user.email, user.photoUrl.toString())
+                                db.child(user.uid).setValue(uid)
+                            }else{
+                                val uid = Utente(user.uid,user.displayName, user.email, user.photoUrl.toString())
                                 db.child(user.uid).setValue(uid)
                             }
                         }
