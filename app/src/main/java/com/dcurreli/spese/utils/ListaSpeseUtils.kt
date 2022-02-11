@@ -57,7 +57,6 @@ object ListaSpeseUtils {
     ) {
         val methodName = "creaListaSpese"
         Log.i(className, ">>$methodName")
-        val newKey = db.push().key!!
         currentUser = DBUtils.getCurrentUser()!!
         partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
 

@@ -1,13 +1,10 @@
 package com.dcurreli.spese.utils
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.navigation.NavController
 import com.dcurreli.spese.adapters.MeseAdapter
-import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.DataForQuery
 import com.dcurreli.spese.objects.Mese
@@ -25,11 +22,11 @@ object MeseUtils {
     private lateinit var mese: Mese
     @SuppressLint("StaticFieldLeak") private lateinit var meseAdapter: MeseAdapter
     private lateinit var meseArray: ArrayList<Mese>
-    private final var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.MESE.value)
+    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.MESE.value)
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun creaMese(spesa: Spesa) {
-        val methodName: String = "creaMese"
+        val methodName = "creaMese"
         Log.i(className, ">>$methodName")
 
         //Vedo se il mese già esiste
@@ -47,34 +44,7 @@ object MeseUtils {
         Log.i(className, "<<$methodName")
     }
 
-    fun printMese(context: Context, binding: ActivityMainBinding, navController: NavController) {
-        /*
-        binding.listaMese.setHasFixedSize(true)
-        binding.listaMese.layoutManager = LinearLayoutManager(context)
-        meseArray = ArrayList()
-        meseAdapter = MeseAdapter(context, meseArray, binding, navController)
-
-        binding.listaMese.adapter = meseAdapter
-
-        db.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                meseArray.clear()
-                for (snapshot: DataSnapshot in dataSnapshot.children.reversed()) {
-                    mese = snapshot.getValue(Mese::class.java) as Mese
-                    meseArray.add(mese)
-                }
-                meseAdapter.notifyDataSetChanged() //Se tolgo non stampa
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(className, "Failed to read value.", error.toException())
-            }
-        })
-
-         */
-    }
-
-    fun getMonthAsText(mese: String): String? {
+    fun getMonthAsText(mese: String): String {
         return when (mese) {
             "1", "01" -> "Gennaio"
             "2", "02" -> "Febbraio"
@@ -92,7 +62,7 @@ object MeseUtils {
         }
     }
 
-    fun getMonthAsNumber(mese: String): String? {
+    fun getMonthAsNumber(mese: String): String {
         return when (mese) {
             "Gennaio" -> "01"
             "Febbraio" -> "02"
@@ -111,13 +81,13 @@ object MeseUtils {
     }
 
     fun getNomeMeseFromSpesaData(spesaData: String): String {
-        var arrayData = spesaData.split("/")// 0 giorno, 1 mese, 2 anno
+        val arrayData = spesaData.split("/")// 0 giorno, 1 mese, 2 anno
 
         return "${getMonthAsText(arrayData[1])} ${arrayData[2]}"
     }
 
     fun getDataFromString(dataString: String, pattern: String): Date {
-        var arrayData: List<String> = dataString.split(" ")// 0 giorno, 1 mese, 2 anno
+        val arrayData: List<String> = dataString.split(" ")// 0 giorno, 1 mese, 2 anno
 
         return GenericUtils.dateStringToDate(
             arrayData[0] + "/" + getMonthAsNumber(arrayData[1]) + "/" + arrayData[2],
@@ -127,7 +97,7 @@ object MeseUtils {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun deleteMese(spesa: Spesa) {
-        var dataForQuery = createDataForQueryFromSpesa(spesa)!!
+        val dataForQuery = createDataForQueryFromSpesa(spesa)
 
         //Recupero il mese da cancellare
         db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
@@ -143,7 +113,7 @@ object MeseUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    fun createDataForQueryFromSpesa(spesa: Spesa): DataForQuery? {
+    fun createDataForQueryFromSpesa(spesa: Spesa): DataForQuery {
         val pattern = "yyyy-MM-dd"
         val nomeMese = getNomeMeseFromSpesaData(spesa.data)
         val startsAt = "" + dateStringToTimestampSeconds(firstDayOfMonth(nomeMese), pattern)
@@ -152,7 +122,7 @@ object MeseUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    fun createDataForQueryFromMeseAnno(nomeMese: String): DataForQuery? {
+    fun createDataForQueryFromMeseAnno(nomeMese: String): DataForQuery {
         val pattern = "yyyy-MM-dd"
         val startsAt = "" + dateStringToTimestampSeconds(firstDayOfMonth(nomeMese), pattern)
         val endsAt = "" + dateStringToTimestampSeconds(lastDayOfMonth(nomeMese), pattern)
