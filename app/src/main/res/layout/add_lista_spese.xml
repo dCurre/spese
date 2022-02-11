@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:hint="Nome lista"
+            android:hint="@string/list_name"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_lista_spese">
 
@@ -30,29 +30,12 @@
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lista_spese_categorie"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_below="@id/lista_spese_nome"
-            app:startIconDrawable="@drawable/ic_lista_spese">
-
-            <AutoCompleteTextView
-                android:id="@+id/lista_spese_categorie_menu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Categoria"
-                android:inputType="none"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/spesa_button_add_spesa"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_below="@id/lista_spese_categorie"
-            android:text="Aggiungi" />
+            android:layout_below="@id/lista_spese_nome"
+            android:text="@string/add" />
 
     </RelativeLayout>
 

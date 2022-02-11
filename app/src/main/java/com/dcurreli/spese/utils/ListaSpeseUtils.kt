@@ -40,8 +40,7 @@ object ListaSpeseUtils {
             newKey,
             binding.listaSpeseNomeText.text.toString(),
             partecipanti,
-            DBUtils.getCurrentUser()?.uid,
-            binding.listaSpeseCategorieMenu.text.toString()
+            DBUtils.getCurrentUser()?.uid
         )
 
         //Creo lista
@@ -93,7 +92,6 @@ object ListaSpeseUtils {
 
     fun clearTextViewFocus(binding: AddListaSpeseBinding) {
         binding.listaSpeseNome.clearFocus()
-        binding.listaSpeseCategorieMenu.clearFocus()
     }
 
     fun printListe(context: Context, binding: HomeFragmentBinding, navController: NavController) {

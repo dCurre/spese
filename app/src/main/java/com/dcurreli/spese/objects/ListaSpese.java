@@ -9,15 +9,13 @@ public class ListaSpese {
     private String nome = null;
     private ArrayList<String> partecipanti = null;
     private String owner;
-    private String categoria;
     private boolean saldato;
 
-    public ListaSpese(String id, String nome, ArrayList<String> partecipanti, String owner, String categoria) {
+    public ListaSpese(String id, String nome, ArrayList<String> partecipanti, String owner) {
         this.id = id;
         this.nome = nome;
         this.partecipanti = partecipanti;
         this.owner = owner;
-        this.categoria = categoria;
         this.saldato = false;
     }
 
@@ -58,14 +56,6 @@ public class ListaSpese {
 
     public void setOwner(String owner) {
         this.owner = owner;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
     }
 
     public boolean isSaldato() {

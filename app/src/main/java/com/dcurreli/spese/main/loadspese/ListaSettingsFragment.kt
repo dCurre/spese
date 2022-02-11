@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.utils.GenericUtils
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -30,7 +31,7 @@ class ListaSettingsFragment : Fragment(R.layout.settings_fragment) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = ListaSettingsFragmentBinding.inflate(inflater, container, false)
 
@@ -49,6 +50,10 @@ class ListaSettingsFragment : Fragment(R.layout.settings_fragment) {
         binding.switchSaldato.setOnCheckedChangeListener { _, checkedId ->
             GenericUtils.onOffSaldato(db, arguments?.getString("idLista").toString(), checkedId)
         }
+
+        //Cambio il titolo della lista
+        val toolbar = (activity as MainActivity).supportActionBar
+        if (arguments != null) { toolbar?.title = "Impostazioni ${arguments?.getString("nomeLista")}" }
 
     }
 

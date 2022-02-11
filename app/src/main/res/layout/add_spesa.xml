@@ -20,16 +20,20 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Spesa"
+            android:hint="@string/spesa"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_spesa">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
                 android:id="@+id/spesa_spesa_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:layout_height="50dp"
+                android:inputType="textCapSentences"
+                android:completionThreshold="1"
+                android:maxLength="20"
+                tools:ignore="LabelFor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- IMPORTO -->
@@ -39,15 +43,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/spesa_spesa_layout"
-            android:layout_marginBottom="10dp"
-            android:hint="Importo"
+            android:layout_marginBottom="15dp"
+            android:hint="@string/importo"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_euro">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/spesa_importo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,8 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/spesa_importo_layout"
-            android:layout_marginBottom="10dp"
-            android:hint="Data"
+            android:layout_marginBottom="15dp"
+            android:hint="@string/date"
             app:endIconDrawable="@drawable/ic_calendar_plus"
             app:endIconMode="custom"
             app:endIconTint="@color/app_color_main"
@@ -68,7 +72,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/spesa_data"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:cursorVisible="false"
                 android:focusable="false" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -80,17 +84,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/spesa_data_layout"
-            android:layout_marginBottom="10dp"
-            android:hint="Pagato da"
+            android:hint="@string/pagatore"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
             app:endIconMode="clear_text"
+            android:layout_marginBottom="10dp"
             app:startIconDrawable="@drawable/ic_pagatore">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
                 android:id="@+id/spesa_pagatore_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:imeOptions="actionDone"
-                android:inputType="text" />
+                android:inputType="textCapSentences"
+                android:completionThreshold="1"
+                android:maxLength="20"
+                tools:ignore="LabelFor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -98,9 +107,9 @@
             android:layout_width="245dp"
             android:layout_height="60dp"
             android:layout_below="@id/spesa_pagatore_layout"
-            android:layout_toStartOf="@id/spesa_button_add_spesa_10"
             android:layout_alignParentStart="true"
-            android:text="Aggiungi" />
+            android:layout_toStartOf="@id/spesa_button_add_spesa_10"
+            android:text="@string/add" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/spesa_button_add_spesa_10"

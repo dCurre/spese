@@ -4,16 +4,27 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddSpesaBinding
+import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.objects.Spesa
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SpesaUtils
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class AddSpesaFragment : Fragment(R.layout.add_spesa) {
@@ -21,6 +32,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
     private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
     private lateinit var idLista : String
+    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -40,7 +52,43 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         //Setup calendario
         setupCalendario()
 
+        //Setup autocomplete fields
+        setupAutocompleteInputs()
+
         return binding.root
+    }
+
+    private fun setupAutocompleteInputs() {
+        val spesaText : AutoCompleteTextView = binding.spesaSpesaText
+        val pagatoreText : AutoCompleteTextView = binding.spesaPagatoreText
+        var arraySpesa : ArrayList<String> = ArrayList()
+        var arrayPagatore : ArrayList<String> = ArrayList()
+
+        db.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
+            ValueEventListener {
+            @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                arraySpesa.clear()
+                arrayPagatore.clear()
+
+                //Ciclo per ottenere spese e pagatori
+                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                    val spesa = snapshot.getValue(Spesa::class.java) as Spesa
+                    arraySpesa.add(spesa.spesa)
+                    arrayPagatore.add(spesa.pagatore)
+                }
+                arraySpesa = arraySpesa.distinct() as ArrayList<String>
+                arrayPagatore = arrayPagatore.distinct() as ArrayList<String>
+
+                spesaText.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, arraySpesa))
+                pagatoreText.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, arrayPagatore))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(className, "Failed to read value.", error.toException())
+            }
+        })
+
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")

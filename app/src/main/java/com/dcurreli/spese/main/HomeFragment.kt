@@ -23,7 +23,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,7 +44,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     private fun setupUserBar() {
         val user = DBUtils.getCurrentUser()
 
-        binding.userBarText.text = "Benvenuto,\n${user?.displayName}"
+        binding.userBarText.text = "Ciao,\n${user?.displayName}"
         Picasso.get().load(user?.photoUrl).into(binding.userBarImage)
         binding.userBarSettings.setOnClickListener {
             findNavController().navigate(R.id.action_To_SettingsFragment)
