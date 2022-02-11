@@ -20,6 +20,12 @@
     <string name="sign_in_with_google">Accedi con Google</string>
     <string name="sign_out">Esci</string>
     <string name="leave">Abbandona</string>
+    <string name="list_name">Nome lista</string>
+    <string name="add">Aggiungi</string>
+    <string name="spesa">Spesa</string>
+    <string name="importo">Importo</string>
+    <string name="date">Data</string>
+    <string name="pagatore">Pagato da</string>
 
     //Categorie lista spese
     <string-array name="categorieListe">
