@@ -26,9 +26,9 @@ class ViewPagerAdapter(supportFragmentManager: FragmentManager) : FragmentPagerA
         return mIconList[position]
     }
 
-    fun addFragment(fragment: Fragment, title: String, icSettings: Int){
+    fun addFragment(fragment: Fragment, title: String, icon: Int){
         mFragmentList.add(fragment)
         mFragmentTitleList.add(title)
-        mIconList.add(icSettings)
+        mIconList.add(icon)
     }
 }
