@@ -191,10 +191,6 @@ object SpesaUtils {
     @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
     fun deleteSpesa(spesa: Spesa) {
-
-        //Cancello la spesa
-
-
         //TODO capire se mi serve cancellare il mese, non penso
         //val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
 

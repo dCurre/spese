@@ -88,6 +88,14 @@ object GenericUtils {
         }
     }
 
+    // Gestisco preferenze tema scuro/chiaro
+    fun onOffSaldato(db: DatabaseReference, idLista : String, bool: Boolean) {
+        when (bool) {
+            true -> db.child(idLista).child("saldato").setValue(true)
+            false -> db.child(idLista).child("saldato").setValue(false)
+        }
+    }
+
     fun setupSottotitoloToolbar(message: String?, activity: AppCompatActivity?){
         (activity)?.supportActionBar?.subtitle = message
     }

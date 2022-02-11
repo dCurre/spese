@@ -74,7 +74,7 @@
         app:destination="@id/joinFragment" />
     <fragment
         android:id="@+id/listaSettingsFragment"
-        android:name="com.dcurreli.spese.main.ListaSettingsFragment"
+        android:name="com.dcurreli.spese.main.loadspese.ListaSettingsFragment"
         android:label="lista_settings_fragment"
         tools:layout="@layout/lista_settings_fragment" />
 </navigation>

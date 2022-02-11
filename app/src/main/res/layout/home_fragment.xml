@@ -75,6 +75,7 @@
             android:layout_below="@+id/user_bar_layout"
             android:fontFamily="@font/monsterrat_bold"
             android:text="Le tue liste:"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/textPrimary"
             android:textSize="20sp" />
 

@@ -36,7 +36,6 @@ class EditSpesaFragment() : Fragment(R.layout.edit_spesa_dialog) {
         super.onViewCreated(view, savedInstanceState)
         //TODO gestione edit da fare tutta
 
-
         //Se premo lo sfondo
         binding.editSpesaConstraintLayout.setOnClickListener {
             GenericUtils.hideSoftKeyBoard(requireContext(), view) //Chiudo la tastiera

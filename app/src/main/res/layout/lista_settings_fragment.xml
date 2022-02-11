@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fadeScrollbars="false"
     android:layout_margin="40dp"
-    tools:context=".main.ListaSettingsFragment">
+    tools:context=".main.loadspese.ListaSettingsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

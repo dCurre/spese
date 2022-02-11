@@ -94,6 +94,7 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
                             .setNegativeButton("NO") { _, _ ->
                                 spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition);
                             }
+                            .setCancelable(false)
                             .show()
 
                     }
