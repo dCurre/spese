@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var mAuth : FirebaseAuth
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value.lowercase())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,27 +52,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
-        Log.d(TAG, ">> signIn()")
+        Log.d(className, ">> signIn()")
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
-        Log.d(TAG, "<< signIn()")
+        Log.d(className, "<< signIn()")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Log.d(TAG, "onActivityResult()")
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                Log.d(className, "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
+                Log.w(className, "Google sign in failed", e)
             }
         }
     }

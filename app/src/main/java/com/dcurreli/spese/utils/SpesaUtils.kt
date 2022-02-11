@@ -28,13 +28,13 @@ import com.google.firebase.ktx.Firebase
 import java.math.BigDecimal
 
 object SpesaUtils {
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun creaSepsa(binding: AddSpesaBinding, idLista : String) {
         val methodName = "creaSpesa"
-        Log.i(TAG, ">>$methodName")
+        Log.i(className, ">>$methodName")
         val newKey = db.push().key!!
 
         //Nuova spesa
@@ -52,7 +52,7 @@ object SpesaUtils {
         //Creo spesa
         db.child(newKey).setValue(spesa)
 
-        Log.i(TAG, "<<$methodName")
+        Log.i(className, "<<$methodName")
     }
 
     fun printSpese(
@@ -98,7 +98,7 @@ object SpesaUtils {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "Failed to read value.", error.toException())
+                Log.e(className, "Failed to read value.", error.toException())
             }
         })
 
@@ -170,8 +170,7 @@ object SpesaUtils {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
-                Log.e(TAG, "Failed to read value.", error.toException())
+                Log.e(className, "Failed to read value.", error.toException())
             }
         })
     }

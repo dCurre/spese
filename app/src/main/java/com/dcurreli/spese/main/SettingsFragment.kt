@@ -27,7 +27,7 @@ import com.squareup.picasso.Picasso
 
 class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private var _binding: SettingsFragmentBinding? = null
     private lateinit var googleSignInClient: GoogleSignInClient
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value)

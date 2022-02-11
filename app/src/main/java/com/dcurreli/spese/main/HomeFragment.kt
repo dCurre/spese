@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso
 class HomeFragment : Fragment(R.layout.home_fragment) {
 
     private var _binding: HomeFragmentBinding? = null
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private val binding get() = _binding!!
 
     override fun onCreateView(

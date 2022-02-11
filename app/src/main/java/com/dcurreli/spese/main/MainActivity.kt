@@ -30,7 +30,7 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var currentUser : FirebaseUser
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
 
     @SuppressLint("ResourceType", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)

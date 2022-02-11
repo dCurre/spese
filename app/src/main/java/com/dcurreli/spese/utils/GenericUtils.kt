@@ -20,7 +20,7 @@ import java.time.YearMonth
 import java.util.*
 
 object GenericUtils {
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     fun hideSoftKeyBoard(context: Context, view: View) {
         try {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

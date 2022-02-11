@@ -26,7 +26,7 @@ import android.view.View as View1
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private var _binding: LoadSpeseBinding? = null
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private val binding get() = _binding!!
 
     @RequiresApi(Build.VERSION_CODES.O)

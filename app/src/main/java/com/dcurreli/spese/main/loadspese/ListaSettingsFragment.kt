@@ -18,7 +18,7 @@ import com.google.firebase.ktx.Firebase
 
 class ListaSettingsFragment : Fragment(R.layout.settings_fragment) {
 
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private var _binding: ListaSettingsFragmentBinding? = null
     private lateinit var googleSignInClient: GoogleSignInClient
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
@@ -72,7 +72,7 @@ class ListaSettingsFragment : Fragment(R.layout.settings_fragment) {
                     }
                 }
             }.addOnFailureListener {
-                Log.e(TAG, "<<Error getting utente", it)
+                Log.e(className, "<<Error getting utente", it)
             }
         }
     }

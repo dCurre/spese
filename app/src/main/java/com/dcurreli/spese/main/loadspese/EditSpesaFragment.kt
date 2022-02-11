@@ -16,7 +16,7 @@ import android.view.View as View1
 class EditSpesaFragment() : Fragment(R.layout.edit_spesa_dialog) {
 
     private var _binding: EditSpesaDialogBinding? = null
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private val binding get() = _binding!!
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -24,7 +24,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value.lowercase())
     private lateinit var utente : Utente
     private lateinit var binding: ActivitySplashBinding
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
                         GenericUtils.onOffDarkTheme(db, user, utente.isDarkTheme) // Gestisco preferenze tema
                    }
                 }.addOnFailureListener {
-                    Log.e(TAG, "<<Error getting utente", it)
+                    Log.e(className, "<<Error getting utente", it)
                 }
 
                 //Se è tutto ok, vado alla main activity

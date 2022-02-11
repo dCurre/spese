@@ -21,7 +21,7 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 object MeseUtils {
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private lateinit var mese: Mese
     @SuppressLint("StaticFieldLeak") private lateinit var meseAdapter: MeseAdapter
     private lateinit var meseArray: ArrayList<Mese>
@@ -30,7 +30,7 @@ object MeseUtils {
     @RequiresApi(Build.VERSION_CODES.O)
     fun creaMese(spesa: Spesa) {
         val methodName: String = "creaMese"
-        Log.i(TAG, ">>$methodName")
+        Log.i(className, ">>$methodName")
 
         //Vedo se il mese già esiste
         db.orderByChild("nome").equalTo(spesa.extractMensilitaAnno()).get().addOnSuccessListener {
@@ -42,9 +42,9 @@ object MeseUtils {
                 db.child(newKey).setValue(mese)
             }
         }.addOnFailureListener {
-            Log.e(TAG, "<<$methodName Error getting mese", it)
+            Log.e(className, "<<$methodName Error getting mese", it)
         }
-        Log.i(TAG, "<<$methodName")
+        Log.i(className, "<<$methodName")
     }
 
     fun printMese(context: Context, binding: ActivityMainBinding, navController: NavController) {
@@ -67,7 +67,7 @@ object MeseUtils {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "Failed to read value.", error.toException())
+                Log.e(className, "Failed to read value.", error.toException())
             }
         })
 
@@ -119,7 +119,6 @@ object MeseUtils {
     fun getDataFromString(dataString: String, pattern: String): Date {
         var arrayData: List<String> = dataString.split(" ")// 0 giorno, 1 mese, 2 anno
 
-        //Log.i(TAG, "Returning: ${arrayData[0] +"/"+getMonthAsNumber(arrayData[1])+"/"+ arrayData[2]}")
         return GenericUtils.dateStringToDate(
             arrayData[0] + "/" + getMonthAsNumber(arrayData[1]) + "/" + arrayData[2],
             pattern
@@ -139,7 +138,7 @@ object MeseUtils {
                     db.child(mese.id.toString()).removeValue() //Cancello
                 }
             }.addOnFailureListener {
-                Log.e(TAG, "<< Error getting mese", it)
+                Log.e(className, "<< Error getting mese", it)
             }
     }
 

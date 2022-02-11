@@ -13,7 +13,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 object CRUDUtils {
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private var db: DatabaseReference = Firebase.database.reference
 
     fun insert(table : String) {
@@ -40,7 +40,7 @@ object CRUDUtils {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "Failed to read value.", error.toException())
+                Log.e(className, "Failed to read value.", error.toException())
             }
         })
     }

@@ -23,7 +23,7 @@ import com.google.firebase.ktx.Firebase
 class JoinFragment : Fragment(R.layout.join_fragment) {
 
     private var _binding: JoinFragmentBinding? = null
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value.lowercase())
 
     private val binding get() = _binding!!
@@ -65,7 +65,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "loadSpesa:onCancelled", databaseError.toException())
+                Log.w(className, "loadSpesa:onCancelled", databaseError.toException())
             }
         }
 

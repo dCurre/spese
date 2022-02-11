@@ -22,7 +22,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 object ListaSpeseUtils {
-    private val TAG by lazy { javaClass.simpleName }
+    private val className by lazy { javaClass.simpleName }
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
     private lateinit var listaSpese: ListaSpese
     private lateinit var currentUser: FirebaseUser
@@ -30,7 +30,7 @@ object ListaSpeseUtils {
 
     fun creaListaSpese(binding: AddListaSpeseBinding) {
         val methodName = "creaListaSpese"
-        Log.i(TAG, ">>$methodName")
+        Log.i(className, ">>$methodName")
         val newKey = db.push().key!!
         currentUser = DBUtils.getCurrentUser()!!
         partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
@@ -47,7 +47,7 @@ object ListaSpeseUtils {
         //Creo lista
         db.child(newKey).setValue(lista)
 
-        Log.i(TAG, "<<$methodName")
+        Log.i(className, "<<$methodName")
     }
 
     fun joinListaSpese(
@@ -56,7 +56,7 @@ object ListaSpeseUtils {
         navController: NavController
     ) {
         val methodName = "creaListaSpese"
-        Log.i(TAG, ">>$methodName")
+        Log.i(className, ">>$methodName")
         val newKey = db.push().key!!
         currentUser = DBUtils.getCurrentUser()!!
         partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
@@ -83,13 +83,13 @@ object ListaSpeseUtils {
                         GenericUtils.showSnackbarError("Fai già parte della lista!", binding.root)
                     }
                 }else{
-                    Log.i(TAG, ">>Non esiste una lista ")
+                    Log.i(className, ">>Non esiste una lista ")
                 }
             }.addOnFailureListener {
-                Log.e(TAG, "<< Error getting mese", it)
+                Log.e(className, "<< Error getting mese", it)
             }
 
-        Log.i(TAG, "<<$methodName")
+        Log.i(className, "<<$methodName")
     }
 
     fun clearTextViewFocus(binding: AddListaSpeseBinding) {
@@ -122,7 +122,7 @@ object ListaSpeseUtils {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "Failed to read value.", error.toException())
+                Log.e(className, "Failed to read value.", error.toException())
             }
         })
     }

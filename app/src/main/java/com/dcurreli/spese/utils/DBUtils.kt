@@ -7,7 +7,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 object DBUtils {
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var db: DatabaseReference = Firebase.database.reference
 

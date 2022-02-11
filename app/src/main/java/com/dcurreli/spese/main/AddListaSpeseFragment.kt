@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference
 
 class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
 
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private var _binding: AddListaSpeseBinding? = null
     private lateinit var db: DatabaseReference
 

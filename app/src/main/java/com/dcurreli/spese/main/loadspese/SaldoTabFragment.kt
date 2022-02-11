@@ -23,7 +23,7 @@ class SaldoTabFragment() : Fragment(R.layout.load_spese_tab_saldo) {
     }
 
     private var _binding: LoadSpeseTabSaldoBinding? = null
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private val binding get() = _binding!!
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -21,7 +21,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import android.view.View as View1
 
 
-class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
+class SpeseTabFragment : Fragment(R.layout.load_spese_tab_spese) {
 
     companion object {
         fun newInstance(args: Bundle?): SpeseTabFragment{
@@ -33,7 +33,7 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
     }
 
     private var _binding: LoadSpeseTabSpeseBinding? = null
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private val binding get() = _binding!!
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -78,7 +78,7 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
                     if(direction == ItemTouchHelper.RIGHT){  //Se scorro verso destra modifico
                         //TODO dialog edit
 
-                        spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition);
+                        spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                     }
 
                     if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
@@ -92,7 +92,7 @@ class SpeseTabFragment() : Fragment(R.layout.load_spese_tab_spese) {
                                 GenericUtils.showSnackbarOK("Spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa} cancellata", binding.root)
                             }
                             .setNegativeButton("NO") { _, _ ->
-                                spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition);
+                                spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                             }
                             .setCancelable(false)
                             .show()

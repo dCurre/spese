@@ -18,7 +18,7 @@ import java.util.*
 
 class AddSpesaFragment : Fragment(R.layout.add_spesa) {
 
-    private val TAG = javaClass.simpleName
+    private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
     private lateinit var idLista : String
 
