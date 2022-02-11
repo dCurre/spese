@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 
 class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
@@ -58,6 +59,8 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
         //Carico i dati dal db per lo switch del tema
         setupSwitchTheme()
+        //Carico foto e nome utente
+        setupUserImage()
 
         binding.switchDarkTheme.setOnCheckedChangeListener { _, checkedId ->
             GenericUtils.onOffDarkTheme(db, user, checkedId)
@@ -94,6 +97,12 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         }.addOnFailureListener {
             Log.e(ContentValues.TAG, "<<Error getting utente", it)
         }
+    }
 
+    private fun setupUserImage() {
+        val user = DBUtils.getCurrentUser()
+
+        binding.userName.text = user?.displayName
+        Picasso.get().load(user?.photoUrl).into(binding.settingsUserImage)
     }
 }

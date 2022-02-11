@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fadeScrollbars="false"
-    android:layout_margin="40dp"
+    android:layout_margin="20dp"
     tools:context=".main.SettingsFragment">
 
     <RelativeLayout
@@ -13,18 +13,64 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
+        <RelativeLayout
+            android:id="@+id/layout_image_card_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="30dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/settings_image_card_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="250dp"
+                app:cardBackgroundColor="@color/black">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="250dp"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/settings_user_image"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"/>
+
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="lorem"
+                android:layout_centerHorizontal="true"
+                android:textSize="20sp"
+                android:fontFamily="@font/monsterrat_bold"
+                android:textColor="@color/textPrimary"
+                android:layout_below="@+id/settings_image_card_view"/>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/text_view_tema_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:fontFamily="@font/montserrat_light"
+            android:textStyle="bold"
+            android:layout_below="@+id/layout_image_card_view"
+            android:textColor="@color/textPrimary"
+            android:textSize="20sp"
             android:text="Tema scuro" />
 
         <Switch
             android:id="@+id/switch_dark_theme"
             android:layout_width="wrap_content"
             android:layout_toEndOf="@id/text_view_tema_switch"
+            android:layout_below="@+id/layout_image_card_view"
             android:layout_alignParentEnd="true"
             android:layout_height="wrap_content"
             tools:ignore="UseSwitchCompatOrMaterialXml"
@@ -35,13 +81,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_out"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_below="@id/text_view_tema_switch"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteY="241dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
 

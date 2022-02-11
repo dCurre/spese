@@ -46,10 +46,8 @@ open class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration) //Se tengo nascosto non escono i tasti
 
-        //Bottone settings nell'header della barra laterale
         /*TODO riutilizzare il button settings
         binding.buttonSettings.setOnClickListener {
-            binding.drawerMainActivity.closeDrawer(GravityCompat.START) //Chiudo il menu laterale
             navController.navigate(R.id.action_To_SettingsFragment)
         }*/
 

@@ -7,12 +7,82 @@
     android:fadeScrollbars="false"
     tools:context=".main.HomeFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lista_spese"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginHorizontal="10dp">
+
+        <RelativeLayout
+            android:id="@+id/user_bar_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_bar_style"
+            android:layout_marginVertical="10dp"
+            >
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/user_bar_image_card_view"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="250dp"
+                android:layout_marginEnd="10dp"
+                android:layout_centerVertical="true"
+                app:cardBackgroundColor="@color/onPrimary">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="250dp"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/user_bar_image"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"/>
+
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/user_bar_text"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_toStartOf="@id/user_bar_settings"
+                android:layout_toEndOf="@+id/user_bar_image_card_view"
+                android:fontFamily="@font/monsterrat_bold"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:text="lorem"
+                android:textColor="@color/onPrimary" />
+
+            <ImageView
+                android:id="@+id/user_bar_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_settings"
+                android:layout_marginEnd="20dp"
+                app:tint="@color/onPrimary" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tw_liste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_bar_layout"
+            android:fontFamily="@font/monsterrat_bold"
+            android:text="Le tue liste:"
+            android:textColor="@color/textPrimary"
+            android:textSize="20sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_spese"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tw_liste" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
