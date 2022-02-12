@@ -15,6 +15,7 @@ import com.dcurreli.spese.utils.GenericUtils.lastDayOfMonth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
 import java.util.*
 
 object MeseUtils {
@@ -127,5 +128,10 @@ object MeseUtils {
         val startsAt = "" + dateStringToTimestampSeconds(firstDayOfMonth(nomeMese), pattern)
         val endsAt = "" + dateStringToTimestampSeconds(lastDayOfMonth(nomeMese), pattern)
         return DataForQuery(startsAt.toDouble(), endsAt.toDouble())
+    }
+
+    fun formatData(data: Date): String {
+        val sdf = SimpleDateFormat("dd/M/yyyy")
+        return sdf.format(data)
     }
 }

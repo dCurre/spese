@@ -22,7 +22,6 @@ import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import android.view.View as View1
 
-
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private var _binding: LoadSpeseBinding? = null

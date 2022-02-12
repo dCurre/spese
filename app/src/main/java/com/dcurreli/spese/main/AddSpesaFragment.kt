@@ -18,6 +18,7 @@ import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.Spesa
 import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.utils.MeseUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -80,8 +81,8 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
                 arraySpesa = arraySpesa.distinct() as ArrayList<String>
                 arrayPagatore = arrayPagatore.distinct() as ArrayList<String>
 
-                spesaText.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, arraySpesa))
-                pagatoreText.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, arrayPagatore))
+                spesaText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arraySpesa))
+                pagatoreText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arrayPagatore))
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -167,6 +168,9 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        //Di base settato a today
+        binding.spesaData.setText(MeseUtils.formatData(Calendar.getInstance().time))
 
         binding.spesaData.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
