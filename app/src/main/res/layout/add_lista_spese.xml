@@ -20,6 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="@string/list_name"
+            app:counterEnabled="true"
+            app:counterMaxLength="14"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_lista_spese">
 
@@ -27,7 +29,8 @@
                 android:id="@+id/lista_spese_nome_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="textCapSentences"
+                android:maxLength="14" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton

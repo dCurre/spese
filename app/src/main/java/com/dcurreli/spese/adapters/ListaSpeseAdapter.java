@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,7 @@ public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.My
         holder.nomeSpesa.setText(listaSpese.getNome());
 
         //Gestisco l'evento on click
-        holder.arrow.setOnClickListener(view -> {
+        holder.relativeLayout.setOnClickListener(view -> {
             //Navigo sul fragment successivo passandogli il bundle con id lista e nome lista
             navController.navigate(R.id.action_HomeFragment_to_loadSpeseFragment, GenericUtils.INSTANCE.createBundleForListaSpese(listaSpese.getId(), holder.nomeSpesa.getText().toString()));
         });
@@ -77,12 +78,13 @@ public class ListaSpeseAdapter extends RecyclerView.Adapter<ListaSpeseAdapter.My
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView nomeSpesa;
-        ImageView arrow, saldato;
+        ImageView saldato;
+        RelativeLayout relativeLayout;
 
         public MyViewHolder(@NotNull View itemView) {
             super(itemView);
             nomeSpesa = itemView.findViewById(R.id.nome_spesa);
-            arrow = itemView.findViewById(R.id.navigate_to_list_arrow);
+            relativeLayout = itemView.findViewById(R.id.spesa_list_first_layout);
             saldato = itemView.findViewById(R.id.saldato_bar);
         }
     }

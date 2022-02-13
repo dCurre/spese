@@ -59,22 +59,31 @@
             android:id="@+id/text_view_tema_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_light"
-            android:textStyle="bold"
             android:layout_below="@+id/layout_image_card_view"
+            android:fontFamily="@font/montserrat_light"
+            android:text="Tema"
             android:textColor="@color/textPrimary"
             android:textSize="20sp"
-            android:text="Tema scuro" />
+            android:textStyle="bold" />
 
         <Switch
             android:id="@+id/switch_dark_theme"
             android:layout_width="wrap_content"
-            android:layout_toEndOf="@id/text_view_tema_switch"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_image_card_view"
+            android:layout_toStartOf="@+id/switch_right_icon"
+            android:drawableStart="@drawable/ic_sun"
+            android:drawableTint="?colorPrimary"
+            tools:ignore="UnusedAttribute,UseSwitchCompatOrMaterialXml" />
+
+        <ImageView
+            android:id="@+id/switch_right_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
             android:layout_below="@+id/layout_image_card_view"
             android:layout_alignParentEnd="true"
-            android:layout_height="wrap_content"
-            tools:ignore="UseSwitchCompatOrMaterialXml"
-            />
+            android:src="@drawable/ic_moon"
+            app:tint="?colorPrimary" />
 
         <Button
             android:id="@+id/sign_out_btn"

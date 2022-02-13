@@ -39,7 +39,7 @@
         <entry key="..\:/Coding/spese/app/src/main/res/layout/activity_sign_in2.xml" value="0.19375" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/addSpesa.xml" value="0.2015625" />
-        <entry key="..\:/Coding/spese/app/src/main/res/layout/add_lista_spese.xml" value="0.20208333333333334" />
+        <entry key="..\:/Coding/spese/app/src/main/res/layout/add_lista_spese.xml" value="0.33" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/add_lista_spese_categoria_item.xml" value="0.3625" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/add_spesa.xml" value="0.33" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/add_spesa_custom_spinner.xml" value="0.19427083333333334" />
@@ -68,7 +68,7 @@
         <entry key="..\:/Coding/spese/app/src/main/res/layout/menu_laterale_item_mese.xml" value="0.19270833333333334" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/menu_laterale_item_spesa.xml" value="0.20208333333333334" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/menu_laterale_items.xml" value="0.3625" />
-        <entry key="..\:/Coding/spese/app/src/main/res/layout/settings_fragment.xml" value="0.25" />
+        <entry key="..\:/Coding/spese/app/src/main/res/layout/settings_fragment.xml" value="0.67" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/single_list_item.xml" value="0.10005065856129686" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/single_spesa_list_item.xml" value="0.33" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/spese_list.xml" value="0.33" />

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/spese_list_cardView"
     android:layout_width="match_parent"
     android:layout_height="100dp"
@@ -15,15 +16,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/nome_spesa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Nome spesa"
-            android:textColor="@android:color/black"
+            android:layout_marginTop="2dp"
+            android:autoSizeTextType="uniform"
+            android:breakStrategy="balanced"
+            android:fontFamily="@font/monsterrat_bold"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Lista col nome lungo"
+            android:textColor="@color/textPrimary"
             android:textSize="9pt"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            tools:ignore="UnusedAttribute" />
 
         <ImageView
             android:id="@+id/navigate_to_list_arrow"

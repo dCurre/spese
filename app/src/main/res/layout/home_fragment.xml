@@ -16,14 +16,13 @@
             android:id="@+id/user_bar_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/user_bar_style"
-            android:paddingHorizontal="10dp">
+            android:background="@drawable/user_bar_style">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/user_bar_image_card_view"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 app:cardCornerRadius="250dp"
                 android:layout_centerVertical="true"
                 app:cardBackgroundColor="@color/onPrimary">
@@ -50,9 +49,9 @@
                 android:layout_toEndOf="@+id/user_bar_image_card_view"
                 android:fontFamily="@font/monsterrat_bold"
                 android:gravity="center_vertical"
-                android:textSize="14sp"
                 android:text="lorem"
-                android:textColor="@color/onPrimary" />
+                android:textColor="@color/onPrimary"
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <TextView

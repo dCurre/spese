@@ -92,9 +92,6 @@ class LoginActivity : AppCompatActivity() {
                             if (!it.exists()) {
                                 val uid = Utente(user.uid,user.displayName, user.email, user.photoUrl.toString())
                                 db.child(user.uid).setValue(uid)
-                            }else{
-                                val uid = Utente(user.uid,user.displayName, user.email, user.photoUrl.toString())
-                                db.child(user.uid).setValue(uid)
                             }
                         }
                         startActivity(Intent(this, MainActivity::class.java))
