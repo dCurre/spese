@@ -35,8 +35,8 @@
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentBottom="true"
             android:background="?colorPrimary"
+            android:layout_alignParentBottom="true"
             app:itemIconTint="?colorOnPrimary"
             app:itemTextColor="?colorOnPrimary"
             app:menu="@menu/drawer_bottom_nav_menu" />

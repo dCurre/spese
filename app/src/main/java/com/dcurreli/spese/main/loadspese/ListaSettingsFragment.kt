@@ -51,10 +51,7 @@ class ListaSettingsFragment : Fragment(R.layout.settings_fragment) {
             GenericUtils.onOffSaldato(db, arguments?.getString("idLista").toString(), checkedId)
         }
 
-        //Cambio il titolo della lista
-        val toolbar = (activity as MainActivity).supportActionBar
-        if (arguments != null) { toolbar?.title = "Impostazioni ${arguments?.getString("nomeLista")}" }
-
+        setupToolbar()
     }
 
     override fun onDestroyView() {
@@ -80,5 +77,11 @@ class ListaSettingsFragment : Fragment(R.layout.settings_fragment) {
                 Log.e(className, "<<Error getting utente", it)
             }
         }
+    }
+
+    private fun setupToolbar() {
+        //Cambio il titolo della toolbar
+        (activity as MainActivity).setToolbarTitle("Impostazioni ${arguments?.getString("nomeLista")}")
+        (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
     }
 }

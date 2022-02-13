@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -45,11 +46,6 @@ open class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         setupActionBarWithNavController(navController, appBarConfiguration) //Se tengo nascosto non escono i tasti
-
-        /*TODO riutilizzare il button settings
-        binding.buttonSettings.setOnClickListener {
-            navController.navigate(R.id.action_To_SettingsFragment)
-        }*/
 
         //Bottom navigation bar
         binding.bottomNav.setupWithNavController(navController)
@@ -111,4 +107,15 @@ open class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener(this) { e -> Log.w(ContentValues.TAG, "getDynamicLink:onFailure", e) }
     }
+
+    fun setBottomNavVisibility(bool : Boolean){
+        binding.bottomNav.isVisible = bool
+    }
+
+    fun setToolbarTitle(string: String?){
+        binding.toolbar.title = string
+    }
+
+
+
 }

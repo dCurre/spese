@@ -77,4 +77,9 @@
         android:name="com.dcurreli.spese.main.loadspese.ListaSettingsFragment"
         android:label="lista_settings_fragment"
         tools:layout="@layout/lista_settings_fragment" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.dcurreli.spese.main.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>

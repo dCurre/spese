@@ -17,8 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/user_bar_style"
-            android:layout_marginVertical="10dp"
-            >
+            android:paddingHorizontal="10dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/user_bar_image_card_view"
@@ -26,7 +25,6 @@
                 android:layout_height="54dp"
                 android:layout_margin="10dp"
                 app:cardCornerRadius="250dp"
-                android:layout_marginEnd="10dp"
                 android:layout_centerVertical="true"
                 app:cardBackgroundColor="@color/onPrimary">
 
@@ -49,23 +47,12 @@
                 android:id="@+id/user_bar_text"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_toStartOf="@id/user_bar_settings"
                 android:layout_toEndOf="@+id/user_bar_image_card_view"
                 android:fontFamily="@font/monsterrat_bold"
                 android:gravity="center_vertical"
                 android:textSize="14sp"
                 android:text="lorem"
                 android:textColor="@color/onPrimary" />
-
-            <ImageView
-                android:id="@+id/user_bar_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_settings"
-                android:layout_marginEnd="20dp"
-                app:tint="@color/onPrimary" />
         </RelativeLayout>
 
         <TextView
@@ -73,10 +60,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_bar_layout"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/monsterrat_bold"
             android:text="Le tue liste:"
-            android:layout_marginBottom="10dp"
             android:textColor="@color/textPrimary"
+            android:layout_marginTop="10dp"
             android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView

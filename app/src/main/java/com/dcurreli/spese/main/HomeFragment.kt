@@ -24,6 +24,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -33,6 +34,12 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
         setupUserBar()
         ListaSpeseUtils.printListe(requireContext(), binding, findNavController())
+    }
+
+    override fun onResume() {
+        //Faccio riapparire la bottom nav
+        (activity as MainActivity).setBottomNavVisibility(true)
+        super.onResume()
     }
 
     override fun onDestroyView() {
@@ -46,8 +53,6 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
         binding.userBarText.text = "Ciao,\n${user?.displayName}"
         Picasso.get().load(user?.photoUrl).into(binding.userBarImage)
-        binding.userBarSettings.setOnClickListener {
-            findNavController().navigate(R.id.action_To_SettingsFragment)
-        }
     }
+
 }

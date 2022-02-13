@@ -48,7 +48,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         _binding = AddSpesaBinding.inflate(inflater, container, false)
 
         //Setto il nome della toolbar in base al bottone di spesa che ho clickato
-        setupToolbarTitle()
+        setupToolbar()
 
         //Setup calendario
         setupCalendario()
@@ -57,39 +57,6 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         setupAutocompleteInputs()
 
         return binding.root
-    }
-
-    private fun setupAutocompleteInputs() {
-        val spesaText : AutoCompleteTextView = binding.spesaSpesaText
-        val pagatoreText : AutoCompleteTextView = binding.spesaPagatoreText
-        var arraySpesa : ArrayList<String> = ArrayList()
-        var arrayPagatore : ArrayList<String> = ArrayList()
-
-        db.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
-            ValueEventListener {
-            @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                arraySpesa.clear()
-                arrayPagatore.clear()
-
-                //Ciclo per ottenere spese e pagatori
-                for (snapshot: DataSnapshot in dataSnapshot.children) {
-                    val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                    arraySpesa.add(spesa.spesa)
-                    arrayPagatore.add(spesa.pagatore)
-                }
-                arraySpesa = arraySpesa.distinct() as ArrayList<String>
-                arrayPagatore = arrayPagatore.distinct() as ArrayList<String>
-
-                spesaText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arraySpesa))
-                pagatoreText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arrayPagatore))
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(className, "Failed to read value.", error.toException())
-            }
-        })
-
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
@@ -109,7 +76,6 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
             when {
-                //TODO max char spesa 20char, pagatore 20 char
                 binding.spesaSpesaText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
                 binding.spesaImporto.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
                 binding.spesaData.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
@@ -152,13 +118,44 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         _binding = null
     }
 
-    private fun setupToolbarTitle() {
-        var nomeLista = "Aggiungi una spesa"
+    private fun setupAutocompleteInputs() {
+        val spesaText : AutoCompleteTextView = binding.spesaSpesaText
+        val pagatoreText : AutoCompleteTextView = binding.spesaPagatoreText
+        var arraySpesa : ArrayList<String> = ArrayList()
+        var arrayPagatore : ArrayList<String> = ArrayList()
 
-        if (arguments != null) {
-            nomeLista = arguments?.getString("nomeLista").toString()
-        }
-        (activity as MainActivity).supportActionBar?.title = "Aggiungi a $nomeLista"
+        db.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
+            ValueEventListener {
+            @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                arraySpesa.clear()
+                arrayPagatore.clear()
+
+                //Ciclo per ottenere spese e pagatori
+                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                    val spesa = snapshot.getValue(Spesa::class.java) as Spesa
+                    arraySpesa.add(spesa.spesa)
+                    arrayPagatore.add(spesa.pagatore)
+                }
+                arraySpesa = arraySpesa.distinct() as ArrayList<String>
+                arrayPagatore = arrayPagatore.distinct() as ArrayList<String>
+
+                spesaText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arraySpesa))
+                pagatoreText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arrayPagatore))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(className, "Failed to read value.", error.toException())
+            }
+        })
+    }
+
+    private fun setupToolbar() {
+        val titolo =  if(arguments == null) "Aggiungi una spesa" else "Aggiungi a ${arguments?.getString("nomeLista").toString()}"
+
+        //Cambio il titolo della toolbar
+        (activity as MainActivity).setToolbarTitle(titolo)
+        (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
     }
 
     @SuppressLint("SetTextI18n")

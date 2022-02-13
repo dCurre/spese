@@ -25,13 +25,13 @@ class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = AddListaSpeseBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 

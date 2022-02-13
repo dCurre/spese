@@ -22,6 +22,7 @@ import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import android.view.View as View1
 
+
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private var _binding: LoadSpeseBinding? = null
@@ -45,21 +46,22 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         //Setup tab layout (schede orizzontali)
         setupTabLayout()
 
+        //Nascondo bottom nav
+        (activity as MainActivity).setBottomNavVisibility(false)
+
         return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-
         //Quando esco dal fragment rimuovo il sottotitolo
         GenericUtils.clearSottotitoloToolbar ((activity as AppCompatActivity?))
 
+        super.onDestroyView()
         _binding = null
     }
 
@@ -87,10 +89,9 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         //Faccio apparire il tasto share
         setHasOptionsMenu(true)
 
-        //Cambio il titolo della lista
-        val toolbar = (activity as MainActivity).supportActionBar
-        if (arguments != null) { toolbar?.title = arguments?.getString("nomeLista") }
-
+        //Cambio il titolo della toolbar
+        (activity as MainActivity).setToolbarTitle(arguments?.getString("nomeLista"))
+        (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
