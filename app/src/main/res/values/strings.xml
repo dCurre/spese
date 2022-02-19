@@ -26,6 +26,8 @@
     <string name="importo">Importo</string>
     <string name="date">Data</string>
     <string name="pagatore">Pagato da</string>
+    <string name="export">Esporta</string>
+    <string name="saldato">Saldato</string>
 
     //Categorie lista spese
     <string-array name="categorieListe">

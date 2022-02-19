@@ -4,43 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fadeScrollbars="false"
-    android:layout_margin="40dp"
+    android:layout_marginVertical="20dp"
     tools:context=".main.loadspese.ListaSettingsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/tw_liste"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/monsterrat_bold"
+            android:padding="10dp"
+            android:text="Partecipanti:"
+            android:textColor="@color/textPrimary"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/text_view_saldato_switch"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="Saldato" />
+            android:layout_above="@+id/text_view_export_list"
+            android:background="@drawable/text_view_first_item_list_bottom_line"
+            android:paddingVertical="10dp"
+            android:paddingStart="20dp"
+            android:text="@string/saldato"
+            android:textColor="@color/textPrimary"
+            android:textSize="20sp"
+            tools:ignore="RtlSymmetry" />
 
         <Switch
             android:id="@+id/switch_saldato"
             android:layout_width="wrap_content"
-            android:layout_toEndOf="@id/text_view_saldato_switch"
-            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/text_view_export_list"
             android:layout_height="wrap_content"
-            tools:ignore="UseSwitchCompatOrMaterialXml"
-            />
+            android:layout_alignParentEnd="true"
+            android:paddingVertical="14dp"
+            android:paddingEnd="20dp"
+            tools:ignore="RtlSymmetry,UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/text_view_export_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_abbandona"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/text_view_list_bottom_line"
+            android:paddingVertical="10dp"
+            android:paddingStart="20dp"
+            android:text="@string/export"
+            android:textColor="@color/textPrimary"
+            android:textSize="20sp"
+            tools:ignore="RtlSymmetry" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_excel"
+            android:layout_above="@+id/button_abbandona"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="95dp"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_esporta_lista"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_abbandona"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            app:icon="@drawable/ic_download"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/primary" />
 
         <Button
             android:id="@+id/button_abbandona"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/leave"
-            android:textAllCaps="false"
+            android:layout_marginTop="20dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            />
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/leave"
+            android:textAllCaps="false" />
     </RelativeLayout>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,10 @@
 package com.dcurreli.spese.main
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -27,11 +30,17 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 
 open class MainActivity : AppCompatActivity() {
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var currentUser : FirebaseUser
     private val className = javaClass.simpleName
+    private val requestExternalStorage = 1
+    private val permissionStorage = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
 
     @SuppressLint("ResourceType", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -52,6 +61,8 @@ open class MainActivity : AppCompatActivity() {
 
         //Controllo se ho un dynamic link attivo
         checkDynamicLink()
+
+        //
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -116,6 +127,14 @@ open class MainActivity : AppCompatActivity() {
         binding.toolbar.title = string
     }
 
+
+    @SuppressLint("NewApi")
+    fun checkUserPermission() {
+        //Se non ci sono i permessi di scrittura --> informo l'utente
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, permissionStorage, requestExternalStorage)
+        }
+    }
 
 
 }
