@@ -132,6 +132,8 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
                 //TODO cercare un modo più intelligente senza usare le liste temporanee
                 arraySpesa.clear()
                 arrayPagatore.clear()
+                arraySpesaTemp.clear()
+                arrayPagatoreTemp.clear()
 
                 //Ciclo per ottenere spese e pagatori
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
