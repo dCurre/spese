@@ -136,8 +136,14 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
                     arraySpesa.add(spesa.spesa)
                     arrayPagatore.add(spesa.pagatore)
                 }
-                arraySpesa = arraySpesa.distinct() as ArrayList<String>
-                arrayPagatore = arrayPagatore.distinct() as ArrayList<String>
+
+                if(arraySpesa.isNotEmpty()){
+                    arraySpesa = arraySpesa.distinct() as ArrayList<String>
+                }
+
+                if(arrayPagatore.isNotEmpty()) {
+                    arrayPagatore = arrayPagatore.distinct() as ArrayList<String>
+                }
 
                 spesaText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arraySpesa))
                 pagatoreText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arrayPagatore))
