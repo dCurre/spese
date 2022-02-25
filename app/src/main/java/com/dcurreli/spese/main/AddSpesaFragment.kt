@@ -120,29 +120,32 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
     private fun setupAutocompleteInputs() {
         val spesaText : AutoCompleteTextView = binding.spesaSpesaText
         val pagatoreText : AutoCompleteTextView = binding.spesaPagatoreText
-        var arraySpesa : ArrayList<String> = ArrayList()
-        var arrayPagatore : ArrayList<String> = ArrayList()
+        val arraySpesa : ArrayList<String> = ArrayList()
+        val arrayPagatore : ArrayList<String> = ArrayList()
+        val arraySpesaTemp : ArrayList<String> = ArrayList()
+        val arrayPagatoreTemp : ArrayList<String> = ArrayList()
 
         db.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
             ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                //TODO cercare un modo più intelligente senza usare le liste temporanee
                 arraySpesa.clear()
                 arrayPagatore.clear()
 
                 //Ciclo per ottenere spese e pagatori
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                    arraySpesa.add(spesa.spesa)
-                    arrayPagatore.add(spesa.pagatore)
+                    arraySpesaTemp.add(spesa.spesa)
+                    arrayPagatoreTemp.add(spesa.pagatore)
                 }
 
-                if(arraySpesa.isNotEmpty()){
-                    arraySpesa = arraySpesa.distinct() as ArrayList<String>
+                if(arraySpesaTemp.isNotEmpty()){
+                    arraySpesa.addAll(arraySpesaTemp.distinct())
                 }
 
-                if(arrayPagatore.isNotEmpty()) {
-                    arrayPagatore = arrayPagatore.distinct() as ArrayList<String>
+                if(arrayPagatoreTemp.isNotEmpty()) {
+                    arrayPagatore.addAll(arrayPagatoreTemp.distinct())
                 }
 
                 spesaText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arraySpesa))
