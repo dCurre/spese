@@ -120,38 +120,38 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
     private fun setupAutocompleteInputs() {
         val spesaText : AutoCompleteTextView = binding.spesaSpesaText
         val pagatoreText : AutoCompleteTextView = binding.spesaPagatoreText
-        val arraySpesa : ArrayList<String> = ArrayList()
-        val arrayPagatore : ArrayList<String> = ArrayList()
-        val arraySpesaTemp : ArrayList<String> = ArrayList()
-        val arrayPagatoreTemp : ArrayList<String> = ArrayList()
+        val arraySpesaDistinct : ArrayList<String> = ArrayList()
+        val arrayPagatoreDistinct : ArrayList<String> = ArrayList()
+        val arraySpesaALL : ArrayList<String> = ArrayList()
+        val arrayPagatoreALL : ArrayList<String> = ArrayList()
 
         db.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
             ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 //TODO cercare un modo più intelligente senza usare le liste temporanee
-                arraySpesa.clear()
-                arrayPagatore.clear()
-                arraySpesaTemp.clear()
-                arrayPagatoreTemp.clear()
+                arraySpesaDistinct.clear()
+                arrayPagatoreDistinct.clear()
+                arraySpesaALL.clear()
+                arrayPagatoreALL.clear()
 
                 //Ciclo per ottenere spese e pagatori
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                    arraySpesaTemp.add(spesa.spesa)
-                    arrayPagatoreTemp.add(spesa.pagatore)
+                    arraySpesaALL.add(spesa.spesa)
+                    arrayPagatoreALL.add(spesa.pagatore)
                 }
 
-                if(arraySpesaTemp.isNotEmpty()){
-                    arraySpesa.addAll(arraySpesaTemp.distinct())
+                if(arraySpesaALL.isNotEmpty()){
+                    arraySpesaDistinct.addAll(arraySpesaALL.distinct())
                 }
 
-                if(arrayPagatoreTemp.isNotEmpty()) {
-                    arrayPagatore.addAll(arrayPagatoreTemp.distinct())
+                if(arrayPagatoreALL.isNotEmpty()) {
+                    arrayPagatoreDistinct.addAll(arrayPagatoreALL.distinct())
                 }
 
-                spesaText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arraySpesa))
-                pagatoreText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arrayPagatore))
+                spesaText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arraySpesaDistinct))
+                pagatoreText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arrayPagatoreDistinct))
             }
 
             override fun onCancelled(error: DatabaseError) {
