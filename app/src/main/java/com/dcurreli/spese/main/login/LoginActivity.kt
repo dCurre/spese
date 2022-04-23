@@ -53,8 +53,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun signIn() {
         Log.d(className, ">> signIn()")
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
         Log.d(className, "<< signIn()")
     }
 

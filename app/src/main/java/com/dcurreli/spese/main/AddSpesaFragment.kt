@@ -19,6 +19,7 @@ import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.Spesa
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.MeseUtils
+import com.dcurreli.spese.utils.SnackbarUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -32,7 +33,6 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
-    private lateinit var idLista : String
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
 
     // This property is only valid between onCreateView and
@@ -76,13 +76,14 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
             when {
-                binding.spesaSpesaText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaImporto.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaData.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaPagatoreText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaSpesaText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaImporto.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaData.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaPagatoreText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaImporto.text.toString().toDouble().equals(0.00) -> { SnackbarUtils.showSnackbarError("Inserire importo maggiore di 0 !", binding.addSpesaConstraintLayout) }
                 else -> {
                     SpesaUtils.creaSepsa(binding, arguments?.getString("idLista").toString())
-                    GenericUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
+                    SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
 
                     findNavController().navigate(R.id.loadSpeseFragment, arguments)
                 }
@@ -95,16 +96,16 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
             when {
-                binding.spesaSpesaText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaImporto.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaData.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaPagatoreText.text.isNullOrBlank() -> { GenericUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaSpesaText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaImporto.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaData.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
+                binding.spesaPagatoreText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
                 else -> {
 
                     for(i in 0 until 10){
                         SpesaUtils.creaSepsa(binding, arguments?.getString("idLista").toString())
                     }
-                    GenericUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
+                    SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
 
                     findNavController().navigate(R.id.loadSpeseFragment, arguments)
                 }

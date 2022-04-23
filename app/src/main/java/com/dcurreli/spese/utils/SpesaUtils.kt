@@ -40,10 +40,10 @@ object SpesaUtils {
         //Nuova spesa
         val spesa = Spesa(
             newKey,
-            binding.spesaSpesaText.text.toString(),
-            binding.spesaImporto.text.toString().replace(",", ".").toDouble(),
-            binding.spesaData.text.toString(),
-            binding.spesaPagatoreText.text.toString(),
+            binding.spesaSpesaText.text.toString().trim(),
+            binding.spesaImporto.text.toString().trim().replace(",", ".").toDouble(),
+            binding.spesaData.text.toString().trim(),
+            binding.spesaPagatoreText.text.toString().trim(),
             idLista
         )
 

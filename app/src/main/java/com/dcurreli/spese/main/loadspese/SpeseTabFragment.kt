@@ -1,10 +1,10 @@
 package com.dcurreli.spese.main.loadspese
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.graphics.Canvas
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -15,13 +15,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
-import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.objects.ListaSpese
+import com.dcurreli.spese.utils.SnackbarUtils
 import com.dcurreli.spese.utils.SpesaUtils
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import android.view.View as View1
 
 
 class SpeseTabFragment : Fragment(R.layout.load_spese_tab_spese) {
+
+    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
 
     companion object {
         fun newInstance(args: Bundle?): SpeseTabFragment{
@@ -62,41 +69,53 @@ class SpeseTabFragment : Fragment(R.layout.load_spese_tab_spese) {
         )
 
         //Gestisco il cardslider passandogli l'adapter
-        setupCardSlider(spesaAdapter) //TODO blocco swipe e riposizionamento item se non modifico o cancello
+        setupCardSlider(spesaAdapter)
     }
 
     private fun setupCardSlider(spesaAdapter: SpesaAdapter) {
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
                 override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-
-                    GenericUtils.showSnackbarOK("ON MOVE", binding.root)
-
+                    //Non penso venga usato, dovrebbe uscire un alert sul movimento degli item nella lista (ma sono bloccati)
+                    SnackbarUtils.showSnackbarOK("ON MOVE", binding.root)
                     return false
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    if(direction == ItemTouchHelper.RIGHT){  //Se scorro verso destra modifico
-                        //TODO dialog edit
-
-                        spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                    }
-
-                    if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
-                        //TODO confirm dialog per delete
-
-                        AlertDialog.Builder(context)
-                            .setTitle("Conferma")
-                            .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
-                            .setPositiveButton("SI") { _, _ ->
-                                spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).delete()
-                                GenericUtils.showSnackbarOK("Spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa} cancellata", binding.root)
+                    db.child(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
+                        val listaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
+                            if(direction == ItemTouchHelper.RIGHT){  //Se scorro verso destra modifico
+                                if(!listaSpese.isSaldato){
+                                    //TODO dialog edit
+                                    spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                                } else {
+                                    SnackbarUtils.showSnackbarError("Non puoi modificare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
+                                    spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                                }
                             }
-                            .setNegativeButton("NO") { _, _ ->
-                                spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                            }
-                            .setCancelable(false)
-                            .show()
 
+                            if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
+                                //Se non è saldato faccio uscire l'alert per la cancellazione della spesa
+                                if(!listaSpese.isSaldato){
+                                    //Se non è saldato faccio uscire l'alert per la cancellazione della spesa
+                                    AlertDialog.Builder(context)
+                                        .setTitle("Conferma")
+                                        .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
+                                        .setPositiveButton("SI") { _, _ ->
+                                            spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).delete()
+                                            SnackbarUtils.showSnackbarOK("Spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa} cancellata", binding.root)
+                                        }
+                                        .setNegativeButton("NO") { _, _ ->
+                                            spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                                        }
+                                        .setCancelable(false)
+                                        .show()
+                                } else {
+                                    SnackbarUtils.showSnackbarError("Non puoi cancellare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
+                                    spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                                }
+                            }
+                    }.addOnFailureListener {
+                        Log.e(className, "<<Error getting utente", it)
                     }
                 }
 
@@ -118,13 +137,7 @@ class SpeseTabFragment : Fragment(R.layout.load_spese_tab_spese) {
                         .create()
                         .decorate()
 
-
-                    var newDx = dX
-
-                    if(newDx > "100".toFloat())
-                        newDx = "100".toFloat()
-
-                    super.onChildDraw(c, recyclerView, viewHolder,newDx, dY, actionState, isCurrentlyActive)
+                    super.onChildDraw(c, recyclerView, viewHolder,dX, dY, actionState, isCurrentlyActive)
                 }
             }
 
@@ -136,12 +149,6 @@ class SpeseTabFragment : Fragment(R.layout.load_spese_tab_spese) {
         super.onDestroyView()
 
         _binding = null
-    }
-
-    private fun showDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.edit_spesa_dialog)
-        dialog.show()
     }
 
 }

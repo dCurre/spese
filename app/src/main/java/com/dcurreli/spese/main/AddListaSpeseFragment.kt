@@ -13,6 +13,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.ListaSpeseUtils
+import com.dcurreli.spese.utils.SnackbarUtils
 import com.google.firebase.database.DatabaseReference
 
 class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
@@ -61,11 +62,11 @@ class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
             if (binding.listaSpeseNomeText.text.isNullOrBlank()) {
-                GenericUtils.showSnackbarError("Nome lista non inserito !", binding.addListaSpeseConstraintLayout)
+                SnackbarUtils.showSnackbarError("Nome lista non inserito !", binding.addListaSpeseConstraintLayout)
             } else {
                 //Recupero dati dall'xml
                 ListaSpeseUtils.creaListaSpese(binding)
-                GenericUtils.showSnackbarOK("Lista creata : )", binding.addListaSpeseConstraintLayout)
+                SnackbarUtils.showSnackbarOK("Lista creata : )", binding.addListaSpeseConstraintLayout)
 
                 findNavController().navigate(R.id.action_addListaSpeseFragment_to_homeFragment)
 

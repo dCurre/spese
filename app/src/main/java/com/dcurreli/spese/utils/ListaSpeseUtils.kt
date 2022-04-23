@@ -38,7 +38,7 @@ object ListaSpeseUtils {
         //Nuova spesa
         val lista = ListaSpese(
             newKey,
-            binding.listaSpeseNomeText.text.toString(),
+            binding.listaSpeseNomeText.text.toString().trim(),
             partecipanti,
             DBUtils.getCurrentUser()?.uid
         )
@@ -71,14 +71,14 @@ object ListaSpeseUtils {
                         if(listaSpese.partecipanti.size < binding.counterMaxUsers.text.toString().toInt()) {
                             listaSpese.partecipanti.add(currentUser.uid)
                             db.child(idLista.replace(" ", "")).child("partecipanti").setValue(listaSpese.partecipanti)
-                            GenericUtils.showSnackbarOK("Ti sei aggiunto alla lista : )", binding.root)
+                            SnackbarUtils.showSnackbarOK("Ti sei aggiunto alla lista : )", binding.root)
 
                             navController.navigate(R.id.loadSpeseFragment, GenericUtils.createBundleForListaSpese(listaSpese.id, listaSpese.nome))
                         }else{//Se ho raggiunto il massimo di utenti
-                            GenericUtils.showSnackbarError("Numero massimo di utenti raggiunto!", binding.root)
+                            SnackbarUtils.showSnackbarError("Numero massimo di utenti raggiunto!", binding.root)
                         }
                     }else{//Se l'utente è già presente in lista
-                        GenericUtils.showSnackbarError("Fai già parte della lista!", binding.root)
+                        SnackbarUtils.showSnackbarError("Fai già parte della lista!", binding.root)
                     }
                 }else{
                     Log.i(className, ">>Non esiste una lista ")
