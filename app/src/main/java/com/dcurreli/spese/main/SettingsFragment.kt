@@ -58,12 +58,16 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
         //Carico i dati dal db per lo switch del tema
-        setupSwitchTheme()
+        setupSwitches()
         //Carico foto e nome utente
         setupUserImage()
 
         binding.switchDarkTheme.setOnCheckedChangeListener { _, checkedId ->
             GenericUtils.onOffDarkTheme(db, user, checkedId)
+        }
+
+        binding.switchNascondiListe.setOnCheckedChangeListener { _, checkedId ->
+            GenericUtils.onOffNascondiListe(db, user, checkedId)
         }
 
         binding.signOutBtn.setOnClickListener {
@@ -84,15 +88,12 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         googleSignInClient.signOut()
     }
 
-    private fun setupSwitchTheme(){
+    private fun setupSwitches(){
         db.child(user.uid).get().addOnSuccessListener {
-            //Se non esiste creo l'utente nella lista utenti
             if (it.exists()) {
                 val utente : Utente = it.getValue(Utente::class.java) as Utente
-                when (utente.isDarkTheme) {
-                    true -> binding.switchDarkTheme.isChecked = true
-                    false -> binding.switchDarkTheme.isChecked = false
-                }
+                GenericUtils.setupSwitch(binding.switchDarkTheme, utente.isDarkTheme)
+                GenericUtils.setupSwitch(binding.switchNascondiListe, utente.isNascondiListeSaldate)
             }
         }.addOnFailureListener {
             Log.e(ContentValues.TAG, "<<Error getting utente", it)

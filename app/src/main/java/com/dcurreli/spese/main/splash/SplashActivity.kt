@@ -41,7 +41,8 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
                     if (it.exists()) {
                         utente = it.getValue(Utente::class.java) as Utente
                         GenericUtils.onOffDarkTheme(db, user, utente.isDarkTheme) // Gestisco preferenze tema
-                   }
+                        GenericUtils.onOffNascondiListe(db, user, utente.isNascondiListeSaldate) // Gestisco preferenze liste saldate nascoste
+                    }
                 }.addOnFailureListener {
                     Log.e(className, "<<Error getting utente", it)
                 }

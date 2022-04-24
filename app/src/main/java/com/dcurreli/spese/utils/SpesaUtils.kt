@@ -47,8 +47,6 @@ object SpesaUtils {
             idLista
         )
 
-        //Creo mese, e se va bene
-        MeseUtils.creaMese(spesa)
         //Creo spesa
         db.child(newKey).setValue(spesa)
 
@@ -83,9 +81,11 @@ object SpesaUtils {
 
                 //Riordino la lista temporanea e la carico sulla lista da stampare
                 spesaArray.addAll(arrayTemp.sortedBy { it.timestamp }.toCollection(ArrayList()))
+                //spesaArray.reverse()
 
                 //Aggiorno il sottotitolo della toolbar
                 GenericUtils.setupSottotitoloToolbar("Totale: ${totaleSpese.setScale(2).toString().replace(".",",")}€", (activity as AppCompatActivity?))
+
 
                 //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
                 if (dataSnapshot.childrenCount > 0) {

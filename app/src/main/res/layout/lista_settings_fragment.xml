@@ -93,5 +93,15 @@
             android:layout_marginHorizontal="20dp"
             android:text="@string/leave"
             android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/button_abbandona"
+            android:backgroundTint="@color/red"
+            android:text="@string/delete"
+            android:textAllCaps="false" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

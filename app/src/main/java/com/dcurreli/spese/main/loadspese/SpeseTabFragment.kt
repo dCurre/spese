@@ -98,17 +98,17 @@ class SpeseTabFragment : Fragment(R.layout.load_spese_tab_spese) {
                                 if(!listaSpese.isSaldato){
                                     //Se non è saldato faccio uscire l'alert per la cancellazione della spesa
                                     AlertDialog.Builder(context)
-                                        .setTitle("Conferma")
-                                        .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
-                                        .setPositiveButton("SI") { _, _ ->
-                                            spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).delete()
-                                            SnackbarUtils.showSnackbarOK("Spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa} cancellata", binding.root)
-                                        }
-                                        .setNegativeButton("NO") { _, _ ->
-                                            spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                                        }
-                                        .setCancelable(false)
-                                        .show()
+                                    .setTitle("Conferma")
+                                    .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
+                                    .setPositiveButton("SI") { _, _ ->
+                                        spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).delete()
+                                        SnackbarUtils.showSnackbarOK("Spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa} cancellata", binding.root)
+                                    }
+                                    .setNegativeButton("NO") { _, _ ->
+                                        spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                                    }
+                                    .setCancelable(false)
+                                    .show()
                                 } else {
                                     SnackbarUtils.showSnackbarError("Non puoi cancellare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
                                     spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)

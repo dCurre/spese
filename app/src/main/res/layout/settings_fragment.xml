@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout_image_card_view"
-            android:background="@drawable/text_view_list_bottom_line"
+            android:background="@drawable/text_view_first_item_list_bottom_line"
             android:fontFamily="@font/montserrat_light"
             android:paddingVertical="10dp"
             android:paddingStart="20dp"
@@ -90,6 +90,31 @@
             android:src="@drawable/ic_moon"
             app:tint="?colorPrimary"
             tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/text_view_switch_nascondi_liste"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view_tema_switch"
+            android:background="@drawable/text_view_list_bottom_line"
+            android:fontFamily="@font/montserrat_light"
+            android:paddingVertical="10dp"
+            android:paddingStart="20dp"
+            android:text="Nascondi liste saldate"
+            android:textColor="@color/textPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+        <Switch
+            android:id="@+id/switch_nascondi_liste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view_tema_switch"
+            android:layout_marginVertical="11dp"
+            android:layout_toStartOf="@+id/switch_right_icon"
+            android:drawableTint="?colorPrimary"
+            tools:ignore="UnusedAttribute,UseSwitchCompatOrMaterialXml" />
 
         <Button
             android:id="@+id/sign_out_btn"

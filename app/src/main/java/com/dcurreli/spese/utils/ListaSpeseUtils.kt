@@ -2,7 +2,9 @@ package com.dcurreli.spese.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +15,7 @@ import com.dcurreli.spese.databinding.HomeFragmentBinding
 import com.dcurreli.spese.databinding.JoinFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.ListaSpese
+import com.dcurreli.spese.objects.Utente
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,15 +26,17 @@ import com.google.firebase.ktx.Firebase
 
 object ListaSpeseUtils {
     private val className by lazy { javaClass.simpleName }
-    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
+    private var dbListe: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
+    private var dbUtente: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value)
     private lateinit var listaSpese: ListaSpese
     private lateinit var currentUser: FirebaseUser
     private var partecipanti : ArrayList<String> = ArrayList()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun creaListaSpese(binding: AddListaSpeseBinding) {
         val methodName = "creaListaSpese"
         Log.i(className, ">>$methodName")
-        val newKey = db.push().key!!
+        val newKey = dbListe.push().key!!
         currentUser = DBUtils.getCurrentUser()!!
         partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
 
@@ -44,7 +49,7 @@ object ListaSpeseUtils {
         )
 
         //Creo lista
-        db.child(newKey).setValue(lista)
+        dbListe.child(newKey).setValue(lista)
 
         Log.i(className, "<<$methodName")
     }
@@ -60,7 +65,7 @@ object ListaSpeseUtils {
         partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
 
         //Recupero il mese da cancellare
-        db.orderByChild("id").equalTo(idLista.replace(" ", "")).get()
+        dbListe.orderByChild("id").equalTo(idLista.replace(" ", "")).get()
             .addOnSuccessListener {
                 if (it.exists()) {
                     val listaSpese = it.children.first().getValue(ListaSpese::class.java) as ListaSpese
@@ -70,7 +75,7 @@ object ListaSpeseUtils {
                         //Se non ho già raggiunto il numero massimo di utenti
                         if(listaSpese.partecipanti.size < binding.counterMaxUsers.text.toString().toInt()) {
                             listaSpese.partecipanti.add(currentUser.uid)
-                            db.child(idLista.replace(" ", "")).child("partecipanti").setValue(listaSpese.partecipanti)
+                            dbListe.child(idLista.replace(" ", "")).child("partecipanti").setValue(listaSpese.partecipanti)
                             SnackbarUtils.showSnackbarOK("Ti sei aggiunto alla lista : )", binding.root)
 
                             navController.navigate(R.id.loadSpeseFragment, GenericUtils.createBundleForListaSpese(listaSpese.id, listaSpese.nome))
@@ -101,21 +106,35 @@ object ListaSpeseUtils {
         }
 
         val listaSpeseArray = ArrayList<ListaSpese>()
+        val arrayTemp = ArrayList<ListaSpese>()
         val listaSpeseAdapter = ListaSpeseAdapter(context, listaSpeseArray, binding, navController)
 
         binding.listaSpese.adapter = listaSpeseAdapter
 
-        db.orderByChild("partecipanti").addValueEventListener(object : ValueEventListener {
+        dbListe.orderByChild("partecipanti").addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 listaSpeseArray.clear()
-                for (snapshot: DataSnapshot in dataSnapshot.children) {
-                    listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
-                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser()?.uid)){
-                        listaSpeseArray.add(listaSpese)
+                arrayTemp.clear()
+
+                dbUtente.child(DBUtils.getCurrentUser()!!.uid).get().addOnSuccessListener {
+                    val utente = it.getValue(Utente::class.java) as Utente
+
+                    for (snapshot: DataSnapshot in dataSnapshot.children) {
+                        listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
+                        if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser()?.uid)){
+                            //Se non nascondo liste saldate stampo tutto, altrimenti stampo solo quelle non saldate
+                            if (!utente.isNascondiListeSaldate || (utente.isNascondiListeSaldate && !listaSpese.isSaldato)) {
+                                arrayTemp.add(listaSpese)
+                            }
+                        }
                     }
+
+                    listaSpeseArray.addAll(arrayTemp.sortedBy { it.timestamp }.toCollection(ArrayList()))
+                    listaSpeseArray.reverse()
+
+                    listaSpeseAdapter.notifyDataSetChanged() //Aggiorna le liste (se tolgo non stampa)
                 }
-                listaSpeseAdapter.notifyDataSetChanged() //Se tolgo non stampa
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -124,5 +143,21 @@ object ListaSpeseUtils {
         })
     }
 
+    //Update di un campo, utile quando creo campi nuovi
+    fun updateField(field: String, value: Long){
+        dbListe.orderByChild("id").addValueEventListener(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot: DataSnapshot in dataSnapshot.children) {
+                    dbListe.child((snapshot.getValue(ListaSpese::class.java) as ListaSpese).id)
+                        .child(field) //CAMPO DA AGGIORNARE
+                        .setValue(value)//VALORE DA ASSEGNARE
+                }
+            }
 
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(className, "Failed to read value.", error.toException())
+            }
+        })
+    }
 }

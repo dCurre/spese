@@ -1,5 +1,7 @@
 package com.dcurreli.spese.main.loadspese
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -13,6 +15,7 @@ import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.objects.Spesa
+import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ExcelUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SnackbarUtils
@@ -34,8 +37,7 @@ class ListaSettingsFragment : Fragment(R.layout.lista_settings_fragment) {
     private var dbSpesa: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
     private var dbListaSpese: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -51,35 +53,86 @@ class ListaSettingsFragment : Fragment(R.layout.lista_settings_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupSwitchSaldato()
+        val idLista = arguments?.getString("idLista").toString()
+        val nomeLista = arguments?.getString("nomeLista").toString()
+
+        setupSwitches(idLista)
+
+        setupButtons(idLista, nomeLista)
+
+        setupToolbar(nomeLista)
+    }
+
+    private fun setupButtons(idLista: String, nomeLista:  String) {
+
+        showHideDeleteButton(idLista)
+
+        binding.buttonDelete.setOnClickListener {
+            cancellaLista(idLista)
+        }
 
         binding.buttonAbbandona.setOnClickListener {
-            abbandonaLista()
+            abbandonaLista(idLista)
         }
 
         binding.buttonEsportaLista.setOnClickListener {
-            esportaLista()
+            esportaLista(idLista, nomeLista)
         }
-
-        binding.switchSaldato.setOnCheckedChangeListener { _, checkedId ->
-            GenericUtils.onOffSaldato(dbListaSpese, arguments?.getString("idLista").toString(), checkedId)
-        }
-
-        setupToolbar()
     }
 
-    private fun esportaLista() {
+    private fun showHideDeleteButton(idLista: String) {
+        dbListaSpese.child(idLista).get().addOnSuccessListener {
+            if (it.exists()) {
+                when {
+                    (it.getValue(ListaSpese::class.java) as ListaSpese).owner.equals(DBUtils.getCurrentUser()!!.uid)-> { binding.buttonDelete.visibility = View.VISIBLE }
+                    else -> { binding.buttonDelete.visibility = View.GONE }
+                }
+            }
+        }
+    }
+
+    private fun cancellaLista(idLista: String) {
+
+        AlertDialog.Builder(context)
+            .setTitle("Conferma")
+            .setMessage("Vuoi veramente cancellare la lista?")
+            .setPositiveButton("SI") { _, _ ->
+                //ELIMINO LE SPESE LEGATE A QUELLA LISTA
+                dbSpesa.orderByChild("listaSpesaID").equalTo(idLista).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (snapshot: DataSnapshot in dataSnapshot.children) {
+                            val spesa = snapshot.getValue(Spesa::class.java) as Spesa
+                            dbSpesa.child(spesa.idAsString()).removeValue()
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e(className, "Failed to read value.", error.toException())
+                    }
+                })
+
+                //ELIMINO LA LISTA
+                dbListaSpese.child(idLista).removeValue()
+
+                //REDIRECT MAIN PAGE
+                activity?.finish()
+                startActivity(Intent(Intent(context, MainActivity::class.java)))
+            }
+            .setNegativeButton("NO") { _, _ -> }
+            .show()
+    }
+
+    private fun esportaLista(idLista: String, nomeLista: String) {
         //Se l'utente non ha i permessi non posso scaricare il file
         (activity as MainActivity).checkUserPermission()
 
-        val nomeLista = "Riepilogo_spese_${arguments?.getString("nomeLista").toString()}"
+        val nomeLista = "Riepilogo_spese_$nomeLista"
         val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
-        val completeFileName = "${nomeLista}.xlsx"
+        val completeFileName = "$nomeLista.xlsx"
         val completePath = "$downloadFolder/$completeFileName"
         val filePath = File(completePath)
 
         //Scrivo le spese nel file
-        dbSpesa.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object : ValueEventListener {
+        dbSpesa.orderByChild("listaSpesaID").equalTo(idLista).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val hssfWorkbook = HSSFWorkbook()
                 val hssfSheet: HSSFSheet = hssfWorkbook.createSheet(nomeLista)
@@ -121,36 +174,71 @@ class ListaSettingsFragment : Fragment(R.layout.lista_settings_fragment) {
         })
     }
 
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    private fun abbandonaLista(){
-    }
+    private fun abbandonaLista(idLista: String){
+        dbListaSpese.child(idLista).get().addOnSuccessListener {
+            if (it.exists()) {
+                val lista : ListaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
 
-    private fun setupSwitchSaldato(){
-        if (arguments != null) {
-            dbListaSpese.child(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
-                //Se non esiste creo l'utente nella lista utenti
-                if (it.exists()) {
-                    val lista : ListaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
-                    when (lista.isSaldato) {
-                        true -> binding.switchSaldato.isChecked = true
-                        false -> binding.switchSaldato.isChecked = false
-                    }
+                //Se la lista ha un solo partecipante
+                if(lista.partecipanti.size == 1 && lista.partecipanti[0].equals(DBUtils.getCurrentUser()!!.uid)){
+                    AlertDialog.Builder(context)
+                        .setTitle("Conferma")
+                        .setMessage("Sei l'unico partecipante di questa lista, vuoi cancellarla?")
+                        .setPositiveButton("SI") { _, _ ->
+                            cancellaLista(idLista)
+                        }
+                        .setNegativeButton("NO") { _, _ -> }
+                        .show()
+                } else {
+                    AlertDialog.Builder(context)
+                        .setTitle("Conferma")
+                        .setMessage("Vuoi veramente abbandonare la lista?")
+                        .setPositiveButton("SI") { _, _ ->
+                            dbListaSpese.child(idLista).child("owner").setValue(lista.partecipanti[1])
+
+                            dbListaSpese.child(idLista).child("owner").setValue(lista.partecipanti[1])
+                            lista.partecipanti.removeAt(0)
+                            dbListaSpese.child(idLista).child("partecipanti").setValue(lista.partecipanti)
+
+                            //REDIRECT MAIN PAGE
+                            activity?.finish()
+                            startActivity(Intent(Intent(context, MainActivity::class.java)))
+                        }
+                        .setNegativeButton("NO") { _, _ -> }
+                        .show()
                 }
-            }.addOnFailureListener {
-                Log.e(className, "<<Error getting utente", it)
+
+
+                GenericUtils.setupSwitch(binding.switchSaldato, lista.isSaldato)
             }
+        }.addOnFailureListener {
+            Log.e(className, "<<Error getting utente", it)
         }
     }
 
-    private fun setupToolbar() {
+    private fun setupSwitches(idLista: String) {
+        binding.switchSaldato.setOnCheckedChangeListener { _, checkedId ->
+            GenericUtils.onOffSaldato(dbListaSpese, idLista, checkedId)
+        }
+
+        dbListaSpese.child(idLista).get().addOnSuccessListener {
+            if (it.exists()) {
+                val lista : ListaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
+                GenericUtils.setupSwitch(binding.switchSaldato, lista.isSaldato)
+            }
+        }.addOnFailureListener {
+            Log.e(className, "<<Error getting utente", it)
+        }
+    }
+
+    private fun setupToolbar(nomeLista: String) {
         //Cambio il titolo della toolbar
-        (activity as MainActivity).setToolbarTitle("Impostazioni ${arguments?.getString("nomeLista")}")
+        (activity as MainActivity).setToolbarTitle("Impostazioni $nomeLista")
         (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
     }
 }

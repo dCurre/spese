@@ -1,10 +1,13 @@
 package com.dcurreli.spese.objects;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.dcurreli.spese.utils.GenericUtils;
-import com.dcurreli.spese.utils.MeseUtils;
+import com.dcurreli.spese.utils.DateUtils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.ktx.Firebase;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -32,9 +35,10 @@ public class Spesa {
     public Spesa() {
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public String extractMensilitaAnno() {
         String[] dataSpesa = this.data.split("/");
-        return MeseUtils.INSTANCE.getMonthAsText(dataSpesa[1]) + " " + dataSpesa[2];
+        return DateUtils.INSTANCE.getMonthAsText(dataSpesa[1]) + " " + dataSpesa[2];
     }
 
     public String getId() {
@@ -45,7 +49,7 @@ public class Spesa {
         this.id = id;
     }
 
-    public String idTextAsString() {
+    public String idAsString() {
         return "" + id;
     }
 

@@ -17,8 +17,8 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.Spesa
+import com.dcurreli.spese.utils.DateUtils
 import com.dcurreli.spese.utils.GenericUtils
-import com.dcurreli.spese.utils.MeseUtils
 import com.dcurreli.spese.utils.SnackbarUtils
 import com.dcurreli.spese.utils.SpesaUtils
 import com.google.firebase.database.DataSnapshot
@@ -178,7 +178,7 @@ class AddSpesaFragment : Fragment(R.layout.add_spesa) {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         //Di base settato a today
-        binding.spesaData.setText(MeseUtils.formatData(Calendar.getInstance().time))
+        binding.spesaData.setText(DateUtils.formatData(Calendar.getInstance().time))
 
         binding.spesaData.setOnClickListener {
             val datePickerDialog = DatePickerDialog(

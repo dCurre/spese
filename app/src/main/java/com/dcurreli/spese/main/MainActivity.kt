@@ -61,8 +61,6 @@ open class MainActivity : AppCompatActivity() {
 
         //Controllo se ho un dynamic link attivo
         checkDynamicLink()
-
-        //
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

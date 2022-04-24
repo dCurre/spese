@@ -1,10 +1,12 @@
 package com.dcurreli.spese.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Switch
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -43,7 +45,7 @@ object GenericUtils {
         val arrayData: List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
         return "" + YearMonth.of(
             arrayData[1].toInt(),
-            MeseUtils.getMonthAsNumber(arrayData[0]).toString().toInt()
+            DateUtils.getMonthAsNumber(arrayData[0]).toString().toInt()
         ).atEndOfMonth()
     }
 
@@ -52,7 +54,7 @@ object GenericUtils {
         val arrayData: List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
         return "" + YearMonth.of(
             arrayData[1].toInt(),
-            MeseUtils.getMonthAsNumber(arrayData[0]).toString().toInt()
+            DateUtils.getMonthAsNumber(arrayData[0]).toString().toInt()
         ).atDay(1)
     }
 
@@ -66,6 +68,18 @@ object GenericUtils {
             false -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 db.child(user.uid).child("darkTheme").setValue(false)
+            }
+        }
+    }
+
+    // Gestisco preferenze tema scuro/chiaro
+    fun onOffNascondiListe(db: DatabaseReference, user: FirebaseUser, bool: Boolean) {
+        when (bool) {
+            true -> {
+                db.child(user.uid).child("nascondiListeSaldate").setValue(true)
+            }
+            false -> {
+                db.child(user.uid).child("nascondiListeSaldate").setValue(false)
             }
         }
     }
@@ -105,6 +119,13 @@ object GenericUtils {
         bundle.putString("idLista", arguments?.getString("idLista"))
         bundle.putString("nomeLista", arguments?.getString("nomeLista"))
         return bundle
+    }
+
+    fun setupSwitch(@SuppressLint("UseSwitchCompatOrMaterialCode") switch: Switch, isActive: Boolean){
+        when (isActive) {
+            true -> switch.isChecked = true
+            false -> switch.isChecked = false
+        }
     }
 
 }

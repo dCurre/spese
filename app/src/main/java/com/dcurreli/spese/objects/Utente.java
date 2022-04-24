@@ -8,6 +8,7 @@ public class Utente {
     private String email;
     private String image;
     private boolean darkTheme;
+    private boolean nascondiListeSaldate;
 
     public Utente(String uid, String nominativo, String email, String image){
         this.user_id = uid;
@@ -15,6 +16,7 @@ public class Utente {
         this.email = email;
         this.image = image;
         this.darkTheme = false;
+        this.nascondiListeSaldate = false;
     }
     public Utente(){
     }
@@ -54,4 +56,8 @@ public class Utente {
     public String getImage() { return image; }
 
     public void setImage(String image) { this.image = image; }
+
+    public boolean isNascondiListeSaldate() { return nascondiListeSaldate; }
+
+    public void setNascondiListeSaldate(boolean nascondiListeSaldate) { this.nascondiListeSaldate = nascondiListeSaldate; }
 }

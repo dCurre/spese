@@ -10,6 +10,9 @@ import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
+import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.utils.GenericUtils.dateToTimestampSeconds
+import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -19,6 +22,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity() {

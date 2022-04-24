@@ -1,8 +1,15 @@
 package com.dcurreli.spese.objects;
 
-import androidx.annotation.NonNull;
+import android.os.Build;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
+import com.dcurreli.spese.utils.GenericUtils;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ListaSpese {
     private String id = null;
@@ -10,13 +17,16 @@ public class ListaSpese {
     private ArrayList<String> partecipanti = null;
     private String owner;
     private boolean saldato;
+    private Long timestamp;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public ListaSpese(String id, String nome, ArrayList<String> partecipanti, String owner) {
         this.id = id;
         this.nome = nome;
         this.partecipanti = partecipanti;
         this.owner = owner;
         this.saldato = false;
+        this.timestamp = GenericUtils.INSTANCE.dateToTimestampSeconds(new Date());
     }
 
     public ListaSpese() {
@@ -65,4 +75,8 @@ public class ListaSpese {
     public void setSaldato(boolean saldato) {
         this.saldato = saldato;
     }
+
+    public Long getTimestamp() { return timestamp; }
+
+    public void setTimestamp(Long timestamp) { this.timestamp = timestamp; }
 }

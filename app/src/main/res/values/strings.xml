@@ -20,6 +20,7 @@
     <string name="sign_in_with_google">Accedi con Google</string>
     <string name="sign_out">Esci</string>
     <string name="leave">Abbandona</string>
+    <string name="delete">Cancella</string>
     <string name="list_name">Nome lista</string>
     <string name="add">Aggiungi</string>
     <string name="spesa">Spesa</string>
