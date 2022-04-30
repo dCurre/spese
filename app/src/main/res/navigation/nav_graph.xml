@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/addSpesaFragment"
-        android:name="com.dcurreli.spese.main.AddSpesaFragment"
+        android:name="com.dcurreli.spese.main.NuovaSpesaFragment"
         android:label="@string/add_spesa_fragment_label"
         tools:layout="@layout/add_spesa">
 
@@ -57,7 +57,7 @@
         tools:layout="@layout/calendar_fragment" />
     <fragment
         android:id="@+id/addListaSpeseFragment"
-        android:name="com.dcurreli.spese.main.AddListaSpeseFragment"
+        android:name="com.dcurreli.spese.main.NuovaListaSpeseFragment"
         android:label="@string/add_lista_spese_fragment_label"
         tools:layout="@layout/add_lista_spese">
         <action
@@ -74,7 +74,7 @@
         app:destination="@id/joinFragment" />
     <fragment
         android:id="@+id/listaSettingsFragment"
-        android:name="com.dcurreli.spese.main.loadspese.ListaSettingsFragment"
+        android:name="com.dcurreli.spese.main.loadspese.SettingsListaSpeseFragment"
         android:label="lista_settings_fragment"
         tools:layout="@layout/lista_settings_fragment" />
     <activity

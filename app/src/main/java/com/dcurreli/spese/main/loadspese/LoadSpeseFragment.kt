@@ -74,8 +74,8 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private fun setupTabLayout(){
         //Setup tab layout (schede orizzontali)
         val adapter = ViewPagerAdapter(childFragmentManager)
-        adapter.addFragment(SpeseTabFragment.newInstance(arguments), "Spese", R.drawable.ic_shopping_cart)
-        adapter.addFragment(SaldoTabFragment.newInstance(arguments), "Saldo", R.drawable.ic_euro)
+        adapter.addFragment(TabSpeseListaSpeseFragment.newInstance(arguments), "Spese", R.drawable.ic_shopping_cart)
+        adapter.addFragment(TabSaldoListaSpeseFragment.newInstance(arguments), "Saldo", R.drawable.ic_euro)
         binding.viewPagerSchede.adapter = adapter
         binding.tableLayoutSchede.setupWithViewPager(binding.viewPagerSchede)
 

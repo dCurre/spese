@@ -16,7 +16,7 @@ import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.dcurreli.spese.utils.SnackbarUtils
 import com.google.firebase.database.DatabaseReference
 
-class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
+class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
 
     private val className = javaClass.simpleName
     private var _binding: AddListaSpeseBinding? = null
@@ -56,6 +56,7 @@ class AddListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
         _binding = null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupAddButton(view: View) {
         binding.spesaButtonAddSpesa.setOnClickListener {
             //Chiudo la tastiera come prima cosa

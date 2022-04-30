@@ -26,13 +26,13 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import android.view.View as View1
 
 
-class SpeseTabFragment : Fragment(R.layout.load_spese_tab_spese) {
+class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
 
     private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
 
     companion object {
-        fun newInstance(args: Bundle?): SpeseTabFragment{
-            val fragment = SpeseTabFragment().apply{
+        fun newInstance(args: Bundle?): TabSpeseListaSpeseFragment{
+            val fragment = TabSpeseListaSpeseFragment().apply{
                 arguments =  args
             }
             return fragment

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginVertical="20dp"
-    tools:context=".main.loadspese.ListaSettingsFragment">
+    tools:context=".main.loadspese.SettingsListaSpeseFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -29,7 +29,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class AddSpesaFragment : Fragment(R.layout.add_spesa) {
+class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null

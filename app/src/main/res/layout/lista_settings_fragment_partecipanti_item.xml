@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/spese_list_cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="10dp"
+    android:orientation="horizontal"
+    card_view:cardPreventCornerOverlap="false"
+    card_view:cardElevation="0dp">
+
+    <RelativeLayout
+        android:id="@+id/spesa_list_first_layout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+
+        <ImageView
+            android:id="@+id/spesa_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/spesa_item_icon_style"
+            android:minWidth="20dp"
+            android:minHeight="20dp"
+            app:tint="?colorOnPrimary" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/spesa_spesa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/spesa_icon"
+            android:autoSizeTextType="uniform"
+            android:breakStrategy="balanced"
+            android:fontFamily="@font/monsterrat_bold"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Utente"
+            android:textColor="@color/textPrimary"
+            android:textSize="9pt"
+            android:textStyle="bold"
+            card_view:ignore="UnusedAttribute" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

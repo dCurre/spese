@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat.startActivity
+import com.dcurreli.spese.R
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -14,14 +15,14 @@ object SnackbarUtils {
     fun showSnackbarError(message: String, constraintLayout: ConstraintLayout) {
         val snackbar = Snackbar.make(constraintLayout, message, Snackbar.LENGTH_LONG)
         snackbar.view.setBackgroundColor(errorColor)
-        //snackbar.setAnchorView(R.id.bottom_nav)
+        snackbar.setAnchorView(R.id.bottom_nav)
         snackbar.show()
     }
 
     fun showSnackbarOK(message: String, constraintLayout: ConstraintLayout) {
         val snackbar = Snackbar.make(constraintLayout, message, Snackbar.LENGTH_LONG)
         snackbar.view.setBackgroundColor(successColor)
-        //snackbar.setAnchorView(R.id.bottom_nav)
+        snackbar.setAnchorView(R.id.bottom_nav)
         snackbar.show()
     }
 

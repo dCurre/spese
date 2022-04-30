@@ -30,7 +30,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
 
-class ListaSettingsFragment : Fragment(R.layout.lista_settings_fragment) {
+class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
     private val className = javaClass.simpleName
     private var _binding: ListaSettingsFragmentBinding? = null
