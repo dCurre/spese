@@ -2,12 +2,10 @@ package com.dcurreli.spese.objects;
 
 import android.os.Build;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.dcurreli.spese.utils.GenericUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 

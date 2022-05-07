@@ -1,7 +1,5 @@
 package com.dcurreli.spese.objects;
 
-import android.net.Uri;
-
 public class Utente {
     private String user_id;
     private String nominativo;

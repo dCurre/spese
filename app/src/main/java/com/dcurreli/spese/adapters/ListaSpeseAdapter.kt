@@ -1,6 +1,5 @@
 package com.dcurreli.spese.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
 
-class ListaSpeseAdapter(private val context: Context, private val listaSpeseList: ArrayList<ListaSpese>, private val navController: NavController) : RecyclerView.Adapter<ListaSpeseAdapter.ViewHolder>() {
+class ListaSpeseAdapter(private val listaSpeseList: ArrayList<ListaSpese>, private val navController: NavController) : RecyclerView.Adapter<ListaSpeseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_fragment_lista_spese, parent, false))
@@ -38,9 +37,9 @@ class ListaSpeseAdapter(private val context: Context, private val listaSpeseList
         }
 
         if (listaSpese.isSaldato) {
-            holder.saldato.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_green_dark))
+            holder.saldato.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, android.R.color.holo_green_dark))
         } else {
-            holder.saldato.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
+            holder.saldato.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, android.R.color.holo_red_dark))
         }
 
     }

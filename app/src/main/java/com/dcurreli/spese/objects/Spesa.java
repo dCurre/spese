@@ -4,8 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.dcurreli.spese.utils.GenericUtils;
 import com.dcurreli.spese.utils.DateUtils;
+import com.dcurreli.spese.utils.GenericUtils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

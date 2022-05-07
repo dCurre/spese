@@ -4,7 +4,6 @@ import com.dcurreli.spese.utils.GenericUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 public class DareAvere {
     private String dare;
