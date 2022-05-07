@@ -5,45 +5,54 @@
     android:id="@+id/spese_list_cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginRight="10dp"
     android:orientation="horizontal"
-    card_view:cardPreventCornerOverlap="false"
-    card_view:cardElevation="0dp">
+    card_view:cardElevation="0dp"
+    card_view:cardPreventCornerOverlap="false">
 
     <RelativeLayout
-        android:id="@+id/spesa_list_first_layout"
+        android:id="@+id/partecipanti_list_item"
         android:layout_width="match_parent"
-        android:layout_height="30dp">
+        android:layout_height="40dp">
 
         <ImageView
-            android:id="@+id/spesa_icon"
+            android:id="@+id/partecipante_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginHorizontal="10dp"
-            android:background="@drawable/spesa_item_icon_style"
             android:minWidth="20dp"
             android:minHeight="20dp"
-            app:tint="?colorOnPrimary" />
+            app:tint="?colorOnPrimary"
+            card_view:ignore="ContentDescription" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spesa_spesa"
+            android:id="@+id/tw_partecipante"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/spesa_icon"
+            android:layout_toEndOf="@+id/partecipante_icon"
             android:autoSizeTextType="uniform"
             android:breakStrategy="balanced"
-            android:fontFamily="@font/monsterrat_bold"
+            android:fontFamily="@font/montserrat_light"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:text="Utente"
+            android:text="@string/partecipante"
             android:textColor="@color/textPrimary"
             android:textSize="9pt"
             android:textStyle="bold"
-            card_view:ignore="UnusedAttribute" />
+            card_view:ignore="RelativeOverlap,UnusedAttribute" />
+
+        <ImageView
+            android:id="@+id/owner_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_pagatore"
+            android:backgroundTint="@color/primary"
+            android:layout_marginEnd="30dp"
+            app:tint="?colorOnPrimary"
+            android:contentDescription="Owner" />
 
     </RelativeLayout>
 

@@ -1,5 +1,6 @@
 package com.dcurreli.spese.main.loadspese
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -9,12 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
+import com.dcurreli.spese.adapters.PartecipantiAdapter
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.objects.Spesa
+import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ExcelUtils
 import com.dcurreli.spese.utils.GenericUtils
@@ -36,6 +40,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     private var _binding: ListaSettingsFragmentBinding? = null
     private var dbSpesa: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
     private var dbListaSpese: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
+    private var dbUtente: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value)
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -56,11 +61,46 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         val idLista = arguments?.getString("idLista").toString()
         val nomeLista = arguments?.getString("nomeLista").toString()
 
+        printPartecipanti(idLista)
+
         setupSwitches(idLista)
 
         setupButtons(idLista, nomeLista)
 
         setupToolbar(nomeLista)
+    }
+
+    private fun printPartecipanti(idLista: String) {
+       dbListaSpese.child(idLista).get().addOnSuccessListener {
+            if (it.exists()) {
+                val listaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
+                val partecipantiArray = ArrayList<Utente>()
+                val partecipantiAdapter = PartecipantiAdapter(partecipantiArray, listaSpese.owner)
+                binding.listaPartecipanti.layoutManager = LinearLayoutManager(context)
+                binding.listaPartecipanti.adapter = partecipantiAdapter
+
+                dbUtente.addValueEventListener(object : ValueEventListener {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        partecipantiArray.clear()
+
+                        //Ciclo per ottenere spese e totale
+                        for (snapshot: DataSnapshot in dataSnapshot.children) {
+                            val utente = snapshot.getValue(Utente::class.java) as Utente
+
+                            if(listaSpese.partecipanti.contains(utente.user_id)){
+                                partecipantiArray.add(utente)
+                            }
+                        }
+
+                        partecipantiAdapter.notifyDataSetChanged()
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e(className, "Failed to read value.", error.toException())
+                    }
+                })
+            }
+        }
     }
 
     private fun setupButtons(idLista: String, nomeLista:  String) {
@@ -125,9 +165,8 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         //Se l'utente non ha i permessi non posso scaricare il file
         (activity as MainActivity).checkUserPermission()
 
-        val nomeLista = "Riepilogo_spese_$nomeLista"
         val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
-        val completeFileName = "$nomeLista.xlsx"
+        val completeFileName = "Riepilogo_spese_$nomeLista.xlsx"
         val completePath = "$downloadFolder/$completeFileName"
         val filePath = File(completePath)
 

@@ -61,7 +61,7 @@ object SpesaUtils {
     ): SpesaAdapter {
         val spesaArray = ArrayList<Spesa>()
         val arrayTemp = ArrayList<Spesa>()
-        val spesaAdapter = SpesaAdapter(context, spesaArray)
+        val spesaAdapter = SpesaAdapter(spesaArray)
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = spesaAdapter
 
@@ -112,8 +112,8 @@ object SpesaUtils {
     ) {
         val spesaArray = ArrayList<Spesa>()
         val dareAvereArray = ArrayList<DareAvere>()
-        val saldoAdapter = SaldoAdapter(context, spesaArray)
-        val dareAvereAdapter = DareAvereAdapter(context, dareAvereArray)
+        val saldoAdapter = SaldoAdapter(spesaArray)
+        val dareAvereAdapter = DareAvereAdapter(dareAvereArray)
         binding.listaSaldoTotale.layoutManager = LinearLayoutManager(context)
         binding.listaSaldoDareAvere.layoutManager = LinearLayoutManager(context)
         binding.listaSaldoTotale.adapter = saldoAdapter
@@ -186,27 +186,4 @@ object SpesaUtils {
         binding.spesaImporto.clearFocus()
         binding.spesaPagatoreText.clearFocus()
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    @JvmStatic
-    fun deleteSpesa(spesa: Spesa) {
-        //TODO capire se mi serve cancellare il mese, non penso
-        //val dataForQuery = MeseUtils.createDataForQueryFromSpesa(spesa)!!
-
-        //In seguito cancello il mese
-        /*db.orderByChild("timestamp").startAfter(dataForQuery.startsAt.toDouble())
-            .endBefore(dataForQuery.endsAt.toDouble())
-            .get().addOnSuccessListener {
-                Log.e(TAG, "<< Children count ${it.childrenCount}")
-                if (it.exists() && it.childrenCount < 1) {
-                    //Essendoci solo una spesa nel mese posso pure cancellare il mese stesso
-                    MeseUtils.deleteMese(spesa)
-                }
-            }.addOnFailureListener {
-                Log.e(TAG, "<< Error getting mese", it)
-            }
-
-         */
-    }
-
 }

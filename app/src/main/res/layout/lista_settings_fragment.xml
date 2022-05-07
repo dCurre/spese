@@ -10,9 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/tw_liste"
@@ -20,9 +18,16 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/monsterrat_bold"
             android:padding="10dp"
-            android:text="Partecipanti:"
+            android:text="@string/partecipanti_header"
             android:textColor="@color/textPrimary"
             android:textSize="20sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_partecipanti"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/text_view_saldato_switch"
+            android:layout_below="@id/tw_liste" />
 
         <TextView
             android:id="@+id/text_view_saldato_switch"
@@ -62,6 +67,7 @@
             tools:ignore="RtlSymmetry" />
 
         <ImageView
+            android:id="@+id/iw_esporta"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/ic_excel"

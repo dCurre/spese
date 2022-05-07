@@ -107,7 +107,7 @@ object ListaSpeseUtils {
 
         val listaSpeseArray = ArrayList<ListaSpese>()
         val arrayTemp = ArrayList<ListaSpese>()
-        val listaSpeseAdapter = ListaSpeseAdapter(context, listaSpeseArray, binding, navController)
+        val listaSpeseAdapter = ListaSpeseAdapter(context, listaSpeseArray, navController)
 
         binding.listaSpese.adapter = listaSpeseAdapter
 
