@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +17,16 @@ import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ViewPagerAdapter
 import com.dcurreli.spese.databinding.LoadSpeseBinding
+import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
+import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.ktx.Firebase
 import android.view.View as View1
 
 
@@ -28,6 +35,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private var _binding: LoadSpeseBinding? = null
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
+    private var dbListaSpese: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -49,7 +57,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         //Nascondo bottom nav
         (activity as MainActivity).setBottomNavVisibility(false)
 
-        return binding.root
+        return this.binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -66,8 +74,16 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     private fun setupAddSpesaButton() {
-        binding.addSpesaButton.setOnClickListener{
-            findNavController().navigate(R.id.addSpesaFragment, arguments)
+        dbListaSpese.child(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
+            if(it.exists() && (it.getValue(ListaSpese::class.java) as ListaSpese).isSaldato){
+                binding.addSpesaButton.visibility = GONE
+            } else {
+                binding.addSpesaButton.visibility = VISIBLE
+            }
+
+            binding.addSpesaButton.setOnClickListener{
+                findNavController().navigate(R.id.addSpesaFragment, arguments)
+            }
         }
     }
 

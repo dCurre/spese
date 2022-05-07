@@ -1,5 +1,6 @@
 package com.dcurreli.spese.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,9 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.dcurreli.spese.R
 import com.dcurreli.spese.objects.Utente
+
 
 class PartecipantiAdapter(private val utenteList: ArrayList<Utente>, private val listOwnerId: String) : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>() {
 
@@ -21,10 +22,21 @@ class PartecipantiAdapter(private val utenteList: ArrayList<Utente>, private val
 
         val utente = utenteList[position]
         holder.partecipante.text = utente.nominativo
-        //Picasso.get().load(utente.getImage()).into(holder.userImage);
-        //Picasso.get().load(utente.getImage()).into(holder.userImage);
-        Glide.with(holder.itemView.context).load(utente.image)
-            .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.userImage)
+
+        //Log.i("prova link $position", ">>${utente.image}")
+        //Glide.with(holder.itemView.context).load("https://lh3.googleusercontent.com/a-/AOh14Gj8PnDprCN5m7qsP50cfrLDXaXTB_dV6cZ9O5oTfg").diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.userImage)
+
+        if(holder.itemView.context != null){
+            Log.i("prova link $position", ">>${utente.image}")
+            Glide.with(holder.userImage.context)
+                .asBitmap()
+                .load("https://lh3.googleusercontent.com/a-/AOh14Gj8PnDprCN5m7qsP50cfrLDXaXTB_dV6cZ9O5oTfg")
+                .into(holder.userImage)
+        }
+
+
+
+
         if (!utente.user_id.equals(listOwnerId, ignoreCase = true)) {
             holder.ownerIcon.visibility = View.GONE
         }

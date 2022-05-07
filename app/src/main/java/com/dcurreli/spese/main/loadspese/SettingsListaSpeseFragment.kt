@@ -100,7 +100,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
                     }
                 })
             }
-        }
+       }
     }
 
     private fun setupButtons(idLista: String, nomeLista:  String) {
