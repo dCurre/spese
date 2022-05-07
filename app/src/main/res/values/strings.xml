@@ -29,6 +29,8 @@
     <string name="pagatore">Pagato da</string>
     <string name="export">Esporta</string>
     <string name="saldato">Saldato</string>
+    <string name="partecipante">Partecipante</string>
+    <string name="partecipanti_header">Partecipanti:</string>
 
     //Categorie lista spese
     <string-array name="categorieListe">
