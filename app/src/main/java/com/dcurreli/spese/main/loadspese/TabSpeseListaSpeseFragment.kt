@@ -17,18 +17,16 @@ import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.ListaSpese
+import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.SnackbarUtils
 import com.dcurreli.spese.utils.SpesaUtils
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import android.view.View as View1
 
 
 class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
 
-    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
+    private var db = DBUtils.getDatabaseReference(TablesEnum.LISTE)
 
     companion object {
         fun newInstance(args: Bundle?): TabSpeseListaSpeseFragment{

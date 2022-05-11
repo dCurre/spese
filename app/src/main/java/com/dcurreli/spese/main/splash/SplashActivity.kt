@@ -15,13 +15,10 @@ import com.dcurreli.spese.main.login.LoginActivity
 import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
-    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value.lowercase())
+    private var db = DBUtils.getDatabaseReference(TablesEnum.UTENTE)
     private lateinit var utente : Utente
     private lateinit var binding: ActivitySplashBinding
     private val className = javaClass.simpleName

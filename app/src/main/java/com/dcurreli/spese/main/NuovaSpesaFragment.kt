@@ -9,30 +9,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.utils.DateUtils
-import com.dcurreli.spese.utils.GenericUtils
-import com.dcurreli.spese.utils.SnackbarUtils
-import com.dcurreli.spese.utils.SpesaUtils
+import com.dcurreli.spese.utils.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
-    private var dbSpesa: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
+    private var dbSpesa: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.SPESA)
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -119,23 +113,23 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     }
 
     private fun setupAutocompleteInputs() {
-        val spesaText : AutoCompleteTextView = binding.spesaSpesaText
-        val pagatoreText : AutoCompleteTextView = binding.spesaPagatoreText
+        val spesaText = binding.spesaSpesaText
+        val pagatoreText = binding.spesaPagatoreText
         val arrayAdapterSpese = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
         val arrayAdapterPagatori = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
         dbSpesa.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
             ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val tempSpese = ArrayList<String?>()
-                val tempPagatori = ArrayList<String?>()
+                val tempSpese = ArrayList<String>()
+                val tempPagatori = ArrayList<String>()
                 arrayAdapterSpese.clear()
                 arrayAdapterPagatori.clear()
 
                 //Ciclo per ottenere spese e pagatori
-                for (snapshot: DataSnapshot in dataSnapshot.children) {
-                    tempSpese.add(snapshot.child("spesa").getValue(String::class.java))
-                    tempPagatori.add(snapshot.child("pagatore").getValue(String::class.java))
+                for (snapshot in dataSnapshot.children) {
+                    tempSpese.add(snapshot.child("spesa").getValue(String::class.java) as String)
+                    tempPagatori.add(snapshot.child("pagatore").getValue(String::class.java) as String)
                 }
 
                 //Faccio la distinct per filtrarmi

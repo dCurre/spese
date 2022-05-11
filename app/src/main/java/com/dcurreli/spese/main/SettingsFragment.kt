@@ -20,9 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 
 class SettingsFragment : Fragment(R.layout.settings_fragment) {
@@ -30,7 +27,7 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     private val className = javaClass.simpleName
     private var _binding: SettingsFragmentBinding? = null
     private lateinit var googleSignInClient: GoogleSignInClient
-    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value)
+    private var db = DBUtils.getDatabaseReference(TablesEnum.UTENTE)
     private lateinit var user : FirebaseUser
     private lateinit var mAuth: FirebaseAuth
 
@@ -39,7 +36,7 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = SettingsFragmentBinding.inflate(inflater, container, false)
 

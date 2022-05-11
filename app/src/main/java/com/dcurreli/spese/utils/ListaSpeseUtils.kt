@@ -19,16 +19,12 @@ import com.dcurreli.spese.objects.Utente
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 object ListaSpeseUtils {
     private val className by lazy { javaClass.simpleName }
-    private var dbListe: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
-    private var dbUtente: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value)
-    private lateinit var listaSpese: ListaSpese
+    private var dbListe = DBUtils.getDatabaseReference(TablesEnum.LISTE)
+    private var dbUtente = DBUtils.getDatabaseReference(TablesEnum.UTENTE)
     private lateinit var currentUser: FirebaseUser
     private var partecipanti : ArrayList<String> = ArrayList()
 
@@ -121,7 +117,7 @@ object ListaSpeseUtils {
                     val utente = it.getValue(Utente::class.java) as Utente
 
                     for (snapshot: DataSnapshot in dataSnapshot.children) {
-                        listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
+                        val listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
                         if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser()?.uid)){
                             //Se non nascondo liste saldate stampo tutto, altrimenti stampo solo quelle non saldate
                             if (!utente.isNascondiListeSaldate || (utente.isNascondiListeSaldate && !listaSpese.isSaldato)) {

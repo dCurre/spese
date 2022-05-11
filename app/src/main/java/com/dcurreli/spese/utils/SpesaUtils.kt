@@ -21,15 +21,12 @@ import com.dcurreli.spese.objects.DareAvere
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import java.math.BigDecimal
 
 object SpesaUtils {
     private val className = javaClass.simpleName
-    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
+    private var db = DBUtils.getDatabaseReference(TablesEnum.SPESA)
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun creaSepsa(binding: AddSpesaBinding, idLista : String) {

@@ -17,9 +17,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-
 
 @Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity() {
@@ -32,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var mAuth : FirebaseAuth
     private val className = javaClass.simpleName
-    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value.lowercase())
+    private var db: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.UTENTE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

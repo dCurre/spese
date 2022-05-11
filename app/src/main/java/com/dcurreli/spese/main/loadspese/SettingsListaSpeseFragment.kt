@@ -27,8 +27,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import java.io.File
@@ -38,9 +36,9 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
     private val className = javaClass.simpleName
     private var _binding: ListaSettingsFragmentBinding? = null
-    private var dbSpesa: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
-    private var dbListaSpese: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
-    private var dbUtente: DatabaseReference = Firebase.database.reference.child(TablesEnum.UTENTE.value)
+    private var dbSpesa: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.SPESA)
+    private var dbListaSpese: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.LISTE)
+    private var dbUtente: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.UTENTE)
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -141,8 +139,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
                 dbSpesa.orderByChild("listaSpesaID").equalTo(idLista).addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for (snapshot: DataSnapshot in dataSnapshot.children) {
-                            val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                            dbSpesa.child(spesa.idAsString()).removeValue()
+                            dbSpesa.child((snapshot.getValue(Spesa::class.java) as Spesa).idAsString()).removeValue()
                         }
                     }
                     override fun onCancelled(error: DatabaseError) {

@@ -4,16 +4,13 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.dcurreli.spese.utils.DBUtils;
 import com.dcurreli.spese.utils.DateUtils;
 import com.dcurreli.spese.utils.GenericUtils;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class Spesa {
-    private DatabaseReference db = FirebaseDatabase.getInstance().getReference().getRoot().child("spesa");
     private String id;
     private String spesa;
     private double importo;
@@ -103,6 +100,6 @@ public class Spesa {
     public void setListaSpesaID(String listaSpesaID) { this.listaSpesaID = listaSpesaID; }
 
     public void delete(){
-        db.child(this.id).removeValue();
+        DBUtils.INSTANCE.getDatabaseReference("spesa").child(this.id).removeValue();
     }
 }

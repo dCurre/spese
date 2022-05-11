@@ -4,12 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -20,29 +17,25 @@ import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
 import com.dcurreli.spese.objects.ListaSpese
+import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import com.google.firebase.ktx.Firebase
-import android.view.View as View1
-
 
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private var _binding: LoadSpeseBinding? = null
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
-    private var dbListaSpese: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value)
+    private var dbListaSpese = DBUtils.getDatabaseReference(TablesEnum.LISTE)
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View1 {
+    ): View {
         _binding = LoadSpeseBinding.inflate(inflater, container, false)
 
         //Setto il nome della toolbar in base al bottone di spesa che ho clickato
@@ -61,7 +54,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 

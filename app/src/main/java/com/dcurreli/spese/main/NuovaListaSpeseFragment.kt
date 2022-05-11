@@ -14,16 +14,11 @@ import com.dcurreli.spese.databinding.AddListaSpeseBinding
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.dcurreli.spese.utils.SnackbarUtils
-import com.google.firebase.database.DatabaseReference
 
 class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
 
     private val className = javaClass.simpleName
     private var _binding: AddListaSpeseBinding? = null
-    private lateinit var db: DatabaseReference
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     @SuppressLint("RestrictedApi")

@@ -32,11 +32,11 @@ object GenericUtils {
         return dateToTimestampSeconds(SimpleDateFormat(pattern).parse(data))
     }
 
-    fun dateToTimestampSeconds(date: Date): Long {
-        return Timestamp(date).seconds
+    fun dateToTimestampSeconds(date: Date?): Long {
+        return Timestamp(date!!).seconds
     }
 
-    fun dateStringToDate(dataString: String, pattern: String): Date {
+    fun dateStringToDate(dataString: String, pattern: String): Date? {
         return SimpleDateFormat(pattern).parse(dataString)
     }
 
@@ -45,7 +45,7 @@ object GenericUtils {
         val arrayData: List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
         return "" + YearMonth.of(
             arrayData[1].toInt(),
-            DateUtils.getMonthAsNumber(arrayData[0]).toString().toInt()
+            DateUtils.getMonthAsNumber(arrayData[0]).toInt()
         ).atEndOfMonth()
     }
 
@@ -54,7 +54,7 @@ object GenericUtils {
         val arrayData: List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
         return "" + YearMonth.of(
             arrayData[1].toInt(),
-            DateUtils.getMonthAsNumber(arrayData[0]).toString().toInt()
+            DateUtils.getMonthAsNumber(arrayData[0]).toInt()
         ).atDay(1)
     }
 
@@ -101,13 +101,13 @@ object GenericUtils {
     }
 
     fun importoAsEur(double : Double): String {
-        return "${String.format("%.2f", double)} €";
+        return "${String.format("%.2f", double)} €"
     }
 
 
     fun createBundleForListaSpese(idLista: String, nomeLista: String?): Bundle {
         //Utile per creare un bundle per load spese fragment
-        val bundle : Bundle = Bundle()
+        val bundle = Bundle()
         bundle.putString("idLista", idLista)
         bundle.putString("nomeLista", nomeLista)
         return bundle
@@ -115,7 +115,7 @@ object GenericUtils {
 
     fun createBundleForListaSpese(arguments: Bundle?): Bundle {
         //Utile per creare un bundle per load spese fragment
-        val bundle : Bundle = Bundle()
+        val bundle = Bundle()
         bundle.putString("idLista", arguments?.getString("idLista"))
         bundle.putString("nomeLista", arguments?.getString("nomeLista"))
         return bundle

@@ -11,20 +11,19 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.JoinFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.objects.ListaSpese
+import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 
 class JoinFragment : Fragment(R.layout.join_fragment) {
 
     private var _binding: JoinFragmentBinding? = null
     private val className = javaClass.simpleName
-    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.LISTE.value.lowercase())
+    private var db: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.LISTE)
 
     private val binding get() = _binding!!
 
