@@ -168,7 +168,6 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
         val completeFileName = "Riepilogo_spese_$nomeLista.xlsx"
         val completePath = "$downloadFolder/$completeFileName"
-        val filePath = File(completePath)
 
         //Scrivo le spese nel file
         dbSpesa.orderByChild("listaSpesaID").equalTo(idLista).addValueEventListener(object : ValueEventListener {
@@ -192,7 +191,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
                 //Creo il file
                 try {
-                    val fileOutputStream = FileOutputStream(filePath)
+                    val fileOutputStream = FileOutputStream(File(completePath))
                     hssfWorkbook.write(fileOutputStream)
                     fileOutputStream.flush()
                     fileOutputStream.close()

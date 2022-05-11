@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.objects.Spesa
 import com.dcurreli.spese.utils.DateUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SnackbarUtils
@@ -33,7 +32,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
-    private var db: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
+    private var dbSpesa: DatabaseReference = Firebase.database.reference.child(TablesEnum.SPESA.value)
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -46,6 +45,13 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     ): View {
 
         _binding = AddSpesaBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //Setto il nome della toolbar in base al bottone di spesa che ho clickato
         setupToolbar()
@@ -55,14 +61,6 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
 
         //Setup autocomplete fields
         setupAutocompleteInputs()
-
-        return binding.root
-    }
-
-    @SuppressLint("SimpleDateFormat", "SetTextI18n")
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         //Se premo lo sfondo
         binding.addSpesaConstraintLayout.setOnClickListener {
@@ -85,7 +83,9 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                     SpesaUtils.creaSepsa(binding, arguments?.getString("idLista").toString())
                     SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
 
-                    findNavController().navigate(R.id.loadSpeseFragment, arguments)
+                    findNavController().popBackStack()
+                   // activity?.onBackPressed()
+                    //findNavController().navigate(R.id.loadSpeseFragment, arguments)
                 }
             }
         }
@@ -121,44 +121,34 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     private fun setupAutocompleteInputs() {
         val spesaText : AutoCompleteTextView = binding.spesaSpesaText
         val pagatoreText : AutoCompleteTextView = binding.spesaPagatoreText
-        val arraySpesaDistinct : ArrayList<String> = ArrayList()
-        val arrayPagatoreDistinct : ArrayList<String> = ArrayList()
-        val arraySpesaALL : ArrayList<String> = ArrayList()
-        val arrayPagatoreALL : ArrayList<String> = ArrayList()
-
-        db.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
+        val arrayAdapterSpese = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
+        val arrayAdapterPagatori = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
+        dbSpesa.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
             ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //TODO cercare un modo più intelligente senza usare le liste temporanee
-                arraySpesaDistinct.clear()
-                arrayPagatoreDistinct.clear()
-                arraySpesaALL.clear()
-                arrayPagatoreALL.clear()
+                val tempSpese = ArrayList<String?>()
+                val tempPagatori = ArrayList<String?>()
+                arrayAdapterSpese.clear()
+                arrayAdapterPagatori.clear()
 
                 //Ciclo per ottenere spese e pagatori
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
-                    val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                    arraySpesaALL.add(spesa.spesa)
-                    arrayPagatoreALL.add(spesa.pagatore)
+                    tempSpese.add(snapshot.child("spesa").getValue(String::class.java))
+                    tempPagatori.add(snapshot.child("pagatore").getValue(String::class.java))
                 }
 
-                if(arraySpesaALL.isNotEmpty()){
-                    arraySpesaDistinct.addAll(arraySpesaALL.distinct())
-                }
-
-                if(arrayPagatoreALL.isNotEmpty()) {
-                    arrayPagatoreDistinct.addAll(arrayPagatoreALL.distinct())
-                }
-
-                spesaText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arraySpesaDistinct))
-                pagatoreText.setAdapter(ArrayAdapter(requireContext(), R.layout.add_spesa_custom_spinner, arrayPagatoreDistinct))
+                //Faccio la distinct per filtrarmi
+                arrayAdapterSpese.addAll(tempSpese.distinct())
+                arrayAdapterPagatori.addAll(tempPagatori.distinct())
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e(className, "Failed to read value.", error.toException())
             }
         })
+        spesaText.setAdapter(arrayAdapterSpese)
+        pagatoreText.setAdapter(arrayAdapterPagatori)
     }
 
     private fun setupToolbar() {

@@ -29,8 +29,7 @@ class PartecipantiAdapter(private val utenteList: ArrayList<Utente>, private val
         if(holder.itemView.context != null){
             Log.i("prova link $position", ">>${utente.image}")
             Glide.with(holder.userImage.context)
-                .asBitmap()
-                .load("https://lh3.googleusercontent.com/a-/AOh14Gj8PnDprCN5m7qsP50cfrLDXaXTB_dV6cZ9O5oTfg")
+                .load("https://lh3.googleusercontent.com/a-/AOh14Gj8PnDprCN5m7qsP50cfrLDXaXTB_dV6cZ9O5oTfg=s96-c")
                 .into(holder.userImage)
         }
 

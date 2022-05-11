@@ -86,7 +86,6 @@ object SpesaUtils {
                 //Aggiorno il sottotitolo della toolbar
                 GenericUtils.setupSottotitoloToolbar("Totale: ${totaleSpese.setScale(2).toString().replace(".",",")}€", (activity as AppCompatActivity?))
 
-
                 //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
                 if (dataSnapshot.childrenCount > 0) {
                     binding.speseNotFound.visibility = View.INVISIBLE
