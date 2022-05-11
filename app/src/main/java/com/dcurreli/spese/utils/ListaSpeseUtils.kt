@@ -113,7 +113,7 @@ object ListaSpeseUtils {
                 listaSpeseArray.clear()
                 arrayTemp.clear()
 
-                dbUtente.child(DBUtils.getCurrentUser()!!.uid).get().addOnSuccessListener {
+                dbUtente.child(DBUtils.getCurrentUser()!!.uid).get().addOnSuccessListener { it ->
                     val utente = it.getValue(Utente::class.java) as Utente
 
                     for (snapshot: DataSnapshot in dataSnapshot.children) {

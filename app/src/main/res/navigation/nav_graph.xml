@@ -12,34 +12,47 @@
         tools:layout="@layout/home_fragment">
 
         <action
-            android:id="@+id/action_HomeFragment_to_AddSpesaFragment"
-            app:destination="@id/addSpesaFragment" />
-        <action
             android:id="@+id/action_HomeFragment_to_loadSpeseFragment"
-            app:destination="@id/loadSpeseFragment" />
+            app:destination="@id/loadSpeseFragment"
+            app:enterAnim="@anim/enter_to_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_to_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpTo="@id/loadSpeseFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_listaSettingsFragment"
-            app:destination="@id/listaSettingsFragment" />
+            android:id="@+id/action_homeFragment_to_addListaSpeseFragment"
+            app:destination="@id/addListaSpeseFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
     <fragment
         android:id="@+id/addSpesaFragment"
         android:name="com.dcurreli.spese.main.NuovaSpesaFragment"
         android:label="@string/add_spesa_fragment_label"
-        tools:layout="@layout/add_spesa">
-
-        <action
-            android:id="@+id/action_AddSpesaFragment_to_HomeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/add_spesa"/>
     <fragment
         android:id="@+id/loadSpeseFragment"
         android:name="com.dcurreli.spese.main.loadspese.LoadSpeseFragment"
         android:label="Riepilogo spese">
         <action
-            android:id="@+id/action_loadSpeseFragment_to_HomeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_loadSpeseFragment_to_addSpesaFragment"
+            app:destination="@id/addSpesaFragment"
+            app:enterAnim="@anim/enter_to_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_to_left"
+            app:popExitAnim="@anim/exit_to_right"
+            />
+        <action
+            android:id="@+id/action_loadSpeseFragment_to_listaSettingsFragment"
+            app:destination="@id/listaSettingsFragment"
+            app:enterAnim="@anim/enter_to_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_to_left"
+            app:popExitAnim="@anim/exit_to_right"/>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -47,9 +60,6 @@
         android:label="Settings"
         tools:layout="@layout/settings_fragment" />
 
-    <action
-        android:id="@+id/action_To_SettingsFragment"
-        app:destination="@id/settingsFragment" />
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.dcurreli.spese.main.CalendarFragment"
@@ -59,11 +69,7 @@
         android:id="@+id/addListaSpeseFragment"
         android:name="com.dcurreli.spese.main.NuovaListaSpeseFragment"
         android:label="@string/add_lista_spese_fragment_label"
-        tools:layout="@layout/add_lista_spese">
-        <action
-            android:id="@+id/action_addListaSpeseFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
+        tools:layout="@layout/add_lista_spese"/>
     <fragment
         android:id="@+id/joinFragment"
         android:name="com.dcurreli.spese.main.join.JoinFragment"

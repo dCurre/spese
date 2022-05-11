@@ -5,8 +5,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -68,14 +66,11 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private fun setupAddSpesaButton() {
         dbListaSpese.child(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
-            if(it.exists() && (it.getValue(ListaSpese::class.java) as ListaSpese).isSaldato){
-                binding.addSpesaButton.visibility = GONE
-            } else {
-                binding.addSpesaButton.visibility = VISIBLE
-            }
+            //Setto la visibilità del bottone 'add spesa'
+            binding.addSpesaButton.visibility = if(it.exists() && (it.getValue(ListaSpese::class.java) as ListaSpese).isSaldato) View.GONE else View.VISIBLE
 
             binding.addSpesaButton.setOnClickListener{
-                findNavController().navigate(R.id.addSpesaFragment, arguments)
+                findNavController().navigate(R.id.action_loadSpeseFragment_to_addSpesaFragment, arguments)
             }
         }
     }
@@ -124,7 +119,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
             }
             R.id.edit -> {
                 //Navigo sul fragment successivo passandogli il bundle con id lista e nome lista
-                findNavController().navigate(R.id.listaSettingsFragment, createBundleForListaSpese(arguments))
+                findNavController().navigate(R.id.action_loadSpeseFragment_to_listaSettingsFragment, createBundleForListaSpese(arguments))
             }
         }
 

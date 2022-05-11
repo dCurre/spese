@@ -101,17 +101,11 @@ open class MainActivity : AppCompatActivity() {
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
                 // Get deep link from result (may be null if no link is found)
-                var deepLink: Uri? = null
-                if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.link
-                }
+                val deepLink: Uri? = pendingDynamicLinkData?.link
 
                 if (deepLink != null) {
                     //Navigo sul fragment successivo passandogli il bundle con id lista
                     navController.navigate(R.id.joinFragment, GenericUtils.createBundleForListaSpese(deepLink.getQueryParameter("group")!!, null))
-
-                } else {
-                    Log.d(ContentValues.TAG, "getDynamicLink: no link found")
                 }
             }
             .addOnFailureListener(this) { e -> Log.w(ContentValues.TAG, "getDynamicLink:onFailure", e) }

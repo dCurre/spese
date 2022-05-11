@@ -15,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.objects.ListaSpese
+import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,11 +24,14 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import java.util.*
 
+
 class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
     private var dbSpesa: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.SPESA)
+    private var dbUtente: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.UTENTE)
+    private var dbListaSpese: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.LISTE)
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -78,8 +83,6 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                     SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
 
                     findNavController().popBackStack()
-                   // activity?.onBackPressed()
-                    //findNavController().navigate(R.id.loadSpeseFragment, arguments)
                 }
             }
         }
@@ -117,12 +120,14 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         val pagatoreText = binding.spesaPagatoreText
         val arrayAdapterSpese = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
         val arrayAdapterPagatori = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
+        val tempPagatori = ArrayList<String>()
+
         dbSpesa.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
             ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val tempSpese = ArrayList<String>()
-                val tempPagatori = ArrayList<String>()
+                tempPagatori.clear()
                 arrayAdapterSpese.clear()
                 arrayAdapterPagatori.clear()
 
@@ -132,15 +137,41 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                     tempPagatori.add(snapshot.child("pagatore").getValue(String::class.java) as String)
                 }
 
-                //Faccio la distinct per filtrarmi
+                //Faccio la distinct per filtrarmi le spese, i pagatori li aggiungo dopo
                 arrayAdapterSpese.addAll(tempSpese.distinct())
-                arrayAdapterPagatori.addAll(tempPagatori.distinct())
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e(className, "Failed to read value.", error.toException())
             }
         })
+
+
+        dbListaSpese.orderByChild("id").equalTo(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
+            for(partecipante in (it.children.first().getValue(ListaSpese::class.java) as ListaSpese).partecipanti){
+                dbUtente.orderByChild("user_id").equalTo(partecipante).addValueEventListener(object : ValueEventListener {
+                    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                        //Ciclo per ottenere spese e pagatori
+                        for (snapshot in dataSnapshot.children) {
+                            val utente = snapshot.getValue(Utente::class.java) as Utente
+                            tempPagatori.add(utente.nominativo)
+                        }
+
+                        //Faccio la distinct per filtrarmi
+                        arrayAdapterPagatori.addAll(tempPagatori.distinct())
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e(className, "Failed to read value.", error.toException())
+                    }
+                })
+            }
+        }.addOnFailureListener {
+            Log.e(className, "<< Error getting mese", it)
+        }
+
         spesaText.setAdapter(arrayAdapterSpese)
         pagatoreText.setAdapter(arrayAdapterPagatori)
     }
