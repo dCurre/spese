@@ -87,7 +87,11 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
             }
         }
 
-        //Bottone "Aggiungi"
+        //TODO: tasto debug da togliere
+        if(!DBUtils.getCurrentUser()!!.email.equals("curre994@gmail.com", ignoreCase = true)){
+            binding.spesaButtonAddSpesa10.visibility = View.GONE
+        }
+        //TODO: tasto debug da togliere
         binding.spesaButtonAddSpesa10.setOnClickListener {
             //Chiudo la tastiera come prima cosa
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
