@@ -69,41 +69,45 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     }
 
     private fun printPartecipanti(idLista: String) {
-       dbListaSpese.child(idLista).get().addOnSuccessListener {
-            if (it.exists()) {
-                val listaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
-                var partecipantiArray = ArrayList<Utente>()
-                val partecipantiAdapter = PartecipantiAdapter(partecipantiArray)
-                binding.listaPartecipanti.adapter = partecipantiAdapter
-                binding.listaPartecipanti.layoutManager = LinearLayoutManager(context)
 
-                dbUtente.orderByChild("nominativo").addValueEventListener(object : ValueEventListener {
-                    @SuppressLint("NotifyDataSetChanged")
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        partecipantiArray.clear()
+       dbListaSpese.child(idLista).addValueEventListener(object : ValueEventListener {
+           @SuppressLint("NotifyDataSetChanged")
+           override fun onDataChange(dataSnapshot: DataSnapshot) {
+               val listaSpese = dataSnapshot.getValue(ListaSpese::class.java) as ListaSpese
+               val partecipantiArray = ArrayList<Utente>()
+               val partecipantiAdapter = PartecipantiAdapter(partecipantiArray)
+               binding.listaPartecipanti.adapter = partecipantiAdapter
+               binding.listaPartecipanti.layoutManager = LinearLayoutManager(context)
 
-                        //Ciclo per ottenere spese e totale
-                        for (snapshot: DataSnapshot in dataSnapshot.children) {
-                            val utente = snapshot.getValue(Utente::class.java) as Utente
+               dbUtente.orderByChild("nominativo").addValueEventListener(object : ValueEventListener {
+                   @SuppressLint("NotifyDataSetChanged")
+                   override fun onDataChange(dataSnapshot: DataSnapshot) {
+                       partecipantiArray.clear()
 
-                            if(listaSpese.partecipanti.contains(utente.user_id)){
-                                //Se l'utente è pure owner lo aggiungo in cima
-                                if(listaSpese.owner.contains(utente.user_id)){
-                                    partecipantiArray.add(0, utente)
-                                } else {
-                                    partecipantiArray.add(utente)
-                                }
-                            }
-                        }
+                       //Ciclo per ottenere spese e totale
+                       for (snapshot: DataSnapshot in dataSnapshot.children) {
+                           val utente = snapshot.getValue(Utente::class.java) as Utente
 
-                        partecipantiAdapter.notifyDataSetChanged()
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.e(className, "Failed to read value.", error.toException())
-                    }
-                })
-            }
-       }
+                           if(listaSpese.partecipanti.contains(utente.user_id)){
+                               //Se l'utente è pure owner lo aggiungo in cima
+                               if(listaSpese.owner.contains(utente.user_id)){
+                                   partecipantiArray.add(0, utente)
+                               } else {
+                                   partecipantiArray.add(utente)
+                               }
+                           }
+                       }
+                       partecipantiAdapter.notifyDataSetChanged()
+                   }
+                   override fun onCancelled(error: DatabaseError) {
+                       Log.e(className, "Failed to read value.", error.toException())
+                   }
+               })
+           }
+           override fun onCancelled(error: DatabaseError) {
+               Log.e(className, "Failed to read value.", error.toException())
+           }
+       })
     }
 
     private fun setupButtons(idLista: String, nomeLista:  String) {

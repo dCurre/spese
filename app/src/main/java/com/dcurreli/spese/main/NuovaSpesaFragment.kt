@@ -141,11 +141,8 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                     pagatoriList.add(snapshot.child("pagatore").getValue(String::class.java) as String)
                 }
 
-                //Faccio la distinct per filtrarmi le spese, i pagatori li aggiungo dopo
+                //Faccio la distinct per filtrarmi le spese doppie, i pagatori li aggiungo dopo
                 arrayAdapterSpese.addAll(speseList.distinct())
-
-                Log.i("PROVAAA", "LISTA NORMALE: $pagatoriList\nLISTA DISTINCT: ${pagatoriList.distinct()}" +
-                        "\nRESULT ADAPTER: $arrayAdapterSpese")
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -166,14 +163,8 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                             pagatoriList.add(utente.nominativo)
                         }
 
-                        //Faccio la distinct per filtrarmi
+                        //Faccio la distinct per filtrarmi i doppioni
                         arrayAdapterPagatori.addAll(pagatoriList.distinct())
-
-                        Log.i("PROVAAA", "LISTA NORMALE: $pagatoriList\nLISTA DISTINCT: ${pagatoriList.distinct()}" +
-                                "\nRESULT ADAPTER: $arrayAdapterSpese")
-
-                        spesaText.setAdapter(arrayAdapterSpese)
-                        pagatoreText.setAdapter(arrayAdapterPagatori)
                     }
 
                     override fun onCancelled(error: DatabaseError) {
@@ -185,6 +176,8 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
             Log.e(className, "<< Error getting mese", it)
         }
 
+        spesaText.setAdapter(arrayAdapterSpese)
+        pagatoreText.setAdapter(arrayAdapterPagatori)
 
     }
 
