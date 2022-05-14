@@ -11,7 +11,7 @@ import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.utils.SpesaUtils
 import android.view.View as View1
 
-class TabSaldoListaSpeseFragment() : Fragment(R.layout.load_spese_tab_saldo) {
+class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
 
     companion object {
         fun newInstance(args: Bundle?): TabSaldoListaSpeseFragment{

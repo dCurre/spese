@@ -11,7 +11,7 @@ import com.dcurreli.spese.objects.DareAvere
 class DareAvereAdapter(private val dareAvereList: ArrayList<DareAvere>) : RecyclerView.Adapter<DareAvereAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_dare_avere_saldo_item, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_saldo_dare_avere_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

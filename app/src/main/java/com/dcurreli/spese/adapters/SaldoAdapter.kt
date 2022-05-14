@@ -11,7 +11,7 @@ import com.dcurreli.spese.objects.Spesa
 class SaldoAdapter(private val speseList: ArrayList<Spesa>) : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_totali_saldo_item, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_saldo_totali_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
