@@ -127,5 +127,4 @@ object GenericUtils {
             false -> switch.isChecked = false
         }
     }
-
 }

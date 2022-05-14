@@ -124,25 +124,28 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         val pagatoreText = binding.spesaPagatoreText
         val arrayAdapterSpese = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
         val arrayAdapterPagatori = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
-        val tempPagatori = ArrayList<String>()
+        val pagatoriList = ArrayList<String>()
 
         dbSpesa.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
             ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val tempSpese = ArrayList<String>()
-                tempPagatori.clear()
+                val speseList = ArrayList<String>()
+                pagatoriList.clear()
                 arrayAdapterSpese.clear()
                 arrayAdapterPagatori.clear()
 
                 //Ciclo per ottenere spese e pagatori
                 for (snapshot in dataSnapshot.children) {
-                    tempSpese.add(snapshot.child("spesa").getValue(String::class.java) as String)
-                    tempPagatori.add(snapshot.child("pagatore").getValue(String::class.java) as String)
+                    speseList.add(snapshot.child("spesa").getValue(String::class.java) as String)
+                    pagatoriList.add(snapshot.child("pagatore").getValue(String::class.java) as String)
                 }
 
                 //Faccio la distinct per filtrarmi le spese, i pagatori li aggiungo dopo
-                arrayAdapterSpese.addAll(tempSpese.distinct())
+                arrayAdapterSpese.addAll(speseList.distinct())
+
+                Log.i("PROVAAA", "LISTA NORMALE: $pagatoriList\nLISTA DISTINCT: ${pagatoriList.distinct()}" +
+                        "\nRESULT ADAPTER: $arrayAdapterSpese")
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -152,32 +155,37 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
 
 
         dbListaSpese.orderByChild("id").equalTo(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
-            for(partecipante in (it.children.first().getValue(ListaSpese::class.java) as ListaSpese).partecipanti){
-                dbUtente.orderByChild("user_id").equalTo(partecipante).addValueEventListener(object : ValueEventListener {
+            val partecipanteID = (it.children.first().getValue(ListaSpese::class.java) as ListaSpese).partecipanti[0]
+                dbUtente.orderByChild("user_id").equalTo(partecipanteID).addValueEventListener(object : ValueEventListener {
                     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                         //Ciclo per ottenere spese e pagatori
                         for (snapshot in dataSnapshot.children) {
                             val utente = snapshot.getValue(Utente::class.java) as Utente
-                            tempPagatori.add(utente.nominativo)
+                            pagatoriList.add(utente.nominativo)
                         }
 
                         //Faccio la distinct per filtrarmi
-                        arrayAdapterPagatori.addAll(tempPagatori.distinct())
+                        arrayAdapterPagatori.addAll(pagatoriList.distinct())
+
+                        Log.i("PROVAAA", "LISTA NORMALE: $pagatoriList\nLISTA DISTINCT: ${pagatoriList.distinct()}" +
+                                "\nRESULT ADAPTER: $arrayAdapterSpese")
+
+                        spesaText.setAdapter(arrayAdapterSpese)
+                        pagatoreText.setAdapter(arrayAdapterPagatori)
                     }
 
                     override fun onCancelled(error: DatabaseError) {
                         Log.e(className, "Failed to read value.", error.toException())
                     }
                 })
-            }
+
         }.addOnFailureListener {
             Log.e(className, "<< Error getting mese", it)
         }
 
-        spesaText.setAdapter(arrayAdapterSpese)
-        pagatoreText.setAdapter(arrayAdapterPagatori)
+
     }
 
     private fun setupToolbar() {

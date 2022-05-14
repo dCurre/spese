@@ -72,12 +72,12 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
        dbListaSpese.child(idLista).get().addOnSuccessListener {
             if (it.exists()) {
                 val listaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
-                val partecipantiArray = ArrayList<Utente>()
-                val partecipantiAdapter = PartecipantiAdapter(partecipantiArray, listaSpese.owner)
-                binding.listaPartecipanti.layoutManager = LinearLayoutManager(context)
+                var partecipantiArray = ArrayList<Utente>()
+                val partecipantiAdapter = PartecipantiAdapter(partecipantiArray)
                 binding.listaPartecipanti.adapter = partecipantiAdapter
+                binding.listaPartecipanti.layoutManager = LinearLayoutManager(context)
 
-                dbUtente.addValueEventListener(object : ValueEventListener {
+                dbUtente.orderByChild("nominativo").addValueEventListener(object : ValueEventListener {
                     @SuppressLint("NotifyDataSetChanged")
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         partecipantiArray.clear()
@@ -87,7 +87,12 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
                             val utente = snapshot.getValue(Utente::class.java) as Utente
 
                             if(listaSpese.partecipanti.contains(utente.user_id)){
-                                partecipantiArray.add(utente)
+                                //Se l'utente è pure owner lo aggiungo in cima
+                                if(listaSpese.owner.contains(utente.user_id)){
+                                    partecipantiArray.add(0, utente)
+                                } else {
+                                    partecipantiArray.add(utente)
+                                }
                             }
                         }
 
@@ -218,9 +223,10 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         dbListaSpese.child(idLista).get().addOnSuccessListener {
             if (it.exists()) {
                 val lista : ListaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
+                val dbUserID = DBUtils.getCurrentUser()!!.uid
 
                 //Se la lista ha un solo partecipante
-                if(lista.partecipanti.size == 1 && lista.partecipanti[0].equals(DBUtils.getCurrentUser()!!.uid)){
+                if(lista.partecipanti.size == 1 && lista.partecipanti[0].equals(dbUserID, ignoreCase = true)){
                     AlertDialog.Builder(context)
                         .setTitle("Conferma")
                         .setMessage("Sei l'unico partecipante di questa lista, vuoi cancellarla?")
@@ -234,10 +240,13 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
                         .setTitle("Conferma")
                         .setMessage("Vuoi veramente abbandonare la lista?")
                         .setPositiveButton("SI") { _, _ ->
-                            dbListaSpese.child(idLista).child("owner").setValue(lista.partecipanti[1])
+                            lista.partecipanti.remove(dbUserID)
 
-                            dbListaSpese.child(idLista).child("owner").setValue(lista.partecipanti[1])
-                            lista.partecipanti.removeAt(0)
+                            //Se il primo della lista non è già l'owner allora aggiorno l'owner
+                            if(lista.partecipanti[0].equals(lista.owner, ignoreCase = true)){
+                                dbListaSpese.child(idLista).child("owner").setValue(lista.partecipanti[0])
+                            }
+
                             dbListaSpese.child(idLista).child("partecipanti").setValue(lista.partecipanti)
 
                             //REDIRECT MAIN PAGE

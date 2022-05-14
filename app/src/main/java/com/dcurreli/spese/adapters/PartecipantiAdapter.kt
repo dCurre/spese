@@ -10,7 +10,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.objects.Utente
 
 
-class PartecipantiAdapter(private val utenteList: ArrayList<Utente>, private val listOwnerId: String) : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>() {
+class PartecipantiAdapter(private val utenteList: ArrayList<Utente>) : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.lista_settings_fragment_partecipanti_item, parent, false))
@@ -20,8 +20,8 @@ class PartecipantiAdapter(private val utenteList: ArrayList<Utente>, private val
 
         val utente = utenteList[position]
         holder.partecipante.text = utente.nominativo
-        if (!utente.user_id.equals(listOwnerId, ignoreCase = true)) {
-            holder.ownerIcon.visibility = View.GONE
+        if (position > 0) {
+            holder.ownerIcon.visibility = View.INVISIBLE
         }
     }
 
