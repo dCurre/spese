@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
-import com.dcurreli.spese.adapters.ListaSpeseAdapter
+import com.dcurreli.spese.adapters.ListaListeAdapter
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
 import com.dcurreli.spese.databinding.HomeFragmentBinding
 import com.dcurreli.spese.databinding.JoinFragmentBinding
@@ -98,12 +98,12 @@ object ListaSpeseUtils {
     fun printListe(context: Context, binding: HomeFragmentBinding, navController: NavController) {
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.apply {
-            layoutManager = GridLayoutManager(context, 3)
+            layoutManager = GridLayoutManager(context, 2)//NUMERO DI SPESE PER RIGA
         }
 
         val listaSpeseArray = ArrayList<ListaSpese>()
         val arrayTemp = ArrayList<ListaSpese>()
-        val listaSpeseAdapter = ListaSpeseAdapter(listaSpeseArray, navController)
+        val listaSpeseAdapter = ListaListeAdapter(listaSpeseArray, navController)
 
         binding.listaSpese.adapter = listaSpeseAdapter
 

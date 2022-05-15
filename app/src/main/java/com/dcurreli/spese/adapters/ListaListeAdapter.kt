@@ -3,17 +3,15 @@ package com.dcurreli.spese.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
 
-class ListaSpeseAdapter(private val listaSpeseList: ArrayList<ListaSpese>, private val navController: NavController) : RecyclerView.Adapter<ListaSpeseAdapter.ViewHolder>() {
+class ListaListeAdapter(private val listaSpeseList: ArrayList<ListaSpese>, private val navController: NavController) : RecyclerView.Adapter<ListaListeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_fragment_lista_spese, parent, false))
@@ -36,12 +34,7 @@ class ListaSpeseAdapter(private val listaSpeseList: ArrayList<ListaSpese>, priva
             )
         }
 
-        if (listaSpese.isSaldato) {
-            holder.saldato.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, android.R.color.holo_green_dark))
-        } else {
-            holder.saldato.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, android.R.color.holo_red_dark))
-        }
-
+        holder.relativeLayout.setBackgroundResource(if (listaSpese.isSaldato) R.drawable.lista_liste_saldato else R.drawable.lista_liste_da_saldare)
     }
 
     // return the number of the items in the list
@@ -52,7 +45,6 @@ class ListaSpeseAdapter(private val listaSpeseList: ArrayList<ListaSpese>, priva
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val nomeSpesa: TextView = itemView.findViewById(R.id.nome_spesa)
-        val saldato: ImageView = itemView.findViewById(R.id.saldato_bar)
-        val relativeLayout: RelativeLayout = itemView.findViewById(R.id.spesa_list_first_layout)
+        val relativeLayout: RelativeLayout = itemView.findViewById(R.id.spesa_list_layout)
     }
 }
