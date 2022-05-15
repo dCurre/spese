@@ -9,15 +9,15 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dcurreli.spese.adapters.DareAvereAdapter
-import com.dcurreli.spese.adapters.SaldoAdapter
+import com.dcurreli.spese.adapters.SaldoCategoryAdapter
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.databinding.EditSpesaDialogBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.objects.DareAvere
+import com.dcurreli.spese.objects.SaldoCategory
+import com.dcurreli.spese.objects.SaldoSubItem
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -106,63 +106,74 @@ object SpesaUtils {
         context: Context,
         idListaSpese: String
     ) {
-        val spesaArray = ArrayList<Spesa>()
-        val dareAvereArray = ArrayList<DareAvere>()
-        val saldoAdapter = SaldoAdapter(spesaArray)
-        val dareAvereAdapter = DareAvereAdapter(dareAvereArray)
-        binding.listaSaldoTotale.layoutManager = LinearLayoutManager(context)
-        binding.listaSaldoDareAvere.layoutManager = LinearLayoutManager(context)
-        binding.listaSaldoTotale.adapter = saldoAdapter
-        binding.listaSaldoDareAvere.adapter = dareAvereAdapter
+
+        val mapSaldo = mutableMapOf<String, Double>()
+        val dareAvereArray = ArrayList<SaldoCategory>()
+        val dareAvereSUBITEMSArray = ArrayList<SaldoSubItem>()
+        val dareAvereAdapter = SaldoCategoryAdapter(context, dareAvereArray)
+        binding.listaSaldoDareAvere2.layoutManager = LinearLayoutManager(context)
+        binding.listaSaldoDareAvere2.adapter = dareAvereAdapter
 
         db.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                spesaArray.clear()
                 dareAvereArray.clear()
+                dareAvereSUBITEMSArray.clear()
 
-                 //Ciclo per ottenere spese e totale
-                 for (snapshot: DataSnapshot in dataSnapshot.children) {
-                    val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                    var exists = false
-
-                    for(i in 0 until spesaArray.size){
-                        if(!exists && spesa.pagatore.equals(spesaArray[i].pagatore, true)){
-                            spesaArray[i].importo += spesa.importo
-                            exists = true
-                        }
-                    }
-                    if(!exists)
-                        spesaArray.add(spesa)
-                }
-
-                //Ciclo per il calcolo dare avere
-                for (spesa in spesaArray) {
-                    for (spesaTwo in spesaArray) {
-                        if(spesa.pagatore != spesaTwo.pagatore){
-                            dareAvereArray.add(DareAvere(spesa.pagatore, spesaTwo.pagatore, ((spesa.importo-spesaTwo.importo)/spesaArray.size)))
-                        }
-                    }
-                }
-
-                //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
-                if (dataSnapshot.childrenCount > 0){
-                    binding.saldatoriNotFound.visibility = View.INVISIBLE
-                    binding.titleSaldoTotale.visibility = View.VISIBLE
-                    binding.titleDareAvere.visibility = View.VISIBLE
-
-                    //Dare avere può essere vuoto se c'è un solo pagatore
-                    if(dareAvereArray.size < 1)
-                        binding.titleDareAvere.visibility = View.INVISIBLE
-
+                if (dataSnapshot.childrenCount <= 0){
+                    binding.saldoNotPrintable.visibility = View.VISIBLE //MOSTRO LO SFONDO D'ERRORE
+                    binding.totaleListaSpese.visibility = View.INVISIBLE //NASCONDO SCRITTA TOTALE
                 }
                 else {
-                    binding.saldatoriNotFound.visibility = View.VISIBLE
-                    binding.titleDareAvere.visibility = View.INVISIBLE
-                    binding.titleSaldoTotale.visibility = View.INVISIBLE
+                    binding.saldoNotPrintable.visibility = View.INVISIBLE //NASCONDO LO SFONDO D'ERRORE
+                    binding.totaleListaSpese.visibility = View.VISIBLE //MOSTRO SCRITTA TOTALE
+
+                    //Riempio una mappa di <Pagatore, ImportiPagati>
+                    for (snapshot: DataSnapshot in dataSnapshot.children) {
+                        val spesa = snapshot.getValue(Spesa::class.java) as Spesa
+
+                        //Se la mappa non contiene il pagatore lo aggiungo, altrimenti sommo all'importo che già aveva
+                        if(mapSaldo.containsKey(spesa.pagatore)) {
+                            mapSaldo[spesa.pagatore] = spesa.importo + mapSaldo[spesa.pagatore]!!
+                        } else {
+                            mapSaldo[spesa.pagatore] = spesa.importo
+                        }
+                    }
+
+                    /* Riempio la lista di subitem e calcolo l'importo corretto dovuto
+                        FORMULA -> (A - B) / C
+
+                        A -> Spesa ricevente
+                        B -> Spesa pagatore
+                        C -> Size mappa, ovvero tutti gli utenti che hanno partecipato alle spese*/
+                    mapSaldo.forEach { pagatore ->
+                        mapSaldo.filterKeys { it != pagatore.key }.forEach { ricevente ->
+                            dareAvereSUBITEMSArray.add(
+                                SaldoSubItem(
+                                    pagatore.key,
+                                    ricevente.key,
+                                    //(mapSaldo.filterKeys { !it.contains(entry.key) }.values.sum() - entry.value) / mapSaldo.size
+                                    (ricevente.value - pagatore.value) / mapSaldo.size
+                                )
+                            )}
+                        }
+
+                    /* Scorro nuovamente la mappa, per ogni pagatore aggiungo all'array di DareAvere:
+                        1. Pagatore
+                        2. Somma pagata dal pagatore
+                        3. Lista di debiti con altri utenti (filtrata dalla mappa per chiave pagatore) */
+                    mapSaldo.forEach { entry ->
+                        dareAvereArray.add(
+                            SaldoCategory(
+                                entry.key,
+                                mapSaldo.filterKeys { it.contains(entry.key) }.values.sum(),
+                                dareAvereSUBITEMSArray.filter { it.pagatore.equals(entry.key, ignoreCase = true) } as java.util.ArrayList<SaldoSubItem>?
+                            )
+                        )
+                    }
                 }
+
                 dareAvereAdapter.notifyDataSetChanged()
-                saldoAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
