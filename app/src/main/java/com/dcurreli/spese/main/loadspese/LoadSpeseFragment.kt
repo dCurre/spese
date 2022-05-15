@@ -134,4 +134,5 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
             .setLongLink(Uri.parse("https://spesedc.page.link/?link=https://spesedc.page.link/join?group=$listID&apn=com.dcurreli.spese"))
             .buildDynamicLink()
     }
+
 }

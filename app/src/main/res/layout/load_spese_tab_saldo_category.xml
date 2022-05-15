@@ -1,36 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/spesa_list_first_layout"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/spese_list_cardView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical"
+    app:cardElevation="0dp"
+    android:elevation="0dp"
+    >
 
-    <TextView
-        android:id="@+id/load_spese_saldo_pagatore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="Pagatore"
-        android:textColor="@android:color/black"
-        android:textSize="9pt"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/saldo_importo_totale_pagato"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
-        android:text="Importo"
-        android:textAlignment="textEnd"
-        android:textColor="@android:color/black"
-        android:textSize="9pt"
-        android:textStyle="bold" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lista_saldo_dare_avere_3"
+    <RelativeLayout
+        android:id="@+id/spesa_list_first_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/load_spese_saldo_pagatore"
-        />
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/spesa_load_category_layout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/saldo_category_style"
+            android:paddingHorizontal="10dp">
+
+            <TextView
+                android:id="@+id/load_spese_saldo_pagatore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/monsterrat_bold"
+                android:text="Pagatore"
+                android:textColor="@color/onPrimary"
+                android:textSize="8pt" />
+
+            <TextView
+                android:id="@+id/saldo_importo_totale_pagato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/monsterrat_bold"
+                android:text="Importo"
+                android:textAlignment="textEnd"
+                android:textColor="@color/onPrimary"
+                android:textSize="8pt" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_saldo_subitems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spesa_load_category_layout"
+            android:background="@drawable/saldo_subitems_style" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

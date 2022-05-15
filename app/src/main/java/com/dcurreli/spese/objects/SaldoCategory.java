@@ -40,7 +40,7 @@ public class SaldoCategory {
     }
 
     public String getImportoPagatoAsEur() {
-        return GenericUtils.INSTANCE.importoAsEur(getImportoPagato()).replace(".",",");
+        return GenericUtils.INSTANCE.importoAsEur(getImportoPagato());
     }
 
 }

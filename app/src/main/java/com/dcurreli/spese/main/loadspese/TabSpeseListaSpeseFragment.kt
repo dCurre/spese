@@ -63,7 +63,6 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
             binding,
             requireContext(),
             idListaSpese = arguments?.getString("idLista").toString(), //id lista
-            activity
         )
 
         //Gestisco il cardslider passandogli l'adapter

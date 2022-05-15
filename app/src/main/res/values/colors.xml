@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#FF3700B3</color>
+    <color name="primary">#FF6200EE</color>
     <color name="onPrimary">#FFFFFFFF</color>
-    <color name="secondary">#f2fde4</color>
+    <color name="secondary">#F4EBFF</color>
+    <color name="alternativeSecondary">#EDDFFF</color>
     <color name="onSecondary">#FF000000</color>
 
     <!-- testo -->

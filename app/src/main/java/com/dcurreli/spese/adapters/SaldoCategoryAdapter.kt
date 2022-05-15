@@ -43,6 +43,6 @@ class SaldoCategoryAdapter(private val context: Context, private val dareAvereLi
 
         val pagatore: TextView = itemView.findViewById(R.id.load_spese_saldo_pagatore)
         val importoTotalePagato: TextView = itemView.findViewById(R.id.saldo_importo_totale_pagato)
-        val subListRecyclerView : RecyclerView = itemView.findViewById(R.id.lista_saldo_dare_avere_3)
+        val subListRecyclerView : RecyclerView = itemView.findViewById(R.id.lista_saldo_subitems)
     }
 }

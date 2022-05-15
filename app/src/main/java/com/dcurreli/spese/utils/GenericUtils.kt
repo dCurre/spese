@@ -101,7 +101,7 @@ object GenericUtils {
     }
 
     fun importoAsEur(double : Double): String {
-        return "${String.format("%.2f", double)} €"
+        return "${String.format("%.2f", double)} €".replace(".", ",")
     }
 
 

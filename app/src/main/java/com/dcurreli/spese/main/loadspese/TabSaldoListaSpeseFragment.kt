@@ -49,6 +49,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
         )
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
 

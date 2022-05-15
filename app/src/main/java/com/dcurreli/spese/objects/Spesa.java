@@ -68,7 +68,7 @@ public class Spesa {
     }
 
     public String importoAsTextEuro() {
-        return GenericUtils.INSTANCE.importoAsEur(getImporto()).replace(".",",");
+        return GenericUtils.INSTANCE.importoAsEur(getImporto());
     }
 
     public String getData() {

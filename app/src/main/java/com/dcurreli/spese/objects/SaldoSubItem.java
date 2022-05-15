@@ -50,7 +50,7 @@ public class SaldoSubItem {
     }
 
     public String getImportoDaPagareFixedAsEur() {
-        return GenericUtils.INSTANCE.importoAsEur(getImportoFixed()).replace(".",",");
+        return GenericUtils.INSTANCE.importoAsEur(getImportoFixed());
     }
 
 }

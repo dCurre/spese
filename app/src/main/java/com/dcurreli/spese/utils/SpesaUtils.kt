@@ -5,9 +5,9 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.adapters.SaldoCategoryAdapter
 import com.dcurreli.spese.adapters.SpesaAdapter
@@ -16,9 +16,11 @@ import com.dcurreli.spese.databinding.EditSpesaDialogBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.objects.SaldoCategory
 import com.dcurreli.spese.objects.SaldoSubItem
 import com.dcurreli.spese.objects.Spesa
+import com.dcurreli.spese.utils.GenericUtils.importoAsEur
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -26,13 +28,14 @@ import java.math.BigDecimal
 
 object SpesaUtils {
     private val className = javaClass.simpleName
-    private var db = DBUtils.getDatabaseReference(TablesEnum.SPESA)
+    private var dbSpesa = DBUtils.getDatabaseReference(TablesEnum.SPESA)
+    private var dbListaSpese = DBUtils.getDatabaseReference(TablesEnum.LISTE)
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun creaSepsa(binding: AddSpesaBinding, idLista : String) {
         val methodName = "creaSpesa"
         Log.i(className, ">>$methodName")
-        val newKey = db.push().key!!
+        val newKey = dbSpesa.push().key!!
 
         //Nuova spesa
         val spesa = Spesa(
@@ -45,7 +48,7 @@ object SpesaUtils {
         )
 
         //Creo spesa
-        db.child(newKey).setValue(spesa)
+        dbSpesa.child(newKey).setValue(spesa)
 
         Log.i(className, "<<$methodName")
     }
@@ -54,7 +57,6 @@ object SpesaUtils {
         binding: LoadSpeseTabSpeseBinding,
         context: Context,
         idListaSpese: String,
-        activity: FragmentActivity?
     ): SpesaAdapter {
         val spesaArray = ArrayList<Spesa>()
         val arrayTemp = ArrayList<Spesa>()
@@ -62,7 +64,7 @@ object SpesaUtils {
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = spesaAdapter
 
-        db.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
+        dbSpesa.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 var totaleSpese : BigDecimal = BigDecimal.ZERO
@@ -79,9 +81,6 @@ object SpesaUtils {
                 //Riordino la lista temporanea e la carico sulla lista da stampare
                 spesaArray.addAll(arrayTemp.sortedBy { it.timestamp }.toCollection(ArrayList()))
                 //spesaArray.reverse()
-
-                //Aggiorno il sottotitolo della toolbar
-                GenericUtils.setupSottotitoloToolbar("Totale: ${totaleSpese.setScale(2).toString().replace(".",",")}€", (activity as AppCompatActivity?))
 
                 //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
                 if (dataSnapshot.childrenCount > 0) {
@@ -111,10 +110,10 @@ object SpesaUtils {
         val dareAvereArray = ArrayList<SaldoCategory>()
         val dareAvereSUBITEMSArray = ArrayList<SaldoSubItem>()
         val dareAvereAdapter = SaldoCategoryAdapter(context, dareAvereArray)
-        binding.listaSaldoDareAvere2.layoutManager = LinearLayoutManager(context)
-        binding.listaSaldoDareAvere2.adapter = dareAvereAdapter
+        binding.listaSaldoCategory.layoutManager = LinearLayoutManager(context)
+        binding.listaSaldoCategory.adapter = dareAvereAdapter
 
-        db.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
+        dbSpesa.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 dareAvereArray.clear()
@@ -138,6 +137,12 @@ object SpesaUtils {
                         } else {
                             mapSaldo[spesa.pagatore] = spesa.importo
                         }
+                    }
+
+                    //AGGIORNO IL TOTALE
+                    dbListaSpese.child(idListaSpese).get().addOnSuccessListener {
+                        val listaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
+                        setupTotale(binding.totaleListaSpese, mapSaldo.values.sum(),listaSpese.isSaldato, context)
                     }
 
                     /* Riempio la lista di subitem e calcolo l'importo corretto dovuto
@@ -192,5 +197,15 @@ object SpesaUtils {
         binding.spesaSpesaText.clearFocus()
         binding.spesaImporto.clearFocus()
         binding.spesaPagatoreText.clearFocus()
+    }
+
+    private fun setupTotale(totaleListaSpese: TextView, importoTotale: Double, isSaldato: Boolean, context: Context) {
+        if(isSaldato){
+            totaleListaSpese.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_dark))
+        } else {
+            totaleListaSpese.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark))
+        }
+
+        totaleListaSpese.text = importoAsEur(importoTotale)
     }
 }
