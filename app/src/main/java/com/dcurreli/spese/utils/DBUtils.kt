@@ -19,6 +19,10 @@ object DBUtils {
         return this.mAuth
     }
 
+    fun getCurrentUserImage(): String {
+        return mAuth.currentUser?.photoUrl.toString()
+    }
+
     fun getDatabaseReference(table : TablesEnum): DatabaseReference {
         return Firebase.database.reference.child(table.value)
     }

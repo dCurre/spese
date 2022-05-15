@@ -56,6 +56,7 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
         //Carico i dati dal db per lo switch del tema
         setupSwitches()
+
         //Carico foto e nome utente
         setupUserImage()
 
@@ -101,6 +102,10 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         val user = DBUtils.getCurrentUser()
 
         binding.userName.text = user?.displayName
-        Picasso.get().load(user?.photoUrl).into(binding.settingsUserImage)
+        Picasso.get()
+            .load(DBUtils.getCurrentUserImage().replace("=s96-c", ""))
+            .error( R.drawable.ic_close )
+            .placeholder( R.drawable.loading_animation )
+            .into(binding.settingsUserImage)
     }
 }
