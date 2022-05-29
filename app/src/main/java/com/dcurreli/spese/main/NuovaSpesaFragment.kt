@@ -151,30 +151,33 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         })
 
 
-        dbListaSpese.orderByChild("id").equalTo(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
-            val partecipanteID = (it.children.first().getValue(ListaSpese::class.java) as ListaSpese).partecipanti[0]
-                dbUtente.orderByChild("user_id").equalTo(partecipanteID).addValueEventListener(object : ValueEventListener {
-                    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+        dbListaSpese.orderByChild("id").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object : ValueEventListener {
+            @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val partecipanti = (dataSnapshot.children.first().getValue(ListaSpese::class.java) as ListaSpese).partecipanti
+                var countPartecipanti = partecipanti.size
 
-                        //Ciclo per ottenere spese e pagatori
-                        for (snapshot in dataSnapshot.children) {
-                            val utente = snapshot.getValue(Utente::class.java) as Utente
-                            pagatoriList.add(utente.nominativo)
+                //Ciclo per ogni id presente nella lista pagatori e recupero l'utente
+                for (partecipanteID in partecipanti) {
+                    dbUtente.orderByChild("user_id").equalTo(partecipanteID).addValueEventListener(object : ValueEventListener {
+                        @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            countPartecipanti--
+
+                            //Recuperato l'utente lo aggiungo alla lista
+                            pagatoriList.add((dataSnapshot.children.first().getValue(Utente::class.java) as Utente).nominativo)
+
+                            //Quando il contatore raggiunge lo 0, faccio la distinct per filtrarmi i doppioni e aggiungo alla lista
+                            if(countPartecipanti == 0){
+                                arrayAdapterPagatori.addAll(pagatoriList.distinct())
+                            }
                         }
-
-                        //Faccio la distinct per filtrarmi i doppioni
-                        arrayAdapterPagatori.addAll(pagatoriList.distinct())
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.e(className, "Failed to read value.", error.toException())
-                    }
-                })
-
-        }.addOnFailureListener {
-            Log.e(className, "<< Error getting mese", it)
-        }
+                        override fun onCancelled(error: DatabaseError) { Log.e(className, "Failed to read value.", error.toException()) }
+                    })
+                }
+            }
+            override fun onCancelled(error: DatabaseError) { Log.e(className, "Failed to read value.", error.toException()) }
+        })
 
         spesaText.setAdapter(arrayAdapterSpese)
         pagatoreText.setAdapter(arrayAdapterPagatori)
