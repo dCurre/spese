@@ -43,6 +43,8 @@
             app:endIconMode="clear_text"
             app:errorIconDrawable="@drawable/ic_info"
             app:errorEnabled="true"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
             app:errorTextColor="@color/red"
             app:startIconDrawable="@drawable/ic_spesa">
 
@@ -50,6 +52,8 @@
                 android:id="@+id/edit_spesa_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:completionThreshold="1"
+                android:maxLength="20"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,6 +114,8 @@
             app:errorIconDrawable="@drawable/ic_info"
             app:errorEnabled="true"
             app:errorTextColor="@color/red"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
             app:startIconDrawable="@drawable/ic_pagatore">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -117,6 +123,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
+                android:completionThreshold="1"
+                android:maxLength="20"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
