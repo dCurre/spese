@@ -21,6 +21,7 @@ import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 
+
 class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private var _binding: LoadSpeseBinding? = null
@@ -119,6 +120,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
             }
             R.id.edit -> {
                 //Navigo sul fragment successivo passandogli il bundle con id lista e nome lista
+                //TODO togliere il metodo createBundleForListaSpese perchè è inutile
                 findNavController().navigate(R.id.action_loadSpeseFragment_to_listaSettingsFragment, createBundleForListaSpese(arguments))
             }
         }

@@ -1,43 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".main.loadspese.LoadSpeseFragment">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/table_layout_schede"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="?colorOnPrimary"
-            app:tabInlineLabel="true"
-            app:tabIconTint="?colorPrimary"
-            app:tabTextColor="?colorPrimary"
-            />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager_schede"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/table_layout_schede" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_spesa_button"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:backgroundTint="?colorPrimary"
-            android:contentDescription="Aggiungi spesa"
-            app:srcCompat="@drawable/ic_plus"
-            app:tint="@color/white"
-            app:useCompatPadding="true" />
-    </RelativeLayout>
+            tools:ignore="MissingConstraints">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/table_layout_schede"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:backgroundTint="?colorOnPrimary"
+                app:tabInlineLabel="true"
+                app:tabIconTint="?colorPrimary"
+                app:tabTextColor="?colorPrimary"
+                />
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager_schede"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/table_layout_schede" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_spesa_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:backgroundTint="?colorPrimary"
+                app:srcCompat="@drawable/ic_plus"
+                app:tint="@color/white"
+                app:useCompatPadding="true"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

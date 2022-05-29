@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SaldoCategoryAdapter
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.AddSpesaBinding
-import com.dcurreli.spese.databinding.EditSpesaDialogBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
@@ -20,11 +20,15 @@ import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.objects.SaldoCategory
 import com.dcurreli.spese.objects.SaldoSubItem
 import com.dcurreli.spese.objects.Spesa
+import com.dcurreli.spese.utils.GenericUtils.dateStringToTimestampSeconds
 import com.dcurreli.spese.utils.GenericUtils.importoAsEur
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import java.math.BigDecimal
+
 
 object SpesaUtils {
     private val className = javaClass.simpleName
@@ -32,7 +36,7 @@ object SpesaUtils {
     private var dbListaSpese = DBUtils.getDatabaseReference(TablesEnum.LISTE)
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun creaSepsa(binding: AddSpesaBinding, idLista : String) {
+    fun creaSpesa(binding: AddSpesaBinding, idLista : String) {
         val methodName = "creaSpesa"
         Log.i(className, ">>$methodName")
         val newKey = dbSpesa.push().key!!
@@ -51,6 +55,17 @@ object SpesaUtils {
         dbSpesa.child(newKey).setValue(spesa)
 
         Log.i(className, "<<$methodName")
+    }
+
+    fun updateSpesa(id: String, newSpesa : String, newImporto : String, newData : String, newPagatore : String) {
+        val hopperRef: DatabaseReference = dbSpesa.child(id)
+        val spesaUpdate: MutableMap<String, Any> = HashMap()
+        spesaUpdate["spesa"] = newSpesa.trim()
+        spesaUpdate["importo"] = newImporto.trim().replace(",", ".").toDouble()
+        spesaUpdate["data"] = newData.trim()
+        spesaUpdate["pagatore"] = newPagatore.trim()
+        spesaUpdate["timestamp"] = dateStringToTimestampSeconds(newData, "dd/MM/yyyy")
+        hopperRef.updateChildren(spesaUpdate)
     }
 
     fun printSpese(
@@ -167,11 +182,11 @@ object SpesaUtils {
                         1. Pagatore
                         2. Somma pagata dal pagatore
                         3. Lista di debiti con altri utenti (filtrata dalla mappa per chiave pagatore) */
-                    mapSaldo.forEach { entry ->
+                    mapSaldo.toSortedMap().forEach { entry ->
                         dareAvereArray.add(
                             SaldoCategory(
                                 entry.key,
-                                mapSaldo.filterKeys { it.contains(entry.key) }.values.sum(),
+                                entry.value,
                                 dareAvereSUBITEMSArray.filter { it.pagatore.equals(entry.key, ignoreCase = true) } as java.util.ArrayList<SaldoSubItem>?
                             )
                         )
@@ -193,10 +208,14 @@ object SpesaUtils {
         binding.spesaPagatoreText.clearFocus()
     }
 
-    fun clearTextViewFocusEditSpesa(binding: EditSpesaDialogBinding) {
-        binding.spesaSpesaText.clearFocus()
-        binding.spesaImporto.clearFocus()
-        binding.spesaPagatoreText.clearFocus()
+    fun clearTextViewFocusEditSpesa(view: View) {
+        val spesa = view.findViewById<TextInputEditText>(R.id.edit_spesa_text)
+        val importo = view.findViewById<TextInputEditText>(R.id.edit_spesa_importo)
+        val pagatore = view.findViewById<TextInputEditText>(R.id.edit_spesa_pagatore_text)
+
+        spesa.clearFocus()
+        importo.clearFocus()
+        pagatore.clearFocus()
     }
 
     private fun setupTotale(totaleListaSpese: TextView, importoTotale: Double, isSaldato: Boolean, context: Context) {

@@ -79,7 +79,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                 binding.spesaPagatoreText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
                 binding.spesaImporto.text.toString().toDouble().equals(0.00) -> { SnackbarUtils.showSnackbarError("Inserire importo maggiore di 0 !", binding.addSpesaConstraintLayout) }
                 else -> {
-                    SpesaUtils.creaSepsa(binding, arguments?.getString("idLista").toString())
+                    SpesaUtils.creaSpesa(binding, arguments?.getString("idLista").toString())
                     SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
 
                     findNavController().popBackStack()
@@ -104,7 +104,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                 else -> {
 
                     for(i in 0 until 10){
-                        SpesaUtils.creaSepsa(binding, arguments?.getString("idLista").toString())
+                        SpesaUtils.creaSpesa(binding, arguments?.getString("idLista").toString())
                     }
                     SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
 

@@ -16,6 +16,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.main.dialog.EditSpesaDialogFragment
 import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.SnackbarUtils
@@ -26,7 +27,8 @@ import android.view.View as View1
 
 class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
 
-    private var db = DBUtils.getDatabaseReference(TablesEnum.LISTE)
+    private var dbListe = DBUtils.getDatabaseReference(TablesEnum.LISTE)
+    private var dbSpesa = DBUtils.getDatabaseReference(TablesEnum.SPESA)
 
     companion object {
         fun newInstance(args: Bundle?): TabSpeseListaSpeseFragment{
@@ -78,11 +80,14 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    db.child(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
+                    dbListe.child(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
                         val listaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
                             if(direction == ItemTouchHelper.RIGHT){  //Se scorro verso destra modifico
                                 if(!listaSpese.isSaldato){
                                     //TODO dialog edit
+                                    EditSpesaDialogFragment().newInstance(spesaAdapter.getItem(viewHolder.absoluteAdapterPosition)).show(childFragmentManager, EditSpesaDialogFragment.TAG)
+
+                                    //SnackbarUtils.showSnackbarOK("Spesa modificata", binding.root)
                                     spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                                 } else {
                                     SnackbarUtils.showSnackbarError("Non puoi modificare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
@@ -99,7 +104,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                                     .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
                                     .setPositiveButton("SI") { _, _ ->
                                         spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).delete()
-                                        SnackbarUtils.showSnackbarOK("Spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa} cancellata", binding.root)
+                                        SnackbarUtils.showSnackbarOK("Spesa cancellata", binding.root)
                                     }
                                     .setNegativeButton("NO") { _, _ ->
                                         spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)

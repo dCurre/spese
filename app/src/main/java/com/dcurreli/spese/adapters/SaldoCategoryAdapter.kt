@@ -21,8 +21,8 @@ class SaldoCategoryAdapter(private val context: Context, private val dareAvereLi
 
         val dareAvere = dareAvereList[position]
 
-        holder.pagatore.text = dareAvere.pagatore
-        holder.importoTotalePagato.text = dareAvere.importoPagatoAsEur
+        holder.pagatore.text = "${dareAvere.pagatore} ha speso:"
+        holder.importoTotalePagato.text =  dareAvere.importoPagatoAsEur
         setSublist(holder.subListRecyclerView, dareAvereList[position].pagatoreImportoDaAvere)
 
     }

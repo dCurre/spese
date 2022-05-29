@@ -18,7 +18,7 @@ class SaldoSubItemAdapter(private val saldoSubItemList: ArrayList<SaldoSubItem>)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dareAvere = saldoSubItemList[position]
 
-        holder.daPagareA.text = dareAvere.daPagareA
+        holder.daPagareA.text = "deve a ${dareAvere.daPagareA}"
         holder.importoDaPagare.text = dareAvere.importoDaPagareFixedAsEur
         holder.importoDaPagare.setTextColor(if(dareAvere.importoFixed == 0.00) holder.itemView.resources.getColor(R.color.green) else holder.itemView.resources.getColor(R.color.red))
 

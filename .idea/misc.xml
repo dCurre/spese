@@ -12,6 +12,7 @@
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.37864583333333335" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_calendar.xml" value="0.209375" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_calendar_plus.xml" value="0.209375" />
+        <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_close.xml" value="0.202" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_google.xml" value="0.209375" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_home.xml" value="0.209375" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_importo_euro.xml" value="0.37864583333333335" />
@@ -41,6 +42,7 @@
         <entry key="..\:/Coding/spese/app/src/main/res/layout-v23/activity_login.xml" value="0.3625" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout-v23/activity_main.xml" value="0.19270833333333334" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout-v23/lista_settings_fragment_partecipanti_item.xml" value="0.2552083333333333" />
+        <entry key="..\:/Coding/spese/app/src/main/res/layout-v26/edit_spesa_dialog.xml" value="0.2796875" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout-v26/load_spese.xml" value="0.196875" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/activity_dashboard.xml" value="0.19322916666666667" />
         <entry key="..\:/Coding/spese/app/src/main/res/layout/activity_join.xml" value="0.1953125" />
