@@ -16,6 +16,8 @@ class UtenteRepository {
     fun getAll(liveData: MutableLiveData<List<User>>) {
         db.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                userList.clear()
+
                 for (snapshot in dataSnapshot.children) {
                     userList.add(snapshot.getValue(User::class.java) as User)
                 }
@@ -31,8 +33,7 @@ class UtenteRepository {
     fun getUserById(liveData: MutableLiveData<User>, uid: String) {
         db.orderByChild("user_id").equalTo(uid).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user = dataSnapshot.children.first().getValue(User::class.java) as User
-                liveData.postValue(user)
+                liveData.postValue(dataSnapshot.children.first().getValue(User::class.java) as User)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -52,6 +53,8 @@ class UtenteRepository {
     fun getUserListByIdList(liveData: MutableLiveData<List<User>>, uidList: List<String>) {
         db.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                userList.clear()
+
                 for (snapshot in dataSnapshot.children) {
                     val user = snapshot.getValue(User::class.java) as User
                     if(uidList.contains(user.user_id)){

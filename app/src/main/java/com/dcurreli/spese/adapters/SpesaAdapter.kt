@@ -1,5 +1,6 @@
 package com.dcurreli.spese.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.objects.Spesa
 
-class SpesaAdapter(private val speseList: ArrayList<Spesa>) : RecyclerView.Adapter<SpesaAdapter.ViewHolder>() {
+class SpesaAdapter : RecyclerView.Adapter<SpesaAdapter.ViewHolder>() {
+
+    private var speseList = ArrayList<Spesa>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_spese_item, parent, false))
@@ -32,6 +35,15 @@ class SpesaAdapter(private val speseList: ArrayList<Spesa>) : RecyclerView.Adapt
 
     fun getItem(position: Int): Spesa {
         return speseList[position]
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun addItems(newSpesaList : List<Spesa>){
+        if(newSpesaList.isNotEmpty()) {
+            speseList.clear()
+            speseList.addAll(newSpesaList)
+            notifyDataSetChanged()
+        }
     }
 
     // Holds the views for adding it to image and text

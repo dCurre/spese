@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.dcurreli.spese.R
+import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.objects.Spesa
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SpesaUtils
@@ -18,12 +20,16 @@ import java.util.*
 
 class EditSpesaDialogFragment : DialogFragment() {
 
+    private lateinit var spesaModel : SpesaViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.edit_spesa_dialog, container, false)
+
+        spesaModel = ViewModelProvider(this)[SpesaViewModel::class.java]
 
         setupInputText(view)
 
@@ -59,7 +65,16 @@ class EditSpesaDialogFragment : DialogFragment() {
                 pagatore.text.isNullOrBlank() -> { pagatoreLayout.error = "Campo non popolato" }
                 importo.text.toString().toDouble().equals(0.00) -> { importoLayout.error = "Importo non valido" }
                 else -> {
-                    SpesaUtils.updateSpesa(arguments?.getString("id")!!, spesa.text.toString(), importo.text.toString(), data.text.toString(), pagatore.text.toString())
+
+                    //Update della spesa
+                    spesaModel.update(Spesa(
+                        arguments?.getString("id")!!,
+                        spesa.text.toString().trim(),
+                        importo.text.toString().trim().replace(",", ".").toDouble(),
+                        data.text.toString().trim(),
+                        pagatore.text.toString().trim(),
+                        GenericUtils.dateStringToTimestampSeconds(data.text.toString(), "dd/MM/yyyy").toString()
+                    ))
                     dismiss()
                 }
             }

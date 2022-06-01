@@ -6,7 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
+import com.dcurreli.spese.adapters.SaldoAdapter
+import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
+import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.utils.SpesaUtils
 import android.view.View as View1
@@ -25,6 +30,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
     private var _binding: LoadSpeseTabSaldoBinding? = null
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
+    private lateinit var spesaModel : SpesaViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -41,12 +47,30 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //printSaldo()
+
         //Stampo le spese
         SpesaUtils.printSaldo(
             binding,
             requireContext(),
-            idListaSpese = arguments?.getString("idLista").toString() //id lista
+            idListaSpese = arguments?.getString("idLista").toString(), //id lista
+            viewLifecycleOwner,
+            ViewModelProvider(this)[ListaSpeseViewModel::class.java]
         )
+    }
+
+    private fun printSaldo() {
+        val saldoAdapter = SaldoAdapter()
+
+        //Aggiungo le spese estratte all'adapter
+        spesaModel.findAll()
+        spesaModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
+            saldoAdapter.addItems(spesaList)
+        }
+
+        //Setup griglia liste
+        binding.listaSaldoCategory.layoutManager = LinearLayoutManager(context)
+        binding.listaSaldoCategory.adapter = saldoAdapter
     }
 
 

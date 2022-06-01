@@ -1,5 +1,6 @@
 package com.dcurreli.spese.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.objects.Spesa
 
-class SaldoAdapter(private val speseList: ArrayList<Spesa>) : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
+class SaldoAdapter() : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
+
+    private val speseList = ArrayList<Spesa>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_saldo_totali_item, parent, false))
@@ -25,6 +28,15 @@ class SaldoAdapter(private val speseList: ArrayList<Spesa>) : RecyclerView.Adapt
     // return the number of the items in the list
     override fun getItemCount(): Int {
         return speseList.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun addItems(newSpesaList : List<Spesa>){
+        if(newSpesaList.isNotEmpty()) {
+            speseList.clear()
+            speseList.addAll(newSpesaList)
+            notifyDataSetChanged()
+        }
     }
 
     // Holds the views for adding it to image and text

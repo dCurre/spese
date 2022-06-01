@@ -12,13 +12,14 @@ import com.google.firebase.database.ValueEventListener
 
 class ListaSpeseRepository {
     private val db: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.LISTE)
-    val listaSpeseList = ArrayList<ListaSpese>()
+    var listaSpeseList = ArrayList<ListaSpese>()
 
     fun getAll(liveData: MutableLiveData<List<ListaSpese>>) {
-        listaSpeseList.clear()
 
         db.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                listaSpeseList.clear()
+
                 for (snapshot in dataSnapshot.children) {
                     listaSpeseList.add(snapshot.getValue(ListaSpese::class.java) as ListaSpese)
                 }
@@ -32,11 +33,10 @@ class ListaSpeseRepository {
     }
 
     fun getListsByUserID(liveData: MutableLiveData<List<ListaSpese>>, user: User) {
-        listaSpeseList.clear()
 
         db.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val arrayTemp = ArrayList<ListaSpese>()
+                listaSpeseList.clear()
 
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
@@ -44,11 +44,11 @@ class ListaSpeseRepository {
                     if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(user.user_id)){
                         //Se non nascondo liste saldate stampo tutto, altrimenti stampo solo quelle non saldate
                         if (!user.isNascondiListeSaldate || (user.isNascondiListeSaldate && !listaSpese.isSaldato)) {
-                            arrayTemp.add(listaSpese)
+                            listaSpeseList.add(listaSpese)
                         }
                     }
                 }
-                listaSpeseList.addAll(arrayTemp.sortedBy { it.timestamp }.toCollection(ArrayList()))
+                listaSpeseList = listaSpeseList.sortedBy { it.timestamp }.toCollection(ArrayList())
                 listaSpeseList.reverse()
                 liveData.postValue(listaSpeseList)
             }

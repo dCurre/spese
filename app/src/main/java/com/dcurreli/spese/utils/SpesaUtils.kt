@@ -8,15 +8,14 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SaldoCategoryAdapter
-import com.dcurreli.spese.adapters.SpesaAdapter
+import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
-import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.objects.SaldoCategory
 import com.dcurreli.spese.objects.SaldoSubItem
 import com.dcurreli.spese.objects.Spesa
@@ -29,13 +28,11 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.math.BigDecimal
 
 
 object SpesaUtils {
     private val className = javaClass.simpleName
     private var dbSpesa = DBUtils.getDatabaseReference(TablesEnum.SPESA)
-    private var dbListaSpese = DBUtils.getDatabaseReference(TablesEnum.LISTE)
     val db = Firebase.firestore.collection("Utenti")
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -73,57 +70,12 @@ object SpesaUtils {
         hopperRef.updateChildren(spesaUpdate)
     }
 
-    fun printSpese(
-        binding: LoadSpeseTabSpeseBinding,
-        context: Context,
-        idListaSpese: String,
-    ): SpesaAdapter {
-        val spesaArray = ArrayList<Spesa>()
-        val arrayTemp = ArrayList<Spesa>()
-        val spesaAdapter = SpesaAdapter(spesaArray)
-        binding.listaSpese.layoutManager = LinearLayoutManager(context)
-        binding.listaSpese.adapter = spesaAdapter
-
-        dbSpesa.orderByChild("listaSpesaID").equalTo(idListaSpese).addValueEventListener(object : ValueEventListener {
-            @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var totaleSpese : BigDecimal = BigDecimal.ZERO
-                spesaArray.clear()
-                arrayTemp.clear()
-
-                //Ciclo per ottenere spese e totale
-                for (snapshot: DataSnapshot in dataSnapshot.children) {
-                    val spesa = snapshot.getValue(Spesa::class.java) as Spesa
-                    arrayTemp.add(spesa)
-                    totaleSpese = totaleSpese.add(spesa.importo.toBigDecimal())
-                }
-
-                //Riordino la lista temporanea e la carico sulla lista da stampare
-                spesaArray.addAll(arrayTemp.sortedBy { it.timestamp }.toCollection(ArrayList()))
-                //spesaArray.reverse()
-
-                //Se ci sono spese non stampo la stringa d'errore, altrimenti la stampo
-                if (dataSnapshot.childrenCount > 0) {
-                    binding.speseNotFound.visibility = View.INVISIBLE
-                }
-                else
-                    binding.speseNotFound.visibility = View.VISIBLE
-
-                spesaAdapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(className, "Failed to read value.", error.toException())
-            }
-        })
-
-        return spesaAdapter
-    }
-
     fun printSaldo(
         binding: LoadSpeseTabSaldoBinding,
         context: Context,
-        idListaSpese: String
+        idListaSpese: String,
+        viewLifecycleOwner: LifecycleOwner,
+        listaSpeseViewModel: ListaSpeseViewModel
     ) {
 
         val mapSaldo = mutableMapOf<String, Double>()
@@ -142,8 +94,7 @@ object SpesaUtils {
                 if (dataSnapshot.childrenCount <= 0){
                     binding.saldoNotPrintable.visibility = View.VISIBLE //MOSTRO LO SFONDO D'ERRORE
                     binding.totaleListaSpese.visibility = View.INVISIBLE //NASCONDO SCRITTA TOTALE
-                }
-                else {
+                } else {
                     binding.saldoNotPrintable.visibility = View.INVISIBLE //NASCONDO LO SFONDO D'ERRORE
                     binding.totaleListaSpese.visibility = View.VISIBLE //MOSTRO SCRITTA TOTALE
 
@@ -160,8 +111,8 @@ object SpesaUtils {
                     }
 
                     //AGGIORNO IL TOTALE
-                    dbListaSpese.child(idListaSpese).get().addOnSuccessListener {
-                        val listaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
+                    listaSpeseViewModel.getListaSpeseById(idListaSpese)
+                    listaSpeseViewModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
                         setupTotale(binding.totaleListaSpese, mapSaldo.values.sum(),listaSpese.isSaldato, context)
                     }
 
@@ -177,7 +128,6 @@ object SpesaUtils {
                                 SaldoSubItem(
                                     pagatore.key,
                                     ricevente.key,
-                                    //(mapSaldo.filterKeys { !it.contains(entry.key) }.values.sum() - entry.value) / mapSaldo.size
                                     (ricevente.value - pagatore.value) / mapSaldo.size
                                 )
                             )}

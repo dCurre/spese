@@ -90,7 +90,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         }
 
         //TODO: tasto debug da togliere
-        if(!DBUtils.getLoggedUser()!!.email.equals("curre994@gmail.com", ignoreCase = true)){
+        if(!DBUtils.getLoggedUser().email.equals("curre994@gmail.com", ignoreCase = true)){
             binding.spesaButtonAddSpesa10.visibility = View.GONE
         }
         //TODO: tasto debug da togliere

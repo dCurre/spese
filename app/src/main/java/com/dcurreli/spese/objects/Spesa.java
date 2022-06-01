@@ -102,4 +102,8 @@ public class Spesa {
     public void delete(){
         DBUtils.INSTANCE.getDatabaseReference("spesa").child(this.id).removeValue();
     }
+
+    public String toString(){
+        return this.id + " | " + this.spesa;
+    }
 }

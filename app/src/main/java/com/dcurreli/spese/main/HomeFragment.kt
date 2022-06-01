@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dcurreli.spese.R
-import com.dcurreli.spese.adapters.ListaListeAdapter
+import com.dcurreli.spese.adapters.ListaSpeseAdapter
 import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.HomeFragmentBinding
@@ -44,7 +44,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     }
 
     private fun printListaSpese() {
-        val listaSpeseAdapter = ListaListeAdapter(findNavController())
+        val listaSpeseAdapter = ListaSpeseAdapter(findNavController())
         val listsPerRow = 2
 
         //Recupero listaSpese a partire dall'utente
@@ -55,7 +55,9 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
         //Aggiungo le liste estratte all'adapter
         listaSpeseModel.listaSpeseListLiveData.observe(viewLifecycleOwner) { listaSpeseList ->
-            listaSpeseAdapter.addItems(listaSpeseList)
+            if (listaSpeseList != null) {
+                listaSpeseAdapter.addItems(listaSpeseList)
+            }
         }
 
         //Setup griglia liste

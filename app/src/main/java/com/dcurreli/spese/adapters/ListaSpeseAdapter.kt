@@ -12,7 +12,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.utils.GenericUtils
 
-class ListaListeAdapter(private val navController: NavController) : RecyclerView.Adapter<ListaListeAdapter.ViewHolder>() {
+class ListaSpeseAdapter(private val navController: NavController) : RecyclerView.Adapter<ListaSpeseAdapter.ViewHolder>() {
 
     private var listaSpeseList = ArrayList<ListaSpese>()
 
@@ -21,6 +21,7 @@ class ListaListeAdapter(private val navController: NavController) : RecyclerView
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val listaSpese = listaSpeseList[position]
         holder.nomeSpesa.text = listaSpese.nome
 
