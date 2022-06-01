@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ViewPagerAdapter
+import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
-import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese

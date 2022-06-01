@@ -11,12 +11,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
+import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
+import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.objects.ListaSpese
-import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -30,8 +31,8 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
     private var dbSpesa: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.SPESA)
-    private var dbUtente: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.UTENTE)
-    private var dbListaSpese: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.LISTE)
+    private lateinit var userModel : UserViewModel
+    private lateinit var listaSpeseModel : ListaSpeseViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -44,6 +45,8 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     ): View {
 
         _binding = AddSpesaBinding.inflate(inflater, container, false)
+        userModel = ViewModelProvider(this)[UserViewModel::class.java]
+        listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
         return binding.root
     }
 
@@ -126,6 +129,46 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         val arrayAdapterPagatori = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
         val pagatoriList = ArrayList<String>()
 
+        setupAutocompleteInputSpese(pagatoriList, arrayAdapterSpese, arrayAdapterPagatori)
+
+        setupAutocompleteInputPagatori(pagatoriList, arrayAdapterPagatori)
+
+        spesaText.setAdapter(arrayAdapterSpese)
+        pagatoreText.setAdapter(arrayAdapterPagatori)
+
+    }
+
+    private fun setupAutocompleteInputPagatori(
+        pagatoriList: ArrayList<String>,
+        arrayAdapterPagatori: ArrayAdapter<String>
+    ) {
+        listaSpeseModel.getListaSpeseById(arguments?.getString("idLista").toString())
+        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
+            val partecipanti = listaSpese.partecipanti
+            var countPartecipanti = partecipanti.size
+
+            userModel.getUserListByIdList(partecipanti)
+            userModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
+                for(user in userList){
+                    countPartecipanti--
+
+                    //Recuperato l'utente lo aggiungo alla lista
+                    pagatoriList.add(user.nominativo)
+
+                    //Quando il contatore raggiunge lo 0, faccio la distinct per filtrarmi i doppioni e aggiungo alla lista
+                    if(countPartecipanti == 0){
+                        arrayAdapterPagatori.addAll(pagatoriList.distinct())
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupAutocompleteInputSpese(
+        pagatoriList: ArrayList<String>,
+        arrayAdapterSpese: ArrayAdapter<String>,
+        arrayAdapterPagatori: ArrayAdapter<String>
+    ) {
         dbSpesa.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
             ValueEventListener {
             @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
@@ -149,39 +192,6 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                 Log.e(className, "Failed to read value.", error.toException())
             }
         })
-
-
-        dbListaSpese.orderByChild("id").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object : ValueEventListener {
-            @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val partecipanti = (dataSnapshot.children.first().getValue(ListaSpese::class.java) as ListaSpese).partecipanti
-                var countPartecipanti = partecipanti.size
-
-                //Ciclo per ogni id presente nella lista pagatori e recupero l'utente
-                for (partecipanteID in partecipanti) {
-                    dbUtente.orderByChild("user_id").equalTo(partecipanteID).addValueEventListener(object : ValueEventListener {
-                        @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            countPartecipanti--
-
-                            //Recuperato l'utente lo aggiungo alla lista
-                            pagatoriList.add((dataSnapshot.children.first().getValue(Utente::class.java) as Utente).nominativo)
-
-                            //Quando il contatore raggiunge lo 0, faccio la distinct per filtrarmi i doppioni e aggiungo alla lista
-                            if(countPartecipanti == 0){
-                                arrayAdapterPagatori.addAll(pagatoriList.distinct())
-                            }
-                        }
-                        override fun onCancelled(error: DatabaseError) { Log.e(className, "Failed to read value.", error.toException()) }
-                    })
-                }
-            }
-            override fun onCancelled(error: DatabaseError) { Log.e(className, "Failed to read value.", error.toException()) }
-        })
-
-        spesaText.setAdapter(arrayAdapterSpese)
-        pagatoreText.setAdapter(arrayAdapterPagatori)
-
     }
 
     private fun setupToolbar() {

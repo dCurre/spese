@@ -13,12 +13,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.PartecipantiAdapter
+import com.dcurreli.spese.data.entity.ListaSpese
+import com.dcurreli.spese.data.entity.User
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
-import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.objects.Spesa
-import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ExcelUtils
 import com.dcurreli.spese.utils.GenericUtils
@@ -74,7 +74,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
            @SuppressLint("NotifyDataSetChanged")
            override fun onDataChange(dataSnapshot: DataSnapshot) {
                val listaSpese = dataSnapshot.getValue(ListaSpese::class.java) as ListaSpese
-               val partecipantiArray = ArrayList<Utente>()
+               val partecipantiArray = ArrayList<User>()
                val partecipantiAdapter = PartecipantiAdapter(partecipantiArray)
                binding.listaPartecipanti.adapter = partecipantiAdapter
                binding.listaPartecipanti.layoutManager = LinearLayoutManager(context)
@@ -86,14 +86,14 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
                        //Ciclo per ottenere spese e totale
                        for (snapshot: DataSnapshot in dataSnapshot.children) {
-                           val utente = snapshot.getValue(Utente::class.java) as Utente
+                           val user = snapshot.getValue(User::class.java) as User
 
-                           if(listaSpese.partecipanti.contains(utente.user_id)){
+                           if(listaSpese.partecipanti.contains(user.user_id)){
                                //Se l'utente è pure owner lo aggiungo in cima
-                               if(listaSpese.owner.contains(utente.user_id)){
-                                   partecipantiArray.add(0, utente)
+                               if(listaSpese.owner.contains(user.user_id)){
+                                   partecipantiArray.add(0, user)
                                } else {
-                                   partecipantiArray.add(utente)
+                                   partecipantiArray.add(user)
                                }
                            }
                        }

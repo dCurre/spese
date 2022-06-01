@@ -1,4 +1,4 @@
-package com.dcurreli.spese.objects;
+package com.dcurreli.spese.data.entity;
 
 import android.os.Build;
 
@@ -77,4 +77,8 @@ public class ListaSpese {
     public Long getTimestamp() { return timestamp; }
 
     public void setTimestamp(Long timestamp) { this.timestamp = timestamp; }
+
+    public String toString(){
+        return this.id + "|" + this.nome + ",";
+    }
 }

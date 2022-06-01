@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SpesaAdapter
+import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.dialog.EditSpesaDialogFragment
-import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.SnackbarUtils
 import com.dcurreli.spese.utils.SpesaUtils

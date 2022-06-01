@@ -9,10 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.dcurreli.spese.R
+import com.dcurreli.spese.data.entity.User
 import com.dcurreli.spese.databinding.SettingsFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.login.LoginActivity
-import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -89,9 +89,10 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     private fun setupSwitches(){
         db.child(user.uid).get().addOnSuccessListener {
             if (it.exists()) {
-                val utente : Utente = it.getValue(Utente::class.java) as Utente
-                GenericUtils.setupSwitch(binding.switchDarkTheme, utente.isDarkTheme)
-                GenericUtils.setupSwitch(binding.switchNascondiListe, utente.isNascondiListeSaldate)
+                val user : User = it.getValue(
+                    User::class.java) as User
+                GenericUtils.setupSwitch(binding.switchDarkTheme, user.isDarkTheme)
+                GenericUtils.setupSwitch(binding.switchNascondiListe, user.isNascondiListeSaldate)
             }
         }.addOnFailureListener {
             Log.e(ContentValues.TAG, "<<Error getting utente", it)

@@ -1,6 +1,6 @@
-package com.dcurreli.spese.objects;
+package com.dcurreli.spese.data.entity;
 
-public class Utente {
+public class User {
     private String user_id;
     private String nominativo;
     private String email;
@@ -8,7 +8,7 @@ public class Utente {
     private boolean darkTheme;
     private boolean nascondiListeSaldate;
 
-    public Utente(String uid, String nominativo, String email, String image){
+    public User(String uid, String nominativo, String email, String image){
         this.user_id = uid;
         this.nominativo = nominativo;
         this.email = email;
@@ -16,7 +16,7 @@ public class Utente {
         this.darkTheme = false;
         this.nascondiListeSaldate = false;
     }
-    public Utente(){
+    public User(){
     }
 
     public String getUser_id() {

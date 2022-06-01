@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
+import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.databinding.JoinFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.objects.ListaSpese
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.google.firebase.database.DataSnapshot

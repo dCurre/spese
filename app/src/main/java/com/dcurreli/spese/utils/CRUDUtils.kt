@@ -3,7 +3,7 @@ package com.dcurreli.spese.utils
 import android.annotation.SuppressLint
 import android.util.Log
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.objects.ListaSpese
+import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.objects.Spesa
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

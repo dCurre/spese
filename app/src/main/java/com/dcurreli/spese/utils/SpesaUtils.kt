@@ -16,7 +16,7 @@ import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.objects.ListaSpese
+import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.objects.SaldoCategory
 import com.dcurreli.spese.objects.SaldoSubItem
 import com.dcurreli.spese.objects.Spesa
@@ -27,6 +27,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.math.BigDecimal
 
 
@@ -34,12 +36,13 @@ object SpesaUtils {
     private val className = javaClass.simpleName
     private var dbSpesa = DBUtils.getDatabaseReference(TablesEnum.SPESA)
     private var dbListaSpese = DBUtils.getDatabaseReference(TablesEnum.LISTE)
+    val db = Firebase.firestore.collection("Utenti")
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun creaSpesa(binding: AddSpesaBinding, idLista : String) {
         val methodName = "creaSpesa"
         Log.i(className, ">>$methodName")
-        val newKey = dbSpesa.push().key!!
+        val newKey = db.document().id
 
         //Nuova spesa
         val spesa = Spesa(
@@ -50,6 +53,8 @@ object SpesaUtils {
             binding.spesaPagatoreText.text.toString().trim(),
             idLista
         )
+
+        db.document(newKey).set(spesa)
 
         //Creo spesa
         dbSpesa.child(newKey).setValue(spesa)

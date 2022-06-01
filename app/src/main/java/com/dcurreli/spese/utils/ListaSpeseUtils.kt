@@ -1,21 +1,15 @@
 package com.dcurreli.spese.utils
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
-import com.dcurreli.spese.adapters.ListaListeAdapter
+import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
-import com.dcurreli.spese.databinding.HomeFragmentBinding
 import com.dcurreli.spese.databinding.JoinFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.objects.ListaSpese
-import com.dcurreli.spese.objects.Utente
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -93,50 +87,6 @@ object ListaSpeseUtils {
 
     fun clearTextViewFocus(binding: AddListaSpeseBinding) {
         binding.listaSpeseNome.clearFocus()
-    }
-
-    fun printListe(context: Context, binding: HomeFragmentBinding, navController: NavController) {
-        binding.listaSpese.layoutManager = LinearLayoutManager(context)
-        binding.listaSpese.apply {
-            layoutManager = GridLayoutManager(context, 2)//NUMERO DI SPESE PER RIGA
-        }
-
-        val listaSpeseArray = ArrayList<ListaSpese>()
-        val arrayTemp = ArrayList<ListaSpese>()
-        val listaSpeseAdapter = ListaListeAdapter(listaSpeseArray, navController)
-
-        binding.listaSpese.adapter = listaSpeseAdapter
-
-        dbListe.orderByChild("partecipanti").addValueEventListener(object : ValueEventListener {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                listaSpeseArray.clear()
-                arrayTemp.clear()
-
-                dbUtente.child(DBUtils.getCurrentUser()!!.uid).get().addOnSuccessListener { it ->
-                    val utente = it.getValue(Utente::class.java) as Utente
-
-                    for (snapshot: DataSnapshot in dataSnapshot.children) {
-                        val listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
-                        if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(DBUtils.getCurrentUser()?.uid)){
-                            //Se non nascondo liste saldate stampo tutto, altrimenti stampo solo quelle non saldate
-                            if (!utente.isNascondiListeSaldate || (utente.isNascondiListeSaldate && !listaSpese.isSaldato)) {
-                                arrayTemp.add(listaSpese)
-                            }
-                        }
-                    }
-
-                    listaSpeseArray.addAll(arrayTemp.sortedBy { it.timestamp }.toCollection(ArrayList()))
-                    listaSpeseArray.reverse()
-
-                    listaSpeseAdapter.notifyDataSetChanged() //Aggiorna le liste (se tolgo non stampa)
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(className, "Failed to read value.", error.toException())
-            }
-        })
     }
 
     //Update di un campo, utile quando creo campi nuovi

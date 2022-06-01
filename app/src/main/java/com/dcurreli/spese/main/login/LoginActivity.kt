@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.dcurreli.spese.R
+import com.dcurreli.spese.data.entity.User
 import com.dcurreli.spese.databinding.ActivityLoginBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
-import com.dcurreli.spese.objects.Utente
 import com.dcurreli.spese.utils.DBUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -87,7 +87,12 @@ class LoginActivity : AppCompatActivity() {
                         this.db.child(user.uid).get().addOnSuccessListener {
                             //Se non esiste creo l'utente nella lista utenti
                             if (!it.exists()) {
-                                val uid = Utente(user.uid,user.displayName, user.email, user.photoUrl.toString())
+                                val uid = User(
+                                    user.uid,
+                                    user.displayName,
+                                    user.email,
+                                    user.photoUrl.toString()
+                                )
                                 db.child(user.uid).setValue(uid)
                             }
                         }
