@@ -78,7 +78,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
             binding.speseNotFound.visibility = if(spesaList.isNotEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
         }
 
-        //Setup griglia liste
+        //Setup spese
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = spesaAdapter
     }

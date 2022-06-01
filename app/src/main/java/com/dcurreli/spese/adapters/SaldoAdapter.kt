@@ -32,11 +32,9 @@ class SaldoAdapter() : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun addItems(newSpesaList : List<Spesa>){
-        if(newSpesaList.isNotEmpty()) {
-            speseList.clear()
-            speseList.addAll(newSpesaList)
-            notifyDataSetChanged()
-        }
+        speseList.clear()
+        speseList.addAll(newSpesaList)
+        notifyDataSetChanged()
     }
 
     // Holds the views for adding it to image and text
