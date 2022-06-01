@@ -62,8 +62,7 @@ class ListaSpeseRepository {
     fun getListaSpeseById(liveData: MutableLiveData<ListaSpese>, id : String) {
         db.orderByChild("id").equalTo(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val listaSpese = dataSnapshot.children.first().getValue(ListaSpese::class.java) as ListaSpese
-                liveData.postValue(listaSpese)
+                liveData.postValue(dataSnapshot.children.first().getValue(ListaSpese::class.java) as ListaSpese)
             }
 
             override fun onCancelled(error: DatabaseError) {

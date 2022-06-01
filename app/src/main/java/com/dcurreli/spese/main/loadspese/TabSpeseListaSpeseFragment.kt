@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SpesaAdapter
+import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
@@ -50,6 +51,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     ): View1 {
 
         _binding = LoadSpeseTabSpeseBinding.inflate(inflater, container, false)
+        spesaAdapter = SpesaAdapter()
         spesaModel = ViewModelProvider(requireActivity())[SpesaViewModel::class.java]
         listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
 
@@ -64,14 +66,10 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
-
-
         super.onViewCreated(view, savedInstanceState)
     }
 
     private fun printSpese() {
-
-        spesaAdapter = SpesaAdapter()
 
         //Aggiungo le spese estratte all'adapter
         spesaModel.findByListaSpesaID(arguments?.getString("idLista").toString())
@@ -94,42 +92,40 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
+                    var listaSpese = ListaSpese()
                     listaSpeseModel.getListaSpeseById(arguments?.getString("idLista").toString())
-                    listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
-                        if(direction == ItemTouchHelper.RIGHT){ //Se scorro verso destra modifico
-                            if (listaSpese != null) {
-                                if(!listaSpese.isSaldato){
-                                    EditSpesaDialogFragment().newInstance(spesaAdapter.getItem(viewHolder.absoluteAdapterPosition)).show(childFragmentManager, EditSpesaDialogFragment.TAG)
-                                    spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                                } else {
-                                    SnackbarUtils.showSnackbarError("Non puoi modificare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
-                                    spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                                }
-                            }
-                        }
+                    listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
+                        listaSpese = listaSpeseExtracted
+                    }
 
-                        if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
-                            if (listaSpese != null) {
-                                if(!listaSpese.isSaldato){
-                                    //Se non è saldato faccio uscire l'alert per la cancellazione della spesa
-                                    AlertDialog.Builder(context)
-                                        .setTitle("Conferma")
-                                        .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
-                                        .setPositiveButton("SI") { _, _ ->
-                                            spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).delete()
-                                            SnackbarUtils.showSnackbarOK("Spesa cancellata", binding.root)
-                                        }
-                                        .setNegativeButton("NO") { _, _ ->
-                                            spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                                        }
-                                        .setCancelable(false)
-                                        .show()
-                                } else {
-                                    SnackbarUtils.showSnackbarError("Non puoi cancellare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
+                    if(direction == ItemTouchHelper.RIGHT){ //Se scorro verso destra modifico
+                        if(!listaSpese.isSaldato){
+                            EditSpesaDialogFragment().newInstance(spesaAdapter.getItem(viewHolder.absoluteAdapterPosition)).show(childFragmentManager, EditSpesaDialogFragment.TAG)
+                            spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                        } else {
+                            SnackbarUtils.showSnackbarError("Non puoi modificare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
+                            spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                        }
+                    }
+
+                    if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
+                        if(!listaSpese.isSaldato){
+                            //Se non è saldato faccio uscire l'alert per la cancellazione della spesa
+                            AlertDialog.Builder(context)
+                                .setTitle("Conferma")
+                                .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
+                                .setPositiveButton("SI") { _, _ ->
+                                    spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).delete()
+                                    SnackbarUtils.showSnackbarOK("Spesa cancellata", binding.root)
+                                }
+                                .setNegativeButton("NO") { _, _ ->
                                     spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                                 }
-                            }
+                                .setCancelable(false)
+                                .show()
+                        } else {
+                            SnackbarUtils.showSnackbarError("Non puoi cancellare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
+                            spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                         }
                     }
                 }

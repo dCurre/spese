@@ -47,11 +47,9 @@ class ListaSpeseAdapter(private val navController: NavController) : RecyclerView
 
     @SuppressLint("NotifyDataSetChanged")
     fun addItems(newListaSpeseList : List<ListaSpese>){
-        if(newListaSpeseList.isNotEmpty()) {
-            listaSpeseList.clear()
-            listaSpeseList.addAll(newListaSpeseList)
-            notifyDataSetChanged()
-        }
+        listaSpeseList.clear()
+        listaSpeseList.addAll(newListaSpeseList)
+        notifyDataSetChanged()
     }
 
 

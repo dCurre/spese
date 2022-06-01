@@ -64,7 +64,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
 
         //Aggiungo le spese estratte all'adapter
         spesaModel.findAll()
-        spesaModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
+        spesaModel.spesaListLiveData.observe(requireActivity()) { spesaList ->
             saldoAdapter.addItems(spesaList)
         }
 
@@ -76,7 +76,6 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 
