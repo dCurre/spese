@@ -55,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
         Log.d(className, "<< signIn()")
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -82,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("SignInActivity", "signInWithCredential: success")
 
                     //DOPO LA LOGIN CREO L'UTENTE SE NON ESITE
-                    val user = DBUtils.getCurrentUser()
+                    val user = DBUtils.getLoggedUser()
                     if (user != null) {
                         this.db.child(user.uid).get().addOnSuccessListener {
                             //Se non esiste creo l'utente nella lista utenti

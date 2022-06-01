@@ -8,9 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
+import com.dcurreli.spese.data.entity.ListaSpese
+import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
+import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.dcurreli.spese.utils.SnackbarUtils
@@ -20,6 +25,7 @@ class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
     private val className = javaClass.simpleName
     private var _binding: AddListaSpeseBinding? = null
     private val binding get() = _binding!!
+    private val currentUser = DBUtils.getLoggedUser()
 
     @SuppressLint("RestrictedApi")
     override fun onCreateView(
@@ -42,8 +48,7 @@ class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
             ListaSpeseUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
         }
 
-        //Setup bottone "Aggiungi"
-        setupAddButton(view)
+        setupAddButton(view) //Setup bottone "Aggiungi"
     }
 
     override fun onDestroyView() {
@@ -60,12 +65,21 @@ class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
             if (binding.listaSpeseNomeText.text.isNullOrBlank()) {
                 SnackbarUtils.showSnackbarError("Nome lista non inserito !", binding.addListaSpeseConstraintLayout)
             } else {
-                //Recupero dati dall'xml
-                ListaSpeseUtils.creaListaSpese(binding)
+
+                //Insert nuova lista spese
+                ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+                    .insert(
+                        ListaSpese(
+                            DBUtils.getDatabaseReference(TablesEnum.LISTE).push().key!!,
+                            binding.listaSpeseNomeText.text.toString().trim(),
+                            arrayListOf<String>(currentUser.uid),
+                            currentUser.uid
+                        )
+                    )
+
                 SnackbarUtils.showSnackbarOK("Lista creata : )", binding.addListaSpeseConstraintLayout)
 
                 findNavController().navigate(R.id.action_addListaSpeseFragment_to_homeFragment)
-
             }
         }
     }

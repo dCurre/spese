@@ -131,7 +131,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         dbListaSpese.child(idLista).get().addOnSuccessListener {
             if (it.exists()) {
                 when {
-                    (it.getValue(ListaSpese::class.java) as ListaSpese).owner.equals(DBUtils.getCurrentUser()!!.uid)-> { binding.buttonDelete.visibility = View.VISIBLE }
+                    (it.getValue(ListaSpese::class.java) as ListaSpese).owner.equals(DBUtils.getLoggedUser()!!.uid)-> { binding.buttonDelete.visibility = View.VISIBLE }
                     else -> { binding.buttonDelete.visibility = View.GONE }
                 }
             }
@@ -227,7 +227,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         dbListaSpese.child(idLista).get().addOnSuccessListener {
             if (it.exists()) {
                 val lista : ListaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
-                val dbUserID = DBUtils.getCurrentUser()!!.uid
+                val dbUserID = DBUtils.getLoggedUser()!!.uid
 
                 //Se la lista ha un solo partecipante
                 if(lista.partecipanti.size == 1 && lista.partecipanti[0].equals(dbUserID, ignoreCase = true)){

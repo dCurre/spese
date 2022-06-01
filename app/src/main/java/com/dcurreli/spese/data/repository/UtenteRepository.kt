@@ -45,6 +45,10 @@ class UtenteRepository {
         db.child(id).setValue(user)
     }
 
+    fun updateByField(id: String, field : String, value : Any) {
+        db.child(id).child(field).setValue(value)
+    }
+
     fun getUserListByIdList(liveData: MutableLiveData<List<User>>, uidList: List<String>) {
         db.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

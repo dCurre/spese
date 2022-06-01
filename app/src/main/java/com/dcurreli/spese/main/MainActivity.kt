@@ -34,7 +34,6 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var currentUser : FirebaseUser
     private val className = javaClass.simpleName
     private val requestExternalStorage = 1
     private val permissionStorage = arrayOf(
@@ -46,7 +45,6 @@ open class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        currentUser = DBUtils.getCurrentUser()!!
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
@@ -68,10 +66,8 @@ open class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
 
         //Nascondo il menu appena creato
-        val share : MenuItem = menu.findItem(R.id.share)
-        val edit : MenuItem = menu.findItem(R.id.edit)
-        share.isVisible = false
-        edit.isVisible = false
+        menu.findItem(R.id.share).isVisible = false
+        menu.findItem(R.id.edit).isVisible = false
 
         return true
     }
@@ -97,8 +93,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun checkDynamicLink() {
-        Firebase.dynamicLinks
-            .getDynamicLink(intent)
+        Firebase.dynamicLinks.getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
                 // Get deep link from result (may be null if no link is found)
                 val deepLink: Uri? = pendingDynamicLinkData?.link
@@ -127,6 +122,4 @@ open class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, permissionStorage, requestExternalStorage)
         }
     }
-
-
 }

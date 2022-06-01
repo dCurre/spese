@@ -43,7 +43,6 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = AddSpesaBinding.inflate(inflater, container, false)
         userModel = ViewModelProvider(this)[UserViewModel::class.java]
         listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
@@ -91,7 +90,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         }
 
         //TODO: tasto debug da togliere
-        if(!DBUtils.getCurrentUser()!!.email.equals("curre994@gmail.com", ignoreCase = true)){
+        if(!DBUtils.getLoggedUser()!!.email.equals("curre994@gmail.com", ignoreCase = true)){
             binding.spesaButtonAddSpesa10.visibility = View.GONE
         }
         //TODO: tasto debug da togliere
@@ -105,7 +104,6 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                 binding.spesaData.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
                 binding.spesaPagatoreText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
                 else -> {
-
                     for(i in 0 until 10){
                         SpesaUtils.creaSpesa(binding, arguments?.getString("idLista").toString())
                     }

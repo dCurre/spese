@@ -10,25 +10,27 @@ import com.google.firebase.ktx.Firebase
 object DBUtils {
     private val className = javaClass.simpleName
     private var mAuth= FirebaseAuth.getInstance()
-
-    fun getCurrentUser(): FirebaseUser? {
-        return mAuth.currentUser
-    }
+    private val dbReference = Firebase.database.reference
 
     fun getAuthentication(): FirebaseAuth {
         return this.mAuth
     }
 
-    fun getCurrentUserImage(): String {
-        return mAuth.currentUser?.photoUrl.toString()
+    fun getLoggedUser(): FirebaseUser {
+        //L'utente è per forza loggato
+        return getAuthentication().currentUser!!
+    }
+
+    fun getToLogUser(): FirebaseUser? {
+        return getAuthentication().currentUser
     }
 
     fun getDatabaseReference(table : TablesEnum): DatabaseReference {
-        return Firebase.database.reference.child(table.value)
+        return dbReference.child(table.value)
     }
 
     fun getDatabaseReference(table : String): DatabaseReference {
-        return Firebase.database.reference.child(table)
+        return dbReference.child(table)
     }
 
 }

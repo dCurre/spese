@@ -1,9 +1,7 @@
 package com.dcurreli.spese.utils
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.data.entity.ListaSpese
@@ -18,31 +16,8 @@ import com.google.firebase.database.ValueEventListener
 object ListaSpeseUtils {
     private val className by lazy { javaClass.simpleName }
     private var dbListe = DBUtils.getDatabaseReference(TablesEnum.LISTE)
-    private var dbUtente = DBUtils.getDatabaseReference(TablesEnum.UTENTE)
-    private lateinit var currentUser: FirebaseUser
+    private var currentUser: FirebaseUser = DBUtils.getLoggedUser()!!
     private var partecipanti : ArrayList<String> = ArrayList()
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun creaListaSpese(binding: AddListaSpeseBinding) {
-        val methodName = "creaListaSpese"
-        Log.i(className, ">>$methodName")
-        val newKey = dbListe.push().key!!
-        currentUser = DBUtils.getCurrentUser()!!
-        partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
-
-        //Nuova spesa
-        val lista = ListaSpese(
-            newKey,
-            binding.listaSpeseNomeText.text.toString().trim(),
-            partecipanti,
-            DBUtils.getCurrentUser()?.uid
-        )
-
-        //Creo lista
-        dbListe.child(newKey).setValue(lista)
-
-        Log.i(className, "<<$methodName")
-    }
 
     fun joinListaSpese(
         idLista: String,
@@ -51,7 +26,6 @@ object ListaSpeseUtils {
     ) {
         val methodName = "creaListaSpese"
         Log.i(className, ">>$methodName")
-        currentUser = DBUtils.getCurrentUser()!!
         partecipanti.add(currentUser.uid)//Aggiunge user id del partecipante
 
         //Recupero il mese da cancellare

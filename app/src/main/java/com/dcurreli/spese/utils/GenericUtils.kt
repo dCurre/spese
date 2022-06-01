@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import java.text.SimpleDateFormat
 import java.time.YearMonth
@@ -59,27 +58,13 @@ object GenericUtils {
     }
 
     // Gestisco preferenze tema scuro/chiaro
-    fun onOffDarkTheme(db: DatabaseReference, user: FirebaseUser, bool: Boolean) {
+    fun onOffDarkTheme(bool: Boolean) {
         when (bool) {
             true -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                db.child(user.uid).child("darkTheme").setValue(true)
             }
             false -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                db.child(user.uid).child("darkTheme").setValue(false)
-            }
-        }
-    }
-
-    // Gestisco preferenze tema scuro/chiaro
-    fun onOffNascondiListe(db: DatabaseReference, user: FirebaseUser, bool: Boolean) {
-        when (bool) {
-            true -> {
-                db.child(user.uid).child("nascondiListeSaldate").setValue(true)
-            }
-            false -> {
-                db.child(user.uid).child("nascondiListeSaldate").setValue(false)
             }
         }
     }

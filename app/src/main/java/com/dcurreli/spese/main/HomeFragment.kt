@@ -23,7 +23,9 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     private var _binding: HomeFragmentBinding? = null
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
-    private val user = DBUtils.getCurrentUser()!!
+    private val user = DBUtils.getLoggedUser()
+    private lateinit var userModel : UserViewModel
+    private lateinit var listaSpeseModel : ListaSpeseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,25 +33,19 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     ): View {
 
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
+        userModel = ViewModelProvider(this)[UserViewModel::class.java]
+        listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+
+        printListaSpese()
 
         setupUserBar()
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        printListaSpese()
-
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
     private fun printListaSpese() {
-        val listaSpeseModel : ListaSpeseViewModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
-        val userModel : UserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         val listaSpeseAdapter = ListaListeAdapter(findNavController())
-        val listePerRiga = 2 //NUMERO DI SPESE PER RIGA
+        val listsPerRow = 2
 
         //Recupero listaSpese a partire dall'utente
         userModel.getUserById(user.uid)
@@ -57,13 +53,15 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
            listaSpeseModel.findListsByUserID(user)
         }
 
-        //Setup layout manager
-        binding.listaSpese.layoutManager = GridLayoutManager(context, listePerRiga)
-        binding.listaSpese.adapter = listaSpeseAdapter
-
+        //Aggiungo le liste estratte all'adapter
         listaSpeseModel.listaSpeseListLiveData.observe(viewLifecycleOwner) { listaSpeseList ->
             listaSpeseAdapter.addItems(listaSpeseList)
         }
+
+        //Setup griglia liste
+        binding.listaSpese.layoutManager = GridLayoutManager(context, listsPerRow)
+        binding.listaSpese.adapter = listaSpeseAdapter
+
     }
 
     override fun onResume() {

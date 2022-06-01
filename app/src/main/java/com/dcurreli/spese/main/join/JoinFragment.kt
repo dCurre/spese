@@ -31,7 +31,6 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = JoinFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }

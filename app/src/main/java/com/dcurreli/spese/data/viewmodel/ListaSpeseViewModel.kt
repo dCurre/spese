@@ -7,7 +7,7 @@ import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.data.entity.User
 import com.dcurreli.spese.data.repository.ListaSpeseRepository
 
-class ListaSpeseViewModel() : ViewModel() {
+class ListaSpeseViewModel : ViewModel() {
 
     private val repository = ListaSpeseRepository()
 
@@ -30,5 +30,9 @@ class ListaSpeseViewModel() : ViewModel() {
 
     fun update(id: String, listaSpese: ListaSpese) {
         repository.update(id, listaSpese)
+    }
+
+    fun insert(listaSpese: ListaSpese) {
+        repository.insert(listaSpese)
     }
 }

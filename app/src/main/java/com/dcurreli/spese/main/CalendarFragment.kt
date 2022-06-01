@@ -10,6 +10,7 @@ import com.dcurreli.spese.databinding.CalendarFragmentBinding
 import com.google.firebase.database.DatabaseReference
 
 class CalendarFragment : Fragment(R.layout.calendar_fragment) {
+    //TODO CALENDARIO
 
     private var _binding: CalendarFragmentBinding? = null
     private val binding get() = _binding!! // This property is only valid between onCreateView and onDestroyView.
@@ -19,7 +20,7 @@ class CalendarFragment : Fragment(R.layout.calendar_fragment) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = CalendarFragmentBinding.inflate(inflater, container, false)
         return binding.root

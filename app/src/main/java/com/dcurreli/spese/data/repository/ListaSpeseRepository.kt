@@ -76,4 +76,8 @@ class ListaSpeseRepository {
         db.child(id).setValue(listaSpese)
     }
 
+    fun insert(listaSpese : ListaSpese) {
+        db.child(listaSpese.id).setValue(listaSpese)
+    }
+
 }
