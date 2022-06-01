@@ -30,4 +30,8 @@ class SpesaViewModel : ViewModel() {
     fun insert(spesa: Spesa) {
         repository.insert(spesa)
     }
+
+    fun delete(spesa: Spesa) {
+        repository.delete(spesa)
+    }
 }

@@ -62,4 +62,8 @@ class SpesaRepository {
     fun insert(spesa : Spesa) {
         db.child(spesa.id).setValue(spesa)
     }
+
+    fun delete(spesa: Spesa) {
+        db.child(spesa.id).removeValue()
+    }
 }

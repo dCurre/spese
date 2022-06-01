@@ -93,6 +93,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     var listaSpese = ListaSpese()
+
                     listaSpeseModel.getListaSpeseById(arguments?.getString("idLista").toString())
                     listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
                         listaSpese = listaSpeseExtracted
@@ -115,7 +116,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                                 .setTitle("Conferma")
                                 .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
                                 .setPositiveButton("SI") { _, _ ->
-                                    spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).delete()
+                                    spesaModel.delete(spesaAdapter.getItem(viewHolder.absoluteAdapterPosition))
                                     SnackbarUtils.showSnackbarOK("Spesa cancellata", binding.root)
                                 }
                                 .setNegativeButton("NO") { _, _ ->
