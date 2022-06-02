@@ -76,7 +76,7 @@ class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
                         )
                     )
 
-                SnackbarUtils.showSnackbarOK("Lista creata : )", binding.addListaSpeseConstraintLayout)
+                SnackbarUtils.showSnackbarOKOverBottomnav("Lista creata : )", binding.addListaSpeseConstraintLayout)
 
                 findNavController().navigate(R.id.action_addListaSpeseFragment_to_homeFragment)
             }

@@ -37,7 +37,7 @@ object GenericUtils {
         return dateToTimestampSeconds(SimpleDateFormat(pattern).parse(data))
     }
 
-    private fun dateToTimestampSeconds(date: Date?): Long {
+    fun dateToTimestampSeconds(date: Date?): Long {
         return Timestamp(date!!).seconds
     }
 

@@ -29,8 +29,4 @@ object DBUtils {
         return dbReference.child(table.value)
     }
 
-    fun getDatabaseReference(table : String): DatabaseReference {
-        return dbReference.child(table)
-    }
-
 }

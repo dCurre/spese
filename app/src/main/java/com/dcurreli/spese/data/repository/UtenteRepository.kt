@@ -70,4 +70,8 @@ class UtenteRepository {
         })
     }
 
+    fun insert(user: User) {
+        db.child(user.user_id).setValue(user)
+    }
+
 }

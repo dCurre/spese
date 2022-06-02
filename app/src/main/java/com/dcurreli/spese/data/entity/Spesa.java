@@ -93,11 +93,4 @@ public class Spesa {
 
     public void setListaSpesaID(String listaSpesaID) { this.listaSpesaID = listaSpesaID; }
 
-    public void delete(){
-        DBUtils.INSTANCE.getDatabaseReference("spesa").child(this.id).removeValue();
-    }
-
-    public String toString(){
-        return this.id + " | " + this.spesa;
-    }
 }

@@ -3,6 +3,7 @@ package com.dcurreli.spese.data.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.data.entity.User
 import com.dcurreli.spese.data.repository.UtenteRepository
 
@@ -25,6 +26,10 @@ class UserViewModel : ViewModel() {
 
     fun findByIdList(uidList : List<String>) {
         repository.getUserListByIdList(_userListLiveData, uidList)
+    }
+
+    fun insert(user: User) {
+        repository.insert(user)
     }
 
     fun update(id: String, user: User) {

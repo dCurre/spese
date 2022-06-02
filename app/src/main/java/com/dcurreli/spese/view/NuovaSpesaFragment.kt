@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +13,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
+import com.dcurreli.spese.data.entity.Spesa
 import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
+import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.utils.*
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.dcurreli.spese.utils.DBUtils
+import com.dcurreli.spese.utils.DateUtils
+import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.utils.SnackbarUtils
 import java.util.*
 
 
@@ -30,9 +30,9 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
 
     private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
-    private var dbSpesa: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.SPESA)
     private lateinit var userModel : UserViewModel
-    private lateinit var listaSpeseModel : ListaSpeseViewModel
+    private lateinit var listaSpeseViewModel : ListaSpeseViewModel
+    private lateinit var spesaViewModel: SpesaViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -45,7 +45,8 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     ): View {
         _binding = AddSpesaBinding.inflate(inflater, container, false)
         userModel = ViewModelProvider(this)[UserViewModel::class.java]
-        listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+        listaSpeseViewModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+        spesaViewModel = ViewModelProvider(this)[SpesaViewModel::class.java]
         return binding.root
     }
 
@@ -71,22 +72,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
 
         //Bottone "Aggiungi"
         binding.spesaButtonAddSpesa.setOnClickListener {
-            //Chiudo la tastiera come prima cosa
-            GenericUtils.hideSoftKeyBoard(requireContext(), view)
-
-            when {
-                binding.spesaSpesaText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaImporto.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaData.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaPagatoreText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaImporto.text.toString().toDouble().equals(0.00) -> { SnackbarUtils.showSnackbarError("Inserire importo maggiore di 0 !", binding.addSpesaConstraintLayout) }
-                else -> {
-                    SpesaUtils.creaSpesa(binding, arguments?.getString("idLista").toString())
-                    SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
-
-                    findNavController().popBackStack()
-                }
-            }
+            addSpesa(view)
         }
 
         //TODO: tasto debug da togliere
@@ -95,22 +81,36 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         }
         //TODO: tasto debug da togliere
         binding.spesaButtonAddSpesa10.setOnClickListener {
-            //Chiudo la tastiera come prima cosa
-            GenericUtils.hideSoftKeyBoard(requireContext(), view)
+            for(i in 0 until 10){
+                addSpesa(view)
+            }
+        }
+    }
 
-            when {
-                binding.spesaSpesaText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaImporto.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaData.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
-                binding.spesaPagatoreText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
-                else -> {
-                    for(i in 0 until 10){
-                        SpesaUtils.creaSpesa(binding, arguments?.getString("idLista").toString())
-                    }
-                    SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
+    private fun addSpesa(view: View) {
+        //Chiudo la tastiera come prima cosa
+        GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
-                    findNavController().navigate(R.id.loadSpeseFragment, arguments)
-                }
+        when {
+            binding.spesaSpesaText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo spesa non popolato !", binding.addSpesaConstraintLayout) }
+            binding.spesaImporto.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo importo non popolato !", binding.addSpesaConstraintLayout) }
+            binding.spesaData.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo data non popolato !", binding.addSpesaConstraintLayout) }
+            binding.spesaPagatoreText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
+            binding.spesaImporto.text.toString().toDouble().equals(0.00) -> { SnackbarUtils.showSnackbarError("Inserire importo maggiore di 0 !", binding.addSpesaConstraintLayout) }
+            else -> {
+                spesaViewModel.insert(
+                    Spesa(
+                        DBUtils.getDatabaseReference(TablesEnum.SPESA).push().key!!,
+                        binding.spesaSpesaText.text.toString().trim(),
+                        binding.spesaImporto.text.toString().trim().replace(",", ".").toDouble(),
+                        binding.spesaData.text.toString().trim(),
+                        binding.spesaPagatoreText.text.toString().trim(),
+                        arguments?.getString("idLista").toString()
+                    )
+                )
+
+                SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
+                findNavController().popBackStack()
             }
         }
     }
@@ -140,8 +140,8 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         pagatoriList: ArrayList<String>,
         arrayAdapterPagatori: ArrayAdapter<String>
     ) {
-        listaSpeseModel.findById(arguments?.getString("idLista").toString())
-        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
+        listaSpeseViewModel.findById(arguments?.getString("idLista").toString())
+        listaSpeseViewModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
             val partecipanti = listaSpese.partecipanti
             var countPartecipanti = partecipanti.size
 
@@ -167,29 +167,23 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         arrayAdapterSpese: ArrayAdapter<String>,
         arrayAdapterPagatori: ArrayAdapter<String>
     ) {
-        dbSpesa.orderByChild("listaSpesaID").equalTo(arguments?.getString("idLista").toString()).addValueEventListener(object :
-            ValueEventListener {
-            @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val speseList = ArrayList<String>()
-                pagatoriList.clear()
-                arrayAdapterSpese.clear()
-                arrayAdapterPagatori.clear()
 
-                //Ciclo per ottenere spese e pagatori
-                for (snapshot in dataSnapshot.children) {
-                    speseList.add(snapshot.child("spesa").getValue(String::class.java) as String)
-                    pagatoriList.add(snapshot.child("pagatore").getValue(String::class.java) as String)
-                }
+        spesaViewModel.findByListaSpesaID(arguments?.getString("idLista").toString())
+        spesaViewModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
+            val speseList = ArrayList<String>()
+            pagatoriList.clear()
+            arrayAdapterSpese.clear()
+            arrayAdapterPagatori.clear()
 
-                //Faccio la distinct per filtrarmi le spese doppie, i pagatori li aggiungo dopo
-                arrayAdapterSpese.addAll(speseList.distinct())
+            //Ciclo per ottenere spese e pagatori
+            spesaList.forEach { spesa ->
+                speseList.add(spesa.spesa)
+                pagatoriList.add(spesa.pagatore)
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(className, "Failed to read value.", error.toException())
-            }
-        })
+            //Faccio la distinct per filtrarmi le spese doppie, i pagatori li aggiungo dopo
+            arrayAdapterSpese.addAll(speseList.distinct())
+        }
     }
 
     private fun setupToolbar() {

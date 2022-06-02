@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.data.entity.Spesa
 
-class SaldoAdapter() : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
+class SaldoAdapter : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
 
     private val speseList = ArrayList<Spesa>()
 

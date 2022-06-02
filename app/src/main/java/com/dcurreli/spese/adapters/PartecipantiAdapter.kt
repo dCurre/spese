@@ -11,7 +11,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.data.entity.User
 
 
-class PartecipantiAdapter() : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>() {
+class PartecipantiAdapter : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>() {
 
     private val userList = ArrayList<User>()
 
