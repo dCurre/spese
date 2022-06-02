@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main.join
+package com.dcurreli.spese.view.join
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.databinding.JoinFragmentBinding
-import com.dcurreli.spese.main.MainActivity
+import com.dcurreli.spese.view.MainActivity
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.SnackbarUtils
 import com.google.firebase.auth.FirebaseUser

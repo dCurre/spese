@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main.login
+package com.dcurreli.spese.view.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.data.entity.User
 import com.dcurreli.spese.databinding.ActivityLoginBinding
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.main.MainActivity
+import com.dcurreli.spese.view.MainActivity
 import com.dcurreli.spese.utils.DBUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

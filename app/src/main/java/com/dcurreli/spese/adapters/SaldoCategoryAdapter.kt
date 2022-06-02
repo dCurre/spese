@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
-import com.dcurreli.spese.objects.SaldoCategory
-import com.dcurreli.spese.objects.SaldoSubItem
+import com.dcurreli.spese.data.dto.SaldoCategory
+import com.dcurreli.spese.data.dto.SaldoSubItem
 
 class SaldoCategoryAdapter(private val context: Context, ) : RecyclerView.Adapter<SaldoCategoryAdapter.ViewHolder>() {
 

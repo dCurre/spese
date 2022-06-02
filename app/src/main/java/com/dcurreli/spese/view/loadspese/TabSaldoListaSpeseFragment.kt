@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main.loadspese
+package com.dcurreli.spese.view.loadspese
 
 import android.os.Build
 import android.os.Bundle
@@ -14,8 +14,8 @@ import com.dcurreli.spese.adapters.SaldoCategoryAdapter
 import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
-import com.dcurreli.spese.objects.SaldoCategory
-import com.dcurreli.spese.objects.SaldoSubItem
+import com.dcurreli.spese.data.dto.SaldoCategory
+import com.dcurreli.spese.data.dto.SaldoSubItem
 import com.dcurreli.spese.utils.GenericUtils
 import android.view.View as View1
 

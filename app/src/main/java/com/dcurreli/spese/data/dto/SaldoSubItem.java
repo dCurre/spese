@@ -1,4 +1,4 @@
-package com.dcurreli.spese.objects;
+package com.dcurreli.spese.data.dto;
 
 import com.dcurreli.spese.utils.GenericUtils;
 

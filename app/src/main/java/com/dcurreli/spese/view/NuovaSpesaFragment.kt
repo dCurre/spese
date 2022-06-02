@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main
+package com.dcurreli.spese.view
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -66,7 +66,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         //Se premo lo sfondo
         binding.addSpesaConstraintLayout.setOnClickListener {
             GenericUtils.hideSoftKeyBoard(requireContext(), view) //Chiudo la tastiera
-            SpesaUtils.clearTextViewFocusAddSpesa(binding) //Tolgo il focus dagli altri bottoni
+            GenericUtils.clearTextViewFocusAddSpesa(binding) //Tolgo il focus dagli altri bottoni
         }
 
         //Bottone "Aggiungi"
@@ -225,7 +225,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                         }/${String.format("%02d", (mMonth + 1))}/$mYear"
                     )
 
-                    SpesaUtils.clearTextViewFocusAddSpesa(binding) //Tolgo il focus dagli altri bottoni
+                    GenericUtils.clearTextViewFocusAddSpesa(binding) //Tolgo il focus dagli altri bottoni
                 },
                 year,
                 month,

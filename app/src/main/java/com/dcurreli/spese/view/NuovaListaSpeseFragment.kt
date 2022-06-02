@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main
+package com.dcurreli.spese.view
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -17,7 +17,6 @@ import com.dcurreli.spese.databinding.AddListaSpeseBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
-import com.dcurreli.spese.utils.ListaSpeseUtils
 import com.dcurreli.spese.utils.SnackbarUtils
 
 class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
@@ -45,7 +44,7 @@ class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
         //Se premo lo sfondo
         binding.addListaSpeseConstraintLayout.setOnClickListener {
             GenericUtils.hideSoftKeyBoard(requireContext(), view) //Chiudo la tastiera
-            ListaSpeseUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
+            GenericUtils.clearTextViewFocus(binding) //Tolgo il focus dagli altri bottoni
         }
 
         setupAddButton(view) //Setup bottone "Aggiungi"

@@ -1,4 +1,4 @@
-package com.dcurreli.spese.objects;
+package com.dcurreli.spese.data.entity;
 
 import android.os.Build;
 
@@ -30,12 +30,6 @@ public class Spesa {
     }
 
     public Spesa() {
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public String extractMensilitaAnno() {
-        String[] dataSpesa = this.data.split("/");
-        return DateUtils.INSTANCE.getMonthAsText(dataSpesa[1]) + " " + dataSpesa[2];
     }
 
     public String getId() {

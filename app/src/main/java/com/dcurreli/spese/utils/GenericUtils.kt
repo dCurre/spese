@@ -2,22 +2,27 @@ package com.dcurreli.spese.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Switch
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.dcurreli.spese.R
+import com.dcurreli.spese.databinding.AddListaSpeseBinding
+import com.dcurreli.spese.databinding.AddSpesaBinding
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
-import com.google.firebase.database.DatabaseReference
 import java.text.SimpleDateFormat
-import java.time.YearMonth
 import java.util.*
 
 object GenericUtils {
     private val className = javaClass.simpleName
+
+    fun clearTextViewFocus(binding: AddListaSpeseBinding) {
+        binding.listaSpeseNome.clearFocus()
+    }
+
     fun hideSoftKeyBoard(context: Context, view: View) {
         try {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -27,34 +32,13 @@ object GenericUtils {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun dateStringToTimestampSeconds(data: String, pattern: String): Long {
         return dateToTimestampSeconds(SimpleDateFormat(pattern).parse(data))
     }
 
-    fun dateToTimestampSeconds(date: Date?): Long {
+    private fun dateToTimestampSeconds(date: Date?): Long {
         return Timestamp(date!!).seconds
-    }
-
-    fun dateStringToDate(dataString: String, pattern: String): Date? {
-        return SimpleDateFormat(pattern).parse(dataString)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun lastDayOfMonth(dataItem: String): String {
-        val arrayData: List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
-        return "" + YearMonth.of(
-            arrayData[1].toInt(),
-            DateUtils.getMonthAsNumber(arrayData[0]).toInt()
-        ).atEndOfMonth()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun firstDayOfMonth(dataItem: String): String {
-        val arrayData: List<String> = dataItem.split(" ")// 0 giorno, 1 mese, 2 anno
-        return "" + YearMonth.of(
-            arrayData[1].toInt(),
-            DateUtils.getMonthAsNumber(arrayData[0]).toInt()
-        ).atDay(1)
     }
 
     // Gestisco preferenze tema scuro/chiaro
@@ -69,23 +53,17 @@ object GenericUtils {
         }
     }
 
-    // Gestisco preferenze tema scuro/chiaro
-    fun onOffSaldato(db: DatabaseReference, idLista : String, bool: Boolean) {
-        db.child(idLista).child("saldato").setValue(bool)
-    }
-
-    fun setupSottotitoloToolbar(message: String?, activity: AppCompatActivity?){
-        (activity)?.supportActionBar?.subtitle = message
+    fun importoAsEur(double : Double): String {
+        return "${String.format("%.2f", double)}€".replace(".", ",")
     }
 
     fun clearSottotitoloToolbar(activity: AppCompatActivity?){
         setupSottotitoloToolbar(null, activity)
     }
 
-    fun importoAsEur(double : Double): String {
-        return "${String.format("%.2f", double)}€".replace(".", ",")
+    private fun setupSottotitoloToolbar(message: String?, activity: AppCompatActivity?){
+        (activity)?.supportActionBar?.subtitle = message
     }
-
 
     fun createBundleForListaSpese(idLista: String, nomeLista: String?): Bundle {
         //Utile per creare un bundle per load spese fragment
@@ -105,5 +83,21 @@ object GenericUtils {
 
     fun setupSwitch(@SuppressLint("UseSwitchCompatOrMaterialCode") switch: Switch, isActive: Boolean){
         switch.isChecked = isActive
+    }
+
+    fun clearTextViewFocusAddSpesa(binding: AddSpesaBinding) {
+        binding.spesaSpesaText.clearFocus()
+        binding.spesaImporto.clearFocus()
+        binding.spesaPagatoreText.clearFocus()
+    }
+
+    fun clearTextViewFocusEditSpesa(view: View) {
+        val spesa = view.findViewById<TextInputEditText>(R.id.edit_spesa_text)
+        val importo = view.findViewById<TextInputEditText>(R.id.edit_spesa_importo)
+        val pagatore = view.findViewById<TextInputEditText>(R.id.edit_spesa_pagatore_text)
+
+        spesa.clearFocus()
+        importo.clearFocus()
+        pagatore.clearFocus()
     }
 }

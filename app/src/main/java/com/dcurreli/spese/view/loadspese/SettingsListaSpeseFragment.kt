@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main.loadspese
+package com.dcurreli.spese.view.loadspese
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -18,7 +18,7 @@ import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
-import com.dcurreli.spese.main.MainActivity
+import com.dcurreli.spese.view.MainActivity
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ExcelUtils
 import com.dcurreli.spese.utils.GenericUtils

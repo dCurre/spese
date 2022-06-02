@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main
+package com.dcurreli.spese.view
 
 import android.os.Bundle
 import android.view.LayoutInflater

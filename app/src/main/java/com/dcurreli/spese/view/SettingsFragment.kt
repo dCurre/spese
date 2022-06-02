@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main
+package com.dcurreli.spese.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dcurreli.spese.R
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.SettingsFragmentBinding
-import com.dcurreli.spese.main.login.LoginActivity
+import com.dcurreli.spese.view.login.LoginActivity
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn

@@ -7,7 +7,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
-import com.dcurreli.spese.objects.SaldoSubItem
+import com.dcurreli.spese.data.dto.SaldoSubItem
 
 class SaldoSubItemAdapter(private val saldoSubItemList: ArrayList<SaldoSubItem>) : RecyclerView.Adapter<SaldoSubItemAdapter.ViewHolder>() {
 

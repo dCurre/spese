@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.dcurreli.spese.main.HomeFragment"
+        android:name="com.dcurreli.spese.view.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/home_fragment">
 
@@ -31,12 +31,12 @@
     </fragment>
     <fragment
         android:id="@+id/addSpesaFragment"
-        android:name="com.dcurreli.spese.main.NuovaSpesaFragment"
+        android:name="com.dcurreli.spese.view.NuovaSpesaFragment"
         android:label="@string/add_spesa_fragment_label"
         tools:layout="@layout/add_spesa"/>
     <fragment
         android:id="@+id/loadSpeseFragment"
-        android:name="com.dcurreli.spese.main.loadspese.LoadSpeseFragment"
+        android:name="com.dcurreli.spese.view.loadspese.LoadSpeseFragment"
         android:label="Riepilogo spese">
         <action
             android:id="@+id/action_loadSpeseFragment_to_addSpesaFragment"
@@ -56,18 +56,18 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.dcurreli.spese.main.SettingsFragment"
+        android:name="com.dcurreli.spese.view.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/settings_fragment" />
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.dcurreli.spese.main.CalendarFragment"
+        android:name="com.dcurreli.spese.view.CalendarFragment"
         android:label="Calendario"
         tools:layout="@layout/calendar_fragment" />
     <fragment
         android:id="@+id/addListaSpeseFragment"
-        android:name="com.dcurreli.spese.main.NuovaListaSpeseFragment"
+        android:name="com.dcurreli.spese.view.NuovaListaSpeseFragment"
         android:label="@string/add_lista_spese_fragment_label"
         tools:layout="@layout/add_lista_spese">
         <action
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/joinFragment"
-        android:name="com.dcurreli.spese.main.join.JoinFragment"
+        android:name="com.dcurreli.spese.view.join.JoinFragment"
         android:label="Unisciti ad una lista"
         tools:layout="@layout/join_fragment" />
     <action
@@ -84,12 +84,12 @@
         app:destination="@id/joinFragment" />
     <fragment
         android:id="@+id/listaSettingsFragment"
-        android:name="com.dcurreli.spese.main.loadspese.SettingsListaSpeseFragment"
+        android:name="com.dcurreli.spese.view.loadspese.SettingsListaSpeseFragment"
         android:label="lista_settings_fragment"
         tools:layout="@layout/lista_settings_fragment" />
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.dcurreli.spese.main.MainActivity"
+        android:name="com.dcurreli.spese.view.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
 </navigation>

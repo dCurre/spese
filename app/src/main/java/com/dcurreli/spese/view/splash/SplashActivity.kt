@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main.splash
+package com.dcurreli.spese.view.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,8 +8,8 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivitySplashBinding
-import com.dcurreli.spese.main.MainActivity
-import com.dcurreli.spese.main.login.LoginActivity
+import com.dcurreli.spese.view.MainActivity
+import com.dcurreli.spese.view.login.LoginActivity
 import com.dcurreli.spese.utils.DBUtils
 
 @SuppressLint("CustomSplashScreen")

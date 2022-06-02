@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main.dialog
+package com.dcurreli.spese.view.dialog
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dcurreli.spese.R
+import com.dcurreli.spese.data.entity.Spesa
 import com.dcurreli.spese.data.viewmodel.SpesaViewModel
-import com.dcurreli.spese.objects.Spesa
 import com.dcurreli.spese.utils.GenericUtils
-import com.dcurreli.spese.utils.SpesaUtils
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -144,7 +143,7 @@ class EditSpesaDialogFragment : DialogFragment() {
                         }/${String.format("%02d", (mMonth + 1))}/$mYear"
                     )
 
-                    SpesaUtils.clearTextViewFocusEditSpesa(view) //Tolgo il focus dagli altri bottoni
+                    GenericUtils.clearTextViewFocusEditSpesa(view) //Tolgo il focus dagli altri bottoni
                 },
                 year,
                 month,

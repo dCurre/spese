@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main.loadspese
+package com.dcurreli.spese.view.loadspese
 
 import android.app.AlertDialog
 import android.graphics.Canvas
@@ -19,7 +19,7 @@ import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
-import com.dcurreli.spese.main.dialog.EditSpesaDialogFragment
+import com.dcurreli.spese.view.dialog.EditSpesaDialogFragment
 import com.dcurreli.spese.utils.SnackbarUtils
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import android.view.View as View1

@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main.loadspese
+package com.dcurreli.spese.view.loadspese
 
 import android.content.Intent
 import android.net.Uri
@@ -14,7 +14,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ViewPagerAdapter
 import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.databinding.LoadSpeseBinding
-import com.dcurreli.spese.main.MainActivity
+import com.dcurreli.spese.view.MainActivity
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
 import com.google.firebase.dynamiclinks.DynamicLink

@@ -2,7 +2,7 @@ package com.dcurreli.spese.data.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.dcurreli.spese.enum.TablesEnum
-import com.dcurreli.spese.objects.Spesa
+import com.dcurreli.spese.data.entity.Spesa
 import com.dcurreli.spese.utils.DBUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

@@ -1,4 +1,4 @@
-package com.dcurreli.spese.main
+package com.dcurreli.spese.view
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -23,9 +23,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivityMainBinding
-import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 

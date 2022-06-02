@@ -19,7 +19,7 @@
 
         <!-- SPLASH SCREEN -->
         <activity
-            android:name="com.dcurreli.spese.main.splash.SplashActivity"
+            android:name="com.dcurreli.spese.view.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Spese.Splashscreen"
@@ -42,14 +42,14 @@
 
         <!-- LOGIN -->
         <activity
-            android:name="com.dcurreli.spese.main.login.LoginActivity"
+            android:name="com.dcurreli.spese.view.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Spese.NoActionBar"
             android:launchMode = "singleInstance"/>
 
         <!-- MAIN APP -->
         <activity
-            android:name="com.dcurreli.spese.main.MainActivity"
+            android:name="com.dcurreli.spese.view.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

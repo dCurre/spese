@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dcurreli.spese.data.repository.SpesaRepository
-import com.dcurreli.spese.objects.Spesa
+import com.dcurreli.spese.data.entity.Spesa
 
 class SpesaViewModel : ViewModel() {
 
