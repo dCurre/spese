@@ -39,10 +39,14 @@ class UserViewModel : ViewModel() {
     }
 
     fun update(id: String, user: User) {
-        repository.update(id, user)
+        viewModelScope.launch {
+            _userLiveData.value = repository.update(id, user)
+        }
     }
 
     fun updateByField(id: String, field: String, value : Any) {
-        repository.updateByField(id, field, value)
+        viewModelScope.launch {
+            _userLiveData.value = repository.updateByField(id, field, value)
+        }
     }
 }

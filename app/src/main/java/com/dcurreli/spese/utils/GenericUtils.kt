@@ -43,14 +43,7 @@ object GenericUtils {
 
     // Gestisco preferenze tema scuro/chiaro
     fun onOffDarkTheme(bool: Boolean) {
-        when (bool) {
-            true -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }
-            false -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
+        AppCompatDelegate.setDefaultNightMode( if (bool) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
     }
 
     fun importoAsEur(double : Double): String {

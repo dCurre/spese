@@ -20,37 +20,20 @@ class UserRepository {
 
     suspend fun getUserListByIdList(uidList: List<String>): List<User> {
         return db.whereEqualTo(UserFieldEnum.ID.value, uidList).get().await().documents.mapNotNull { it.toUser() }
-/*
-        dbUsers.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                userList.clear()
-
-                for (snapshot in dataSnapshot.children) {
-                    val user = snapshot.getValue(User::class.java) as User
-                    if(uidList.contains(user.user_id)){
-                        userList.add(user)
-                    }
-                }
-                liveData.postValue(userList)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Nothing to do
-            }
-        })
-        */
     }
 
     fun insert(user: User) {
         db.document(user.id).set(user)
     }
 
-    fun update(id: String, user : User) {
+    fun update(id: String, user : User): User {
         db.document(id).set(user)
+        return user
     }
 
-    fun updateByField(id: String, field : String, value : Any) {
+    suspend fun updateByField(id: String, field : String, value : Any): User? {
         db.document(id).update(field, value)
+        return getUserById(id)
     }
 
 

@@ -53,24 +53,14 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
             .build()
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
-        //Carico i dati dal db per lo switch del tema
+        //Setting up switches' status by retrieving data from firestore
         setupSwitches()
 
-        //Carico foto e nome utente
+        //Setting up user name and profile image
         setupUserImage()
 
-        binding.switchDarkTheme.setOnCheckedChangeListener { _, bool ->
-            userModel.updateByField(currentUser.uid, UserFieldEnum.DARKTHEME.value, bool)
-            GenericUtils.onOffDarkTheme(bool)
-        }
-
-        binding.switchHidePaidLists.setOnCheckedChangeListener { _, bool ->
-            userModel.updateByField(currentUser.uid, UserFieldEnum.HIDE_PAID_LISTS.value, bool)
-        }
-
-        binding.signOutBtn.setOnClickListener {
-            signOut()
-        }
+        //Manages all the buttons
+        manageButtons()
     }
 
     override fun onDestroyView() {
@@ -78,21 +68,33 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         _binding = null
     }
 
-    private fun signOut(){
-        startActivity(Intent(Intent(context, LoginActivity::class.java)))
-        activity?.finish()
-        DBUtils.getAuthentication().signOut()
-        googleSignInClient.signOut()
+    private fun manageButtons() {
+
+        //Changes the theme
+        binding.switchDarkTheme.setOnCheckedChangeListener { _, bool ->
+            userModel.updateByField(currentUser.uid, UserFieldEnum.DARKTHEME.value, bool)
+        }
+
+        //Changes the visibility of paid lists
+        binding.switchHidePaidLists.setOnCheckedChangeListener { _, bool ->
+            userModel.updateByField(currentUser.uid, UserFieldEnum.HIDE_PAID_LISTS.value, bool)
+        }
+
+        //Logs the user out
+        binding.signOutBtn.setOnClickListener {
+            startActivity(Intent(Intent(context, LoginActivity::class.java)))
+            activity?.finish()
+            DBUtils.getAuthentication().signOut()
+            googleSignInClient.signOut()
+        }
     }
 
     private fun setupSwitches(){
         userModel.getById(currentUser.uid)
         userModel.userLiveData.observe(viewLifecycleOwner) { user ->
-
-            userModel.getById(currentUser.uid) //TODO Trovare un modo più intelligente rispetto a fare la query ogni volta
-            Log.i("USER BOOLEAN", "${user.hidePaidLists}")
             GenericUtils.setupSwitch(binding.switchDarkTheme, user.darkTheme)
             GenericUtils.setupSwitch(binding.switchHidePaidLists, user.hidePaidLists)
+            GenericUtils.onOffDarkTheme(user.darkTheme)
         }
     }
 
