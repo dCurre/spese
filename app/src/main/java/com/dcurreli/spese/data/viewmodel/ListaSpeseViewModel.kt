@@ -32,7 +32,15 @@ class ListaSpeseViewModel : ViewModel() {
         repository.update(id, listaSpese)
     }
 
+    fun updateByField(id: String, field: String, value : Any) {
+        repository.updateByField(id, field, value)
+    }
+
     fun insert(listaSpese: ListaSpese) {
         repository.insert(listaSpese)
+    }
+
+    fun delete(id : String){
+        repository.delete(id)
     }
 }

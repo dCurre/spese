@@ -63,7 +63,13 @@ class SpesaRepository {
         db.child(spesa.id).setValue(spesa)
     }
 
-    fun delete(spesa: Spesa) {
-        db.child(spesa.id).removeValue()
+    fun delete(id: String) {
+        db.child(id).removeValue()
+    }
+
+    fun deleteList(spesaList: List<Spesa>) {
+        for(spesa in spesaList){
+            delete(spesa.id)
+        }
     }
 }

@@ -71,10 +71,7 @@ object GenericUtils {
 
     // Gestisco preferenze tema scuro/chiaro
     fun onOffSaldato(db: DatabaseReference, idLista : String, bool: Boolean) {
-        when (bool) {
-            true -> db.child(idLista).child("saldato").setValue(true)
-            false -> db.child(idLista).child("saldato").setValue(false)
-        }
+        db.child(idLista).child("saldato").setValue(bool)
     }
 
     fun setupSottotitoloToolbar(message: String?, activity: AppCompatActivity?){
@@ -107,9 +104,6 @@ object GenericUtils {
     }
 
     fun setupSwitch(@SuppressLint("UseSwitchCompatOrMaterialCode") switch: Switch, isActive: Boolean){
-        when (isActive) {
-            true -> switch.isChecked = true
-            false -> switch.isChecked = false
-        }
+        switch.isChecked = isActive
     }
 }

@@ -31,7 +31,11 @@ class SpesaViewModel : ViewModel() {
         repository.insert(spesa)
     }
 
-    fun delete(spesa: Spesa) {
-        repository.delete(spesa)
+    fun delete(id: String) {
+        repository.delete(id)
+    }
+
+    fun deleteList(spesaList: List<Spesa>) {
+        repository.deleteList(spesaList)
     }
 }

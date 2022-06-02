@@ -116,7 +116,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                                 .setTitle("Conferma")
                                 .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
                                 .setPositiveButton("SI") { _, _ ->
-                                    spesaModel.delete(spesaAdapter.getItem(viewHolder.absoluteAdapterPosition))
+                                    spesaModel.delete(spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).id)
                                     SnackbarUtils.showSnackbarOK("Spesa cancellata", binding.root)
                                 }
                                 .setNegativeButton("NO") { _, _ ->

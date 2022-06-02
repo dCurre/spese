@@ -1,5 +1,6 @@
 package com.dcurreli.spese.data.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.data.entity.User
@@ -62,7 +63,13 @@ class ListaSpeseRepository {
     fun getListaSpeseById(liveData: MutableLiveData<ListaSpese>, id : String) {
         db.orderByChild("id").equalTo(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                liveData.postValue(dataSnapshot.children.first().getValue(ListaSpese::class.java) as ListaSpese)
+                listaSpeseList.clear()
+
+                try{
+                    liveData.postValue(dataSnapshot.children.first().getValue(ListaSpese::class.java) as ListaSpese)
+                } catch (e : Exception){
+                    Log.e("getListaSpeseById", "${e.message}")
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -75,8 +82,16 @@ class ListaSpeseRepository {
         db.child(id).setValue(listaSpese)
     }
 
+    fun updateByField(id: String, field : String, value : Any) {
+        db.child(id).child(field).setValue(value)
+    }
+
     fun insert(listaSpese : ListaSpese) {
         db.child(listaSpese.id).setValue(listaSpese)
+    }
+
+    fun delete(id : String) {
+        db.child(id).removeValue()
     }
 
 }

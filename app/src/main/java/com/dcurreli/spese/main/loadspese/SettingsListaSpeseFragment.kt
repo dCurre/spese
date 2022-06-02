@@ -10,11 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.PartecipantiAdapter
 import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.data.entity.User
+import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
+import com.dcurreli.spese.data.viewmodel.SpesaViewModel
+import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
 import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
@@ -36,6 +40,11 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
     private val className = javaClass.simpleName
     private var _binding: ListaSettingsFragmentBinding? = null
+    private lateinit var userModel : UserViewModel
+    private lateinit var listaSpeseModel : ListaSpeseViewModel
+    private lateinit var spesaModel : SpesaViewModel
+
+
     private var dbSpesa: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.SPESA)
     private var dbListaSpese: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.LISTE)
     private var dbUtente: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.UTENTE)
@@ -47,9 +56,10 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = ListaSettingsFragmentBinding.inflate(inflater, container, false)
-
+        userModel = ViewModelProvider(this)[UserViewModel::class.java]
+        listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+        spesaModel = ViewModelProvider(this)[SpesaViewModel::class.java]
         return binding.root
     }
 
@@ -59,7 +69,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         val idLista = arguments?.getString("idLista").toString()
         val nomeLista = arguments?.getString("nomeLista").toString()
 
-        printPartecipanti(idLista)
+        //printPartecipanti(idLista)
 
         setupSwitches(idLista)
 
@@ -128,13 +138,9 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     }
 
     private fun showHideDeleteButton(idLista: String) {
-        dbListaSpese.child(idLista).get().addOnSuccessListener {
-            if (it.exists()) {
-                when {
-                    (it.getValue(ListaSpese::class.java) as ListaSpese).owner.equals(DBUtils.getLoggedUser()!!.uid)-> { binding.buttonDelete.visibility = View.VISIBLE }
-                    else -> { binding.buttonDelete.visibility = View.GONE }
-                }
-            }
+        listaSpeseModel.getListaSpeseById(idLista)
+        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
+            binding.buttonDelete.visibility = if (listaSpese.owner.equals(DBUtils.getLoggedUser()!!.uid)) View.VISIBLE else View.GONE
         }
     }
 
@@ -144,24 +150,20 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
             .setTitle("Conferma")
             .setMessage("Vuoi veramente cancellare la lista?")
             .setPositiveButton("SI") { _, _ ->
+
                 //ELIMINO LE SPESE LEGATE A QUELLA LISTA
-                dbSpesa.orderByChild("listaSpesaID").equalTo(idLista).addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (snapshot: DataSnapshot in dataSnapshot.children) {
-                            dbSpesa.child((snapshot.getValue(Spesa::class.java) as Spesa).idAsString()).removeValue()
-                        }
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.e(className, "Failed to read value.", error.toException())
-                    }
-                })
+                spesaModel.findByListaSpesaID(idLista)
+                spesaModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
+                    spesaModel.deleteList(spesaList)
 
-                //ELIMINO LA LISTA
-                dbListaSpese.child(idLista).removeValue()
+                    //ELIMINO LA LISTA
+                    listaSpeseModel.delete(idLista)
 
-                //REDIRECT MAIN PAGE
-                activity?.finish()
-                startActivity(Intent(Intent(context, MainActivity::class.java)))
+                    //REDIRECT MAIN PAGE
+                    activity?.finish()
+                    startActivity(Intent(Intent(context, MainActivity::class.java)))
+                }
+
             }
             .setNegativeButton("NO") { _, _ -> }
             .show()
@@ -270,17 +272,13 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     }
 
     private fun setupSwitches(idLista: String) {
-        binding.switchSaldato.setOnCheckedChangeListener { _, checkedId ->
-            GenericUtils.onOffSaldato(dbListaSpese, idLista, checkedId)
+        binding.switchSaldato.setOnCheckedChangeListener { _, bool ->
+            listaSpeseModel.updateByField(idLista, "saldato", bool)
         }
 
-        dbListaSpese.child(idLista).get().addOnSuccessListener {
-            if (it.exists()) {
-                val lista : ListaSpese = it.getValue(ListaSpese::class.java) as ListaSpese
-                GenericUtils.setupSwitch(binding.switchSaldato, lista.isSaldato)
-            }
-        }.addOnFailureListener {
-            Log.e(className, "<<Error getting utente", it)
+        listaSpeseModel.getListaSpeseById(idLista)
+        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
+            GenericUtils.setupSwitch(binding.switchSaldato, listaSpese.isSaldato)
         }
     }
 
