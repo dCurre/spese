@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.data.entity.User
-import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.enums.table.TablesEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -42,9 +42,9 @@ class ListaSpeseRepository {
                 for (snapshot: DataSnapshot in dataSnapshot.children) {
                     val listaSpese = snapshot.getValue(ListaSpese::class.java) as ListaSpese
 
-                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(user.user_id)){
+                    if(!listaSpese.partecipanti.isNullOrEmpty() && listaSpese.partecipanti.contains(user.id)){
                         //Se non nascondo liste saldate stampo tutto, altrimenti stampo solo quelle non saldate
-                        if (!user.isNascondiListeSaldate || (user.isNascondiListeSaldate && !listaSpese.isSaldato)) {
+                        if (!user.hidePaidLists!! || (user.hidePaidLists && !listaSpese.isSaldato)) {
                             listaSpeseList.add(listaSpese)
                         }
                     }

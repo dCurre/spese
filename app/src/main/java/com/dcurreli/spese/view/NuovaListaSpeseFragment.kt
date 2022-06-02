@@ -14,7 +14,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
-import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.enums.table.TablesEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SnackbarUtils

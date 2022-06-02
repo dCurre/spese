@@ -2,6 +2,7 @@ package com.dcurreli.spese.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dcurreli.spese.R
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.SettingsFragmentBinding
+import com.dcurreli.spese.enums.entity.UserFieldEnum
 import com.dcurreli.spese.view.login.LoginActivity
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
@@ -36,6 +38,8 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         _binding = SettingsFragmentBinding.inflate(inflater, container, false)
         userModel = ViewModelProvider(this)[UserViewModel::class.java]
         currentUser = DBUtils.getLoggedUser()
+
+
         return binding.root
     }
 
@@ -56,12 +60,12 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         setupUserImage()
 
         binding.switchDarkTheme.setOnCheckedChangeListener { _, bool ->
-            userModel.updateByField(currentUser.uid, "darkTheme", bool)
+            userModel.updateByField(currentUser.uid, UserFieldEnum.DARKTHEME.value, bool)
             GenericUtils.onOffDarkTheme(bool)
         }
 
-        binding.switchNascondiListe.setOnCheckedChangeListener { _, bool ->
-            userModel.updateByField(currentUser.uid, "nascondiListeSaldate", bool)
+        binding.switchHidePaidLists.setOnCheckedChangeListener { _, bool ->
+            userModel.updateByField(currentUser.uid, UserFieldEnum.HIDE_PAID_LISTS.value, bool)
         }
 
         binding.signOutBtn.setOnClickListener {
@@ -82,10 +86,13 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     }
 
     private fun setupSwitches(){
-        userModel.findById(currentUser.uid)
+        userModel.getById(currentUser.uid)
         userModel.userLiveData.observe(viewLifecycleOwner) { user ->
-            GenericUtils.setupSwitch(binding.switchDarkTheme, user.isDarkTheme)
-            GenericUtils.setupSwitch(binding.switchNascondiListe, user.isNascondiListeSaldate)
+
+            userModel.getById(currentUser.uid) //TODO Trovare un modo più intelligente rispetto a fare la query ogni volta
+            Log.i("USER BOOLEAN", "${user.hidePaidLists}")
+            GenericUtils.setupSwitch(binding.switchDarkTheme, user.darkTheme)
+            GenericUtils.setupSwitch(binding.switchHidePaidLists, user.hidePaidLists)
         }
     }
 

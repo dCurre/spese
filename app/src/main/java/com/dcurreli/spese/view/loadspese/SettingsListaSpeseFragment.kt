@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +19,11 @@ import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
-import com.dcurreli.spese.view.MainActivity
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ExcelUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.SnackbarUtils
+import com.dcurreli.spese.view.MainActivity
 import com.google.firebase.auth.FirebaseUser
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
@@ -72,17 +73,17 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     private fun printPartecipanti(idLista: String) {
         val partecipantiAdapter = PartecipantiAdapter()
         listaSpeseModel.findById(idLista)
-        userModel.findAll()
-
+        userModel.getAll()
         listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
             val partecipantiArray = ArrayList<User>()
-
             userModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
+                Log.i("<PRIMA>", "${userList}")
+                //TODO filtrare nella query per user id
 
                 userList.forEach { user ->
-                    if(listaSpese.partecipanti.contains(user.user_id)){
+                    if(listaSpese.partecipanti.contains(user.id)){
                         //Se l'utente è anche owner lo aggiungo in cima
-                        if(listaSpese.owner.contains(user.user_id)){
+                        if(listaSpese.owner.contains(user.id)){
                             partecipantiArray.add(0, user)
                         } else {
                             partecipantiArray.add(user)

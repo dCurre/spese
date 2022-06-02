@@ -3,29 +3,35 @@ package com.dcurreli.spese.data.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dcurreli.spese.data.entity.ListaSpese
+import androidx.lifecycle.viewModelScope
 import com.dcurreli.spese.data.entity.User
-import com.dcurreli.spese.data.repository.UtenteRepository
+import com.dcurreli.spese.data.repository.UserRepository
+import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
 
-    private val repository = UtenteRepository()
-
-    private val _userListLiveData = MutableLiveData<List<User>>()
-    val userListLiveData: LiveData<List<User>> = _userListLiveData
+    private val repository = UserRepository()
     private val _userLiveData = MutableLiveData<User>()
+    private val _userListLiveData = MutableLiveData<List<User>>()
     val userLiveData: LiveData<User> = _userLiveData
+    val userListLiveData: LiveData<List<User>> = _userListLiveData
 
-    fun findAll() {
-        repository.getAll(_userListLiveData)
+    fun getAll() {
+        viewModelScope.launch {
+            _userListLiveData.value = repository.getAll()
+        }
     }
 
-    fun findById(uid : String) {
-        repository.getUserById(_userLiveData, uid)
+    fun getById(uid : String) {
+        viewModelScope.launch {
+            _userLiveData.value = repository.getUserById(uid)
+        }
     }
 
     fun findByIdList(uidList : List<String>) {
-        repository.getUserListByIdList(_userListLiveData, uidList)
+        viewModelScope.launch {
+            _userListLiveData.value = repository.getUserListByIdList(uidList)
+        }
     }
 
     fun insert(user: User) {

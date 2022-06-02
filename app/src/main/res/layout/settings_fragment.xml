@@ -9,6 +9,7 @@
     android:paddingBottom="20dp">
 
     <RelativeLayout
+        android:id="@+id/user_settings_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
@@ -108,7 +109,7 @@
             tools:ignore="RtlSymmetry" />
 
         <Switch
-            android:id="@+id/switch_nascondi_liste"
+            android:id="@+id/switch_hide_paid_lists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_tema_switch"

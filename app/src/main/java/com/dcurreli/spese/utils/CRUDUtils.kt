@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.dcurreli.spese.data.entity.ListaSpese
 import com.dcurreli.spese.data.entity.Spesa
-import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.enums.table.TablesEnum
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference

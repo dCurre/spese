@@ -15,6 +15,7 @@ import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.HomeFragmentBinding
 import com.dcurreli.spese.utils.DBUtils
+import com.dcurreli.spese.utils.SpesaUtils
 import com.squareup.picasso.Picasso
 
 
@@ -36,6 +37,8 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         userModel = ViewModelProvider(this)[UserViewModel::class.java]
         listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
 
+        SpesaUtils.exportDataToFirestore(this, viewLifecycleOwner)
+
         printListaSpese()
 
         setupUserBar()
@@ -48,7 +51,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         val listsPerRow = 2
 
         //Recupero listaSpese a partire dall'utente
-        userModel.findById(user.uid)
+        userModel.getById(user.uid)
         userModel.userLiveData.observe(viewLifecycleOwner) { user ->
            listaSpeseModel.findByUserID(user)
         }

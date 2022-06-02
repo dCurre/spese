@@ -22,7 +22,7 @@ class PartecipantiAdapter : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val utente = userList[position]
-        holder.partecipante.text = utente.nominativo
+        holder.partecipante.text = utente.fullname
         if (position > 0) {
             holder.ownerIcon.visibility = View.INVISIBLE
         }

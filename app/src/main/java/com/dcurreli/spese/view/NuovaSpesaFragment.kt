@@ -18,7 +18,7 @@ import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.AddSpesaBinding
-import com.dcurreli.spese.enum.TablesEnum
+import com.dcurreli.spese.enums.table.TablesEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.DateUtils
 import com.dcurreli.spese.utils.GenericUtils
@@ -151,7 +151,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                     countPartecipanti--
 
                     //Recuperato l'utente lo aggiungo alla lista
-                    pagatoriList.add(user.nominativo)
+                    pagatoriList.add(user.fullname)
 
                     //Quando il contatore raggiunge lo 0, faccio la distinct per filtrarmi i doppioni e aggiungo alla lista
                     if(countPartecipanti == 0){
