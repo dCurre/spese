@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat.startActivity
+import com.dcurreli.spese.R
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -23,6 +24,13 @@ object SnackbarUtils {
         val snackbar = Snackbar.make(constraintLayout, message, Snackbar.LENGTH_LONG)
         snackbar.view.setBackgroundColor(successColor)
         //snackbar.setAnchorView(R.id.bottom_nav)
+        snackbar.show()
+    }
+
+    fun showSnackbarOKOverBottomnav(message: String, constraintLayout: ConstraintLayout) {
+        val snackbar = Snackbar.make(constraintLayout, message, Snackbar.LENGTH_LONG)
+        snackbar.view.setBackgroundColor(successColor)
+        snackbar.setAnchorView(R.id.bottom_nav)
         snackbar.show()
     }
 

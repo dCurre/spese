@@ -8,14 +8,13 @@ import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ViewPagerAdapter
-import com.dcurreli.spese.data.entity.ListaSpese
+import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
 import com.dcurreli.spese.databinding.LoadSpeseBinding
-import com.dcurreli.spese.enum.TablesEnum
 import com.dcurreli.spese.main.MainActivity
-import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
 import com.google.firebase.dynamiclinks.DynamicLink
@@ -27,7 +26,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private var _binding: LoadSpeseBinding? = null
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
-    private var dbListaSpese = DBUtils.getDatabaseReference(TablesEnum.LISTE)
+    private lateinit var listaSpeseModel : ListaSpeseViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -36,6 +35,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         savedInstanceState: Bundle?
     ): View {
         _binding = LoadSpeseBinding.inflate(inflater, container, false)
+        listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
 
         //Setto il nome della toolbar in base al bottone di spesa che ho clickato
         setupToolbar()
@@ -52,11 +52,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         return this.binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onDestroyView() {
         //Quando esco dal fragment rimuovo il sottotitolo
         GenericUtils.clearSottotitoloToolbar ((activity as AppCompatActivity?))
@@ -66,13 +61,13 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     private fun setupAddSpesaButton() {
-        dbListaSpese.child(arguments?.getString("idLista").toString()).get().addOnSuccessListener {
-            //Setto la visibilità del bottone 'add spesa'
-            binding.addSpesaButton.visibility = if(it.exists() && (it.getValue(ListaSpese::class.java) as ListaSpese).isSaldato) View.GONE else View.VISIBLE
+        listaSpeseModel.findById(arguments?.getString("idLista").toString())
+        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
+            binding.addSpesaButton.visibility = if(listaSpese.isSaldato) View.GONE else View.VISIBLE
+        }
 
-            binding.addSpesaButton.setOnClickListener{
-                findNavController().navigate(R.id.action_loadSpeseFragment_to_addSpesaFragment, arguments)
-            }
+        binding.addSpesaButton.setOnClickListener{
+            findNavController().navigate(R.id.action_loadSpeseFragment_to_addSpesaFragment, arguments)
         }
     }
 
