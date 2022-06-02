@@ -12,11 +12,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ViewPagerAdapter
-import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.databinding.LoadSpeseBinding
-import com.dcurreli.spese.view.MainActivity
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
+import com.dcurreli.spese.view.MainActivity
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 
@@ -26,7 +26,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private var _binding: LoadSpeseBinding? = null
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
-    private lateinit var listaSpeseModel : ListaSpeseViewModel
+    private lateinit var listaSpeseModel : ExpensesListViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -35,7 +35,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         savedInstanceState: Bundle?
     ): View {
         _binding = LoadSpeseBinding.inflate(inflater, container, false)
-        listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+        listaSpeseModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
 
         //Setto il nome della toolbar in base al bottone di spesa che ho clickato
         setupToolbar()
@@ -62,8 +62,8 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
 
     private fun setupAddSpesaButton() {
         listaSpeseModel.findById(arguments?.getString("idLista").toString())
-        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
-            binding.addSpesaButton.visibility = if(listaSpese.isSaldato) View.GONE else View.VISIBLE
+        listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
+            binding.addSpesaButton.visibility = if(expensesList.paid) View.GONE else View.VISIBLE
         }
 
         binding.addSpesaButton.setOnClickListener{

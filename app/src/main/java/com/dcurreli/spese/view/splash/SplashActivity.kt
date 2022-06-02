@@ -8,9 +8,9 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.ActivitySplashBinding
+import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.view.MainActivity
 import com.dcurreli.spese.view.login.LoginActivity
-import com.dcurreli.spese.utils.DBUtils
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
@@ -21,6 +21,8 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
         super.onCreate(savedInstanceState)
         val toLogUser = DBUtils.getToLogUser()
         binding = ActivitySplashBinding.inflate(layoutInflater)
+
+        DBUtils.clearFirestorePersistence()
 
         //Fase di login
         Handler(Looper.getMainLooper()).postDelayed({

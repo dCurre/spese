@@ -11,11 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ListaSpeseAdapter
-import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.HomeFragmentBinding
 import com.dcurreli.spese.utils.DBUtils
-import com.dcurreli.spese.utils.SpesaUtils
 import com.squareup.picasso.Picasso
 
 
@@ -24,9 +23,9 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     private var _binding: HomeFragmentBinding? = null
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
-    private val user = DBUtils.getLoggedUser()
+    private val loggedUser = DBUtils.getLoggedUser()
     private lateinit var userModel : UserViewModel
-    private lateinit var listaSpeseModel : ListaSpeseViewModel
+    private lateinit var listaSpeseModel : ExpensesListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,38 +34,15 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
         userModel = ViewModelProvider(this)[UserViewModel::class.java]
-        listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+        listaSpeseModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
 
-        SpesaUtils.exportDataToFirestore(this, viewLifecycleOwner)
+        //SpesaUtils.exportDataToFirestore(this, viewLifecycleOwner)
 
         printListaSpese()
 
         setupUserBar()
 
         return binding.root
-    }
-
-    private fun printListaSpese() {
-        val listaSpeseAdapter = ListaSpeseAdapter(findNavController())
-        val listsPerRow = 2
-
-        //Recupero listaSpese a partire dall'utente
-        userModel.getById(user.uid)
-        userModel.userLiveData.observe(viewLifecycleOwner) { user ->
-           listaSpeseModel.findByUserID(user)
-        }
-
-        //Aggiungo le liste estratte all'adapter
-        listaSpeseModel.listaSpeseListLiveData.observe(viewLifecycleOwner) { listaSpeseList ->
-            if (listaSpeseList != null) {
-                listaSpeseAdapter.addItems(listaSpeseList)
-            }
-        }
-
-        //Setup griglia liste
-        binding.listaSpese.layoutManager = GridLayoutManager(context, listsPerRow)
-        binding.listaSpese.adapter = listaSpeseAdapter
-
     }
 
     override fun onResume() {
@@ -80,10 +56,30 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         _binding = null
     }
 
+    private fun printListaSpese() {
+        val listaSpeseAdapter = ListaSpeseAdapter(findNavController())
+        val listsPerRow = 2
+
+        userModel.findById(loggedUser.uid)
+        userModel.userLiveData.observe(viewLifecycleOwner) { user ->
+            listaSpeseModel.findByUserIDAndIsPaid(user.id, user.hidePaidLists)
+        }
+
+        //Recupero listaSpese a partire dall'utente
+        listaSpeseModel.expensesListListLiveData.observe(viewLifecycleOwner) { expensesListList ->
+            listaSpeseAdapter.addItems(expensesListList)
+        }
+
+        //Setup griglia liste
+        binding.listaSpese.layoutManager = GridLayoutManager(context, listsPerRow)
+        binding.listaSpese.adapter = listaSpeseAdapter
+
+    }
+
     @SuppressLint("SetTextI18n")
     private fun setupUserBar() {
-        binding.userBarText.text = "Ciao,\n${user.displayName}"
-        Picasso.get().load(user.photoUrl).into(binding.userBarImage)
+        binding.userBarText.text = "Ciao,\n${loggedUser.displayName}"
+        Picasso.get().load(loggedUser.photoUrl).into(binding.userBarImage)
     }
 
 }

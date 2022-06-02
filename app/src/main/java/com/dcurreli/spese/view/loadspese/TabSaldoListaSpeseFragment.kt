@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SaldoCategoryAdapter
-import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
-import com.dcurreli.spese.data.viewmodel.SpesaViewModel
-import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.data.dto.SaldoCategory
 import com.dcurreli.spese.data.dto.SaldoSubItem
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
+import com.dcurreli.spese.data.viewmodel.SpesaViewModel
+import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.utils.GenericUtils
 import android.view.View as View1
 
@@ -26,7 +26,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
     private val binding get() = _binding!!
     private lateinit var saldoCategoryAdapter : SaldoCategoryAdapter
     private lateinit var spesaModel : SpesaViewModel
-    private lateinit var listaSpeseViewModel: ListaSpeseViewModel
+    private lateinit var expensesListViewModel: ExpensesListViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -38,7 +38,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
         _binding = LoadSpeseTabSaldoBinding.inflate(inflater, container, false)
         saldoCategoryAdapter = SaldoCategoryAdapter(requireContext())
         spesaModel = ViewModelProvider(this)[SpesaViewModel::class.java]
-        listaSpeseViewModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+        expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
         return binding.root
     }
 
@@ -86,9 +86,9 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
             }
 
             //AGGIORNO IL TOTALE A SCHERMO
-            listaSpeseViewModel.findById(arguments?.getString("idLista").toString())
-            listaSpeseViewModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
-                binding.totaleListaSpese.setTextColor(if (listaSpese.isSaldato) ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark) else ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
+            expensesListViewModel.findById(arguments?.getString("idLista").toString())
+            expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
+                binding.totaleListaSpese.setTextColor(if (listaSpese.paid) ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark) else ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
                 binding.totaleListaSpese.text = GenericUtils.importoAsEur(mapSaldo.values.sum())
             }
 

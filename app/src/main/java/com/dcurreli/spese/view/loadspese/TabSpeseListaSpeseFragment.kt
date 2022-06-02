@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SpesaAdapter
-import com.dcurreli.spese.data.entity.ListaSpese
-import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
+import com.dcurreli.spese.data.entity.ExpensesList
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
-import com.dcurreli.spese.view.dialog.EditSpesaDialogFragment
 import com.dcurreli.spese.utils.SnackbarUtils
+import com.dcurreli.spese.view.dialog.EditSpesaDialogFragment
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import android.view.View as View1
 
@@ -41,7 +41,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     private val binding get() = _binding!!
     private lateinit var spesaAdapter : SpesaAdapter
     private lateinit var spesaModel : SpesaViewModel
-    private lateinit var listaSpeseModel : ListaSpeseViewModel
+    private lateinit var listaSpeseModel : ExpensesListViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -53,7 +53,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
         _binding = LoadSpeseTabSpeseBinding.inflate(inflater, container, false)
         spesaAdapter = SpesaAdapter()
         spesaModel = ViewModelProvider(requireActivity())[SpesaViewModel::class.java]
-        listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+        listaSpeseModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
 
         //Stampo le spese
         printSpese()
@@ -92,15 +92,15 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    var listaSpese = ListaSpese()
+                    var expensesList = ExpensesList(null, null, null, null, false, null)
 
                     listaSpeseModel.findById(arguments?.getString("idLista").toString())
-                    listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
-                        listaSpese = listaSpeseExtracted
+                    listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
+                        expensesList = listaSpeseExtracted
                     }
 
                     if(direction == ItemTouchHelper.RIGHT){ //Se scorro verso destra modifico
-                        if(!listaSpese.isSaldato){
+                        if(!expensesList.paid){
                             EditSpesaDialogFragment().newInstance(spesaAdapter.getItem(viewHolder.absoluteAdapterPosition)).show(childFragmentManager, EditSpesaDialogFragment.TAG)
                             spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                         } else {
@@ -110,7 +110,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                     }
 
                     if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
-                        if(!listaSpese.isSaldato){
+                        if(!expensesList.paid){
                             //Se non è saldato faccio uscire l'alert per la cancellazione della spesa
                             AlertDialog.Builder(context)
                                 .setTitle("Conferma")

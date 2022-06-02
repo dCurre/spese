@@ -2,7 +2,6 @@ package com.dcurreli.spese.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,6 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
         _binding = SettingsFragmentBinding.inflate(inflater, container, false)
         userModel = ViewModelProvider(this)[UserViewModel::class.java]
         currentUser = DBUtils.getLoggedUser()
-
 
         return binding.root
     }
@@ -90,7 +88,7 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     }
 
     private fun setupSwitches(){
-        userModel.getById(currentUser.uid)
+        userModel.findById(currentUser.uid)
         userModel.userLiveData.observe(viewLifecycleOwner) { user ->
             GenericUtils.setupSwitch(binding.switchDarkTheme, user.darkTheme)
             GenericUtils.setupSwitch(binding.switchHidePaidLists, user.hidePaidLists)

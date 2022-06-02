@@ -1,14 +1,7 @@
 package com.dcurreli.spese.utils
 
-import android.annotation.SuppressLint
-import android.util.Log
-import com.dcurreli.spese.data.entity.ListaSpese
-import com.dcurreli.spese.data.entity.Spesa
 import com.dcurreli.spese.enums.table.TablesEnum
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -16,7 +9,7 @@ object CRUDUtils {
     private val className = javaClass.simpleName
     private var db: DatabaseReference = Firebase.database.reference
     private var dbListe = DBUtils.getDatabaseReference(TablesEnum.LISTE)
-
+/*
     fun insert(table : String) {
         //Creo il campo nuovo
         db.child(table).orderByChild("id").addValueEventListener(object :
@@ -35,7 +28,6 @@ object CRUDUtils {
                             val spesa = snapshot.getValue(Spesa::class.java) as Spesa
                             db.child(TablesEnum.LISTE.value).child(spesa.id).setValue(spesa)
                         }
-                        TablesEnum.UTENTE.value -> {}
                     }
                 }
             }
@@ -63,5 +55,5 @@ object CRUDUtils {
             }
         })
     }
-
+*/
 }

@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
                     //DOPO LA LOGIN CREO L'UTENTE SE NON ESITE
                     val loggedUser = DBUtils.getLoggedUser()
 
-                    userModel.getById(loggedUser.uid)
+                    userModel.findById(loggedUser.uid)
                     userModel.userLiveData.observe(this) { user ->
                         if (user == null) {
                             userModel.insert(

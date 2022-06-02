@@ -35,4 +35,8 @@ object DBUtils {
         return Firebase.firestore.collection(table.value)
     }
 
+    fun clearFirestorePersistence(){
+        Firebase.firestore.clearPersistence()
+    }
+
 }

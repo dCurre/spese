@@ -9,12 +9,12 @@ import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
-import com.dcurreli.spese.data.entity.ListaSpese
+import com.dcurreli.spese.data.entity.ExpensesList
 import com.dcurreli.spese.utils.GenericUtils
 
 class ListaSpeseAdapter(private val navController: NavController) : RecyclerView.Adapter<ListaSpeseAdapter.ViewHolder>() {
 
-    private var listaSpeseList = ArrayList<ListaSpese>()
+    private var expensesListList = ArrayList<ExpensesList>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_fragment_lista_spese, parent, false))
@@ -22,8 +22,8 @@ class ListaSpeseAdapter(private val navController: NavController) : RecyclerView
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val listaSpese = listaSpeseList[position]
-        holder.nomeSpesa.text = listaSpese.nome
+        val expensesList = expensesListList[position]
+        holder.nomeSpesa.text = expensesList.name
 
         //Gestisco l'evento on click
         holder.relativeLayout.setOnClickListener {
@@ -31,27 +31,26 @@ class ListaSpeseAdapter(private val navController: NavController) : RecyclerView
             navController.navigate(
                 R.id.action_HomeFragment_to_loadSpeseFragment,
                 GenericUtils.createBundleForListaSpese(
-                    listaSpese.id,
+                    expensesList.id!!,
                     holder.nomeSpesa.text.toString()
                 )
             )
         }
 
-        holder.relativeLayout.setBackgroundResource(if (listaSpese.isSaldato) R.drawable.lista_liste_saldato else R.drawable.lista_liste_da_saldare)
+        holder.relativeLayout.setBackgroundResource(if (expensesList.paid) R.drawable.lista_liste_saldato else R.drawable.lista_liste_da_saldare)
 
     }
 
     override fun getItemCount(): Int {
-        return listaSpeseList.size
+        return expensesListList.size
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addItems(newListaSpeseList : List<ListaSpese>){
-        listaSpeseList.clear()
-        listaSpeseList.addAll(newListaSpeseList)
+    fun addItems(newExpensesListList : List<ExpensesList>){
+        expensesListList.clear()
+        expensesListList.addAll(newExpensesListList)
         notifyDataSetChanged()
     }
-
 
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {

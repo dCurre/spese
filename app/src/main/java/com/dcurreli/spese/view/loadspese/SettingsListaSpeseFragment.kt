@@ -13,12 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.PartecipantiAdapter
-import com.dcurreli.spese.data.entity.ListaSpese
+import com.dcurreli.spese.data.entity.ExpensesList
 import com.dcurreli.spese.data.entity.User
-import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.data.viewmodel.SpesaViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
+import com.dcurreli.spese.enums.entity.ExpensesListFieldEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ExcelUtils
 import com.dcurreli.spese.utils.GenericUtils
@@ -34,8 +35,8 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
     private val className = javaClass.simpleName
     private var _binding: ListaSettingsFragmentBinding? = null
-    private lateinit var userModel : UserViewModel
-    private lateinit var listaSpeseModel : ListaSpeseViewModel
+    private lateinit var userViewModel : UserViewModel
+    private lateinit var expensesListViewModel : ExpensesListViewModel
     private lateinit var spesaModel : SpesaViewModel
     private lateinit var currentUser : FirebaseUser
 
@@ -49,8 +50,8 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
         currentUser = DBUtils.getLoggedUser()
         _binding = ListaSettingsFragmentBinding.inflate(inflater, container, false)
-        userModel = ViewModelProvider(this)[UserViewModel::class.java]
-        listaSpeseModel = ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
         spesaModel = ViewModelProvider(this)[SpesaViewModel::class.java]
         return binding.root
     }
@@ -70,20 +71,24 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         setupToolbar(nomeLista)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun printPartecipanti(idLista: String) {
         val partecipantiAdapter = PartecipantiAdapter()
-        listaSpeseModel.findById(idLista)
-        userModel.getAll()
-        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
+        expensesListViewModel.findById(idLista)
+        userViewModel.findAll()
+        expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
             val partecipantiArray = ArrayList<User>()
-            userModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
+            userViewModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
                 Log.i("<PRIMA>", "${userList}")
                 //TODO filtrare nella query per user id
-
                 userList.forEach { user ->
-                    if(listaSpese.partecipanti.contains(user.id)){
+                    if(listaSpese.partecipatingUsersID!!.contains(user.id)){
                         //Se l'utente è anche owner lo aggiungo in cima
-                        if(listaSpese.owner.contains(user.id)){
+                        if(listaSpese.owner!!.contains(user.id)){
                             partecipantiArray.add(0, user)
                         } else {
                             partecipantiArray.add(user)
@@ -115,8 +120,8 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     }
 
     private fun showHideDeleteButton(idLista: String) {
-        listaSpeseModel.findById(idLista)
-        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
+        expensesListViewModel.findById(idLista)
+        expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
             binding.buttonDelete.visibility = if (listaSpese.owner.equals(currentUser.uid)) View.VISIBLE else View.GONE
         }
     }
@@ -134,7 +139,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
                     spesaModel.deleteList(spesaList)
 
                     //ELIMINO LA LISTA
-                    listaSpeseModel.delete(idLista)
+                    expensesListViewModel.delete(idLista)
 
                     //REDIRECT MAIN PAGE
                     activity?.finish()
@@ -185,19 +190,14 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun leaveList(idLista: String){
-        var listaSpese = ListaSpese()
-        listaSpeseModel.findById(idLista)
-        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
-            listaSpese = listaSpeseExtracted
+        var expensesList = ExpensesList(null, null, null, null, false, null)
+        this.expensesListViewModel.findById(idLista)
+        this.expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { extractedExpensesList ->
+            expensesList = extractedExpensesList
         }
 
-        if(listaSpese.partecipanti.size == 1 && listaSpese.partecipanti[0].equals(currentUser.uid, ignoreCase = true)){
+        if(expensesList.partecipatingUsersID!!.size == 1 && expensesList.partecipatingUsersID!![0].equals(currentUser.uid, ignoreCase = true)){
             AlertDialog.Builder(context)
                 .setTitle("Conferma")
                 .setMessage("Sei l'unico partecipante di questa lista, vuoi cancellarla?")
@@ -208,21 +208,21 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
             AlertDialog.Builder(context)
                 .setTitle("Conferma")
                 .setMessage("Vuoi veramente abbandonare la lista?")
-                .setPositiveButton("SI") { _, _ -> leaveListAndChangeOwnership(listaSpese) }
+                .setPositiveButton("SI") { _, _ -> leaveListAndChangeOwnership(expensesList) }
                 .setNegativeButton("NO") { _, _ -> }
                 .show()
         }
     }
 
-    private fun leaveListAndChangeOwnership(listaSpese: ListaSpese) {
-        listaSpese.partecipanti.remove(currentUser.uid)
+    private fun leaveListAndChangeOwnership(expensesList: ExpensesList) {
+        expensesList.partecipatingUsersID!!.remove(currentUser.uid)
 
         //Se ero l'owner allora passo l'ownership al primo della lista
-        if(listaSpese.owner.equals(currentUser.uid, ignoreCase = true)){
-            listaSpeseModel.updateByField(listaSpese.id,"owner", listaSpese.partecipanti[0])
+        if(expensesList.owner.equals(currentUser.uid, ignoreCase = true)){
+            this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldEnum.OWNER.value, expensesList.partecipatingUsersID[0])
         }
 
-        listaSpeseModel.updateByField(listaSpese.id,"partecipanti", listaSpese.partecipanti)
+        this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
 
         //REDIRECT MAIN PAGE
         activity?.finish()
@@ -230,13 +230,14 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     }
 
     private fun setupSwitches(idLista: String) {
-        binding.switchSaldato.setOnCheckedChangeListener { _, bool ->
-            listaSpeseModel.updateByField(idLista, "saldato", bool)
+
+        expensesListViewModel.findById(idLista)
+        expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
+            GenericUtils.setupSwitch(binding.switchPaid, listaSpese.paid)
         }
 
-        listaSpeseModel.findById(idLista)
-        listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
-            GenericUtils.setupSwitch(binding.switchSaldato, listaSpese.isSaldato)
+        binding.switchPaid.setOnCheckedChangeListener { _, bool ->
+            expensesListViewModel.updateByField(idLista, ExpensesListFieldEnum.PAID.value, bool)
         }
     }
 

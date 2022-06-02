@@ -10,16 +10,16 @@ import kotlinx.coroutines.tasks.await
 class UserRepository {
     private val db = DBUtils.getDatabaseReferenceFirestore(TablesEnum.USER)
 
-    suspend fun getAll(): List<User> {
+    suspend fun findAll(): List<User> {
         return db.get().await().documents.mapNotNull { it.toUser() }
     }
 
-    suspend fun getUserById(uid: String): User? {
-        return db.document(uid).get().await().toUser()
+    suspend fun findByID(id: String): User? {
+        return db.document(id).get().await().toUser()
     }
 
-    suspend fun getUserListByIdList(uidList: List<String>): List<User> {
-        return db.whereEqualTo(UserFieldEnum.ID.value, uidList).get().await().documents.mapNotNull { it.toUser() }
+    suspend fun findAllByIdList(idList: List<String>): List<User> {
+        return db.whereIn(UserFieldEnum.ID.value, idList).get().await().documents.mapNotNull { it.toUser() }
     }
 
     fun insert(user: User) {
@@ -33,7 +33,7 @@ class UserRepository {
 
     suspend fun updateByField(id: String, field : String, value : Any): User? {
         db.document(id).update(field, value)
-        return getUserById(id)
+        return findByID(id)
     }
 
 

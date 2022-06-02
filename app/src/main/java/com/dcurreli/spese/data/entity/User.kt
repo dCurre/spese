@@ -5,7 +5,7 @@ import com.dcurreli.spese.enums.entity.UserFieldEnum
 import com.google.firebase.firestore.DocumentSnapshot
 
 data class User (
-    val id: String,
+    val id : String,
     val fullname : String,
     val email : String,
     val profileImage : String,
@@ -15,7 +15,6 @@ data class User (
 
     companion object {
         fun DocumentSnapshot.toUser(): User? {
-            Log.i("$TAG >GetBOOLEAN", "${getBoolean(UserFieldEnum.HIDE_PAID_LISTS.value)}")
 
             return try {
                 User(

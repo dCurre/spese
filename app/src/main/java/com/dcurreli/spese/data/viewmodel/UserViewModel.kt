@@ -16,21 +16,21 @@ class UserViewModel : ViewModel() {
     val userLiveData: LiveData<User> = _userLiveData
     val userListLiveData: LiveData<List<User>> = _userListLiveData
 
-    fun getAll() {
+    fun findAll() {
         viewModelScope.launch {
-            _userListLiveData.value = repository.getAll()
+            _userListLiveData.value = repository.findAll()
         }
     }
 
-    fun getById(uid : String) {
+    fun findById(uid : String) {
         viewModelScope.launch {
-            _userLiveData.value = repository.getUserById(uid)
+            _userLiveData.value = repository.findByID(uid)
         }
     }
 
     fun findByIdList(uidList : List<String>) {
         viewModelScope.launch {
-            _userListLiveData.value = repository.getUserListByIdList(uidList)
+            _userListLiveData.value = repository.findAllByIdList(uidList)
         }
     }
 

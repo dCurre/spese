@@ -11,13 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
-import com.dcurreli.spese.data.entity.ListaSpese
-import com.dcurreli.spese.data.viewmodel.ListaSpeseViewModel
+import com.dcurreli.spese.data.entity.ExpensesList
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
 import com.dcurreli.spese.enums.table.TablesEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.utils.GenericUtils.dateToTimestampSeconds
 import com.dcurreli.spese.utils.SnackbarUtils
+import java.util.*
 
 class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
 
@@ -66,13 +68,15 @@ class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
             } else {
 
                 //Insert nuova lista spese
-                ViewModelProvider(this)[ListaSpeseViewModel::class.java]
+                ViewModelProvider(this)[ExpensesListViewModel::class.java]
                     .insert(
-                        ListaSpese(
-                            DBUtils.getDatabaseReference(TablesEnum.LISTE).push().key!!,
+                        ExpensesList(
+                            DBUtils.getDatabaseReferenceFirestore(TablesEnum.EXPENSES_LISTS).document().id,
                             binding.listaSpeseNomeText.text.toString().trim(),
-                            arrayListOf<String>(currentUser.uid),
-                            currentUser.uid
+                            arrayListOf(currentUser.uid),
+                            currentUser.uid,
+                            paid = false,
+                            dateToTimestampSeconds(Date())
                         )
                     )
 
