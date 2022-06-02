@@ -48,9 +48,9 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         val listsPerRow = 2
 
         //Recupero listaSpese a partire dall'utente
-        userModel.getUserById(user.uid)
+        userModel.findById(user.uid)
         userModel.userLiveData.observe(viewLifecycleOwner) { user ->
-           listaSpeseModel.findListsByUserID(user)
+           listaSpeseModel.findByUserID(user)
         }
 
         //Aggiungo le liste estratte all'adapter

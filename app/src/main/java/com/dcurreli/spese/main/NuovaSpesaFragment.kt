@@ -140,12 +140,12 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         pagatoriList: ArrayList<String>,
         arrayAdapterPagatori: ArrayAdapter<String>
     ) {
-        listaSpeseModel.getListaSpeseById(arguments?.getString("idLista").toString())
+        listaSpeseModel.findById(arguments?.getString("idLista").toString())
         listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
             val partecipanti = listaSpese.partecipanti
             var countPartecipanti = partecipanti.size
 
-            userModel.getUserListByIdList(partecipanti)
+            userModel.findByIdList(partecipanti)
             userModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
                 for(user in userList){
                     countPartecipanti--

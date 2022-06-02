@@ -19,11 +19,11 @@ class UserViewModel : ViewModel() {
         repository.getAll(_userListLiveData)
     }
 
-    fun getUserById(uid : String) {
+    fun findById(uid : String) {
         repository.getUserById(_userLiveData, uid)
     }
 
-    fun getUserListByIdList(uidList : List<String>) {
+    fun findByIdList(uidList : List<String>) {
         repository.getUserListByIdList(_userListLiveData, uidList)
     }
 

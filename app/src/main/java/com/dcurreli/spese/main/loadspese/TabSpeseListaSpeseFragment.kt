@@ -94,7 +94,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     var listaSpese = ListaSpese()
 
-                    listaSpeseModel.getListaSpeseById(arguments?.getString("idLista").toString())
+                    listaSpeseModel.findById(arguments?.getString("idLista").toString())
                     listaSpeseModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
                         listaSpese = listaSpeseExtracted
                     }

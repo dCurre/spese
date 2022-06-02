@@ -82,7 +82,7 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     }
 
     private fun setupSwitches(){
-        userModel.getUserById(currentUser.uid)
+        userModel.findById(currentUser.uid)
         userModel.userLiveData.observe(viewLifecycleOwner) { user ->
             GenericUtils.setupSwitch(binding.switchDarkTheme, user.isDarkTheme)
             GenericUtils.setupSwitch(binding.switchNascondiListe, user.isNascondiListeSaldate)

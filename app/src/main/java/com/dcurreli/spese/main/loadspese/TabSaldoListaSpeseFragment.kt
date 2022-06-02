@@ -86,7 +86,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
             }
 
             //AGGIORNO IL TOTALE A SCHERMO
-            listaSpeseViewModel.getListaSpeseById(arguments?.getString("idLista").toString())
+            listaSpeseViewModel.findById(arguments?.getString("idLista").toString())
             listaSpeseViewModel.listaSpeseLiveData.observe(viewLifecycleOwner) { listaSpese ->
                 binding.totaleListaSpese.setTextColor(if (listaSpese.isSaldato) ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark) else ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
                 binding.totaleListaSpese.text = GenericUtils.importoAsEur(mapSaldo.values.sum())

@@ -1,5 +1,6 @@
 package com.dcurreli.spese.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,9 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.data.entity.User
 
 
-class PartecipantiAdapter(private val userList: ArrayList<User>) : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>() {
+class PartecipantiAdapter() : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>() {
+
+    private val userList = ArrayList<User>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.lista_settings_fragment_partecipanti_item, parent, false))
@@ -28,6 +31,13 @@ class PartecipantiAdapter(private val userList: ArrayList<User>) : RecyclerView.
     // return the number of the items in the list
     override fun getItemCount(): Int {
         return userList.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun addItems(newUserList : List<User>){
+        userList.clear()
+        userList.addAll(newUserList)
+        notifyDataSetChanged()
     }
 
     // Holds the views for adding it to image and text

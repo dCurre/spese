@@ -56,7 +56,7 @@
             android:id="@+id/text_view_export_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button_abbandona"
+            android:layout_above="@+id/button_leave"
             android:layout_marginTop="0dp"
             android:background="@drawable/text_view_list_bottom_line"
             android:paddingVertical="10dp"
@@ -71,7 +71,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/ic_excel"
-            android:layout_above="@+id/button_abbandona"
+            android:layout_above="@+id/button_leave"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="95dp"
             tools:ignore="ContentDescription" />
@@ -80,7 +80,7 @@
             android:id="@+id/button_esporta_lista"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button_abbandona"
+            android:layout_above="@+id/button_leave"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
@@ -90,7 +90,7 @@
             app:iconTint="@color/primary" />
 
         <Button
-            android:id="@+id/button_abbandona"
+            android:id="@+id/button_leave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/button_abbandona"
+            android:layout_toEndOf="@+id/button_leave"
             android:backgroundTint="@color/red"
             android:text="@string/delete"
             android:textAllCaps="false" />

@@ -17,15 +17,15 @@ class ListaSpeseViewModel : ViewModel() {
     val listaSpeseLiveData: LiveData<ListaSpese> = _listaSpeseLiveData
 
     fun findAll() {
-        repository.getAll(_listaSpeseListLiveData)
+        repository.findAll(_listaSpeseListLiveData)
     }
 
-    fun findListsByUserID(user: User) {
-        repository.getListsByUserID(_listaSpeseListLiveData, user)
+    fun findByUserID(user: User) {
+        repository.findByUserID(_listaSpeseListLiveData, user)
     }
 
-    fun getListaSpeseById(id : String){
-        repository.getListaSpeseById(_listaSpeseLiveData, id)
+    fun findById(id : String){
+        repository.findById(_listaSpeseLiveData, id)
     }
 
     fun update(id: String, listaSpese: ListaSpese) {

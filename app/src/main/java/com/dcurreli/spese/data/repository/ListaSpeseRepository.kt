@@ -15,7 +15,7 @@ class ListaSpeseRepository {
     private val db: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.LISTE)
     var listaSpeseList = ArrayList<ListaSpese>()
 
-    fun getAll(liveData: MutableLiveData<List<ListaSpese>>) {
+    fun findAll(liveData: MutableLiveData<List<ListaSpese>>) {
 
         db.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -33,7 +33,7 @@ class ListaSpeseRepository {
         })
     }
 
-    fun getListsByUserID(liveData: MutableLiveData<List<ListaSpese>>, user: User) {
+    fun findByUserID(liveData: MutableLiveData<List<ListaSpese>>, user: User) {
 
         db.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -60,7 +60,7 @@ class ListaSpeseRepository {
         })
     }
 
-    fun getListaSpeseById(liveData: MutableLiveData<ListaSpese>, id : String) {
+    fun findById(liveData: MutableLiveData<ListaSpese>, id : String) {
         db.orderByChild("id").equalTo(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 listaSpeseList.clear()
