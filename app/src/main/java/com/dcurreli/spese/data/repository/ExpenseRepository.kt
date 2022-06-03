@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 
-class SpesaRepository {
+class ExpenseRepository {
     private val db: DatabaseReference = DBUtils.getDatabaseReference(TablesEnum.SPESA)
     val spesaList = ArrayList<Spesa>()
 

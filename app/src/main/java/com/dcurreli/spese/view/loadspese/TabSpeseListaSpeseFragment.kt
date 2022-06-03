@@ -17,7 +17,7 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.data.entity.ExpensesList
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
-import com.dcurreli.spese.data.viewmodel.SpesaViewModel
+import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.utils.SnackbarUtils
 import com.dcurreli.spese.view.dialog.EditSpesaDialogFragment
@@ -40,7 +40,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
     private lateinit var spesaAdapter : SpesaAdapter
-    private lateinit var spesaModel : SpesaViewModel
+    private lateinit var spesaModel : ExpenseViewModel
     private lateinit var listaSpeseModel : ExpensesListViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -52,7 +52,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
 
         _binding = LoadSpeseTabSpeseBinding.inflate(inflater, container, false)
         spesaAdapter = SpesaAdapter()
-        spesaModel = ViewModelProvider(requireActivity())[SpesaViewModel::class.java]
+        spesaModel = ViewModelProvider(requireActivity())[ExpenseViewModel::class.java]
         listaSpeseModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
 
         //Stampo le spese

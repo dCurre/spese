@@ -7,7 +7,6 @@ enum class TablesEnum(val value: String) {
 
 
     SPESA("spesa"),
-    LISTE("liste"),
 
     ;
 }

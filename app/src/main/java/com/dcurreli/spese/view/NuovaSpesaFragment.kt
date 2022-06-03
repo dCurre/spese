@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.data.entity.Spesa
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
-import com.dcurreli.spese.data.viewmodel.SpesaViewModel
+import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enums.table.TablesEnum
@@ -32,7 +32,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     private var _binding: AddSpesaBinding? = null
     private lateinit var userModel : UserViewModel
     private lateinit var expensesListViewModel : ExpensesListViewModel
-    private lateinit var spesaViewModel: SpesaViewModel
+    private lateinit var expenseViewModel: ExpenseViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -46,7 +46,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         _binding = AddSpesaBinding.inflate(inflater, container, false)
         userModel = ViewModelProvider(this)[UserViewModel::class.java]
         expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
-        spesaViewModel = ViewModelProvider(this)[SpesaViewModel::class.java]
+        expenseViewModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
         return binding.root
     }
 
@@ -98,7 +98,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
             binding.spesaPagatoreText.text.isNullOrBlank() -> { SnackbarUtils.showSnackbarError("Campo pagatore non popolato !", binding.addSpesaConstraintLayout) }
             binding.spesaImporto.text.toString().toDouble().equals(0.00) -> { SnackbarUtils.showSnackbarError("Inserire importo maggiore di 0 !", binding.addSpesaConstraintLayout) }
             else -> {
-                spesaViewModel.insert(
+                expenseViewModel.insert(
                     Spesa(
                         DBUtils.getDatabaseReference(TablesEnum.SPESA).push().key!!,
                         binding.spesaSpesaText.text.toString().trim(),
@@ -169,8 +169,8 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         arrayAdapterPagatori: ArrayAdapter<String>
     ) {
 
-        spesaViewModel.findByListaSpesaID(arguments?.getString("idLista").toString())
-        spesaViewModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
+        expenseViewModel.findByListaSpesaID(arguments?.getString("idLista").toString())
+        expenseViewModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
             val speseList = ArrayList<String>()
             pagatoriList.clear()
             arrayAdapterSpese.clear()

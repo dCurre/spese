@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dcurreli.spese.R
 import com.dcurreli.spese.data.entity.Spesa
-import com.dcurreli.spese.data.viewmodel.SpesaViewModel
+import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
 import com.dcurreli.spese.utils.GenericUtils
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -19,7 +19,7 @@ import java.util.*
 
 class EditSpesaDialogFragment : DialogFragment() {
 
-    private lateinit var spesaModel : SpesaViewModel
+    private lateinit var spesaModel : ExpenseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +28,7 @@ class EditSpesaDialogFragment : DialogFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.edit_spesa_dialog, container, false)
 
-        spesaModel = ViewModelProvider(this)[SpesaViewModel::class.java]
+        spesaModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
 
         setupInputText(view)
 

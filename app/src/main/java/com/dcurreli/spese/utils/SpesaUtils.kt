@@ -3,7 +3,7 @@ package com.dcurreli.spese.utils
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
-import com.dcurreli.spese.data.viewmodel.SpesaViewModel
+import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
 import com.dcurreli.spese.enums.table.TablesEnum
 import com.dcurreli.spese.view.HomeFragment
 
@@ -17,7 +17,7 @@ object SpesaUtils {
 
     fun exportDataToFirestore(homeFragment: HomeFragment, viewLifecycleOwner: LifecycleOwner) {
         val listaSpeseModel = ViewModelProvider(homeFragment)[ExpensesListViewModel::class.java]
-        val spesaModel = ViewModelProvider(homeFragment)[SpesaViewModel::class.java]
+        val spesaModel = ViewModelProvider(homeFragment)[ExpenseViewModel::class.java]
 
         //listaSpeseModel.findAll()
         //spesaModel.findAll()

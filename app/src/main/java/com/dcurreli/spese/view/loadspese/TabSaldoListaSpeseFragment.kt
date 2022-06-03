@@ -14,7 +14,7 @@ import com.dcurreli.spese.adapters.SaldoCategoryAdapter
 import com.dcurreli.spese.data.dto.SaldoCategory
 import com.dcurreli.spese.data.dto.SaldoSubItem
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
-import com.dcurreli.spese.data.viewmodel.SpesaViewModel
+import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.utils.GenericUtils
 import android.view.View as View1
@@ -25,7 +25,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
     private lateinit var saldoCategoryAdapter : SaldoCategoryAdapter
-    private lateinit var spesaModel : SpesaViewModel
+    private lateinit var spesaModel : ExpenseViewModel
     private lateinit var expensesListViewModel: ExpensesListViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -37,7 +37,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
 
         _binding = LoadSpeseTabSaldoBinding.inflate(inflater, container, false)
         saldoCategoryAdapter = SaldoCategoryAdapter(requireContext())
-        spesaModel = ViewModelProvider(this)[SpesaViewModel::class.java]
+        spesaModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
         expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
         return binding.root
     }

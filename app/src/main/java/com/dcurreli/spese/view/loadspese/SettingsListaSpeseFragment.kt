@@ -16,7 +16,7 @@ import com.dcurreli.spese.adapters.PartecipantiAdapter
 import com.dcurreli.spese.data.entity.ExpensesList
 import com.dcurreli.spese.data.entity.User
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
-import com.dcurreli.spese.data.viewmodel.SpesaViewModel
+import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
 import com.dcurreli.spese.enums.entity.ExpensesListFieldEnum
@@ -37,7 +37,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     private var _binding: ListaSettingsFragmentBinding? = null
     private lateinit var userViewModel : UserViewModel
     private lateinit var expensesListViewModel : ExpensesListViewModel
-    private lateinit var spesaModel : SpesaViewModel
+    private lateinit var spesaModel : ExpenseViewModel
     private lateinit var currentUser : FirebaseUser
 
     // This property is only valid between onCreateView and onDestroyView.
@@ -52,7 +52,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         _binding = ListaSettingsFragmentBinding.inflate(inflater, container, false)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
-        spesaModel = ViewModelProvider(this)[SpesaViewModel::class.java]
+        spesaModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
         return binding.root
     }
 
