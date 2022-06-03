@@ -61,7 +61,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     private fun setupAddSpesaButton() {
-        listaSpeseModel.findById(arguments?.getString("idLista").toString())
+        listaSpeseModel.findByID(arguments?.getString("idLista").toString())
         listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
             binding.addSpesaButton.visibility = if(expensesList.paid) View.GONE else View.VISIBLE
         }

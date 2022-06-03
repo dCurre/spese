@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SpesaAdapter
 import com.dcurreli.spese.data.entity.ExpensesList
-import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
 import com.dcurreli.spese.utils.SnackbarUtils
 import com.dcurreli.spese.view.dialog.EditSpesaDialogFragment
@@ -39,8 +39,8 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     private var _binding: LoadSpeseTabSpeseBinding? = null
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
-    private lateinit var spesaAdapter : SpesaAdapter
-    private lateinit var spesaModel : ExpenseViewModel
+    private lateinit var expenseAdapter : SpesaAdapter
+    private lateinit var expenseViewModel : ExpenseViewModel
     private lateinit var listaSpeseModel : ExpensesListViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -51,15 +51,10 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     ): View1 {
 
         _binding = LoadSpeseTabSpeseBinding.inflate(inflater, container, false)
-        spesaAdapter = SpesaAdapter()
-        spesaModel = ViewModelProvider(requireActivity())[ExpenseViewModel::class.java]
+        expenseAdapter = SpesaAdapter()
+        expenseViewModel = ViewModelProvider(requireActivity())[ExpenseViewModel::class.java]
         listaSpeseModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
 
-        //Stampo le spese
-        printSpese()
-
-        //Gestisco il cardslider passandogli l'adapter
-        setupCardSlider()
 
         return binding.root
     }
@@ -67,20 +62,26 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Stampo le spese
+        printSpese()
+
+        //Gestisco il cardslider passandogli l'adapter
+        setupCardSlider()
     }
 
     private fun printSpese() {
-
         //Aggiungo le spese estratte all'adapter
-        spesaModel.findByListaSpesaID(arguments?.getString("idLista").toString())
-        spesaModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
-            spesaAdapter.addItems(spesaList.sortedBy { it.timestamp }.toCollection(ArrayList()))
-            binding.speseNotFound.visibility = if(spesaList.isNotEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
+        expenseViewModel.findAllByExpensesListID(arguments?.getString("idLista").toString())
+        expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
+            //TODO CAMBIARE CON UNA QUERY SERIA
+            expenseAdapter.addItems(expenseList.sortedBy { it.expenseDateTimestamp }.toCollection(ArrayList()))
+            binding.speseNotFound.visibility = if(expenseList.isNotEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
         }
 
         //Setup spese
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
-        binding.listaSpese.adapter = spesaAdapter
+        binding.listaSpese.adapter = expenseAdapter
     }
 
     private fun setupCardSlider() {
@@ -94,18 +95,18 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     var expensesList = ExpensesList(null, null, null, null, false, null)
 
-                    listaSpeseModel.findById(arguments?.getString("idLista").toString())
+                    listaSpeseModel.findByID(arguments?.getString("idLista").toString())
                     listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
                         expensesList = listaSpeseExtracted
                     }
 
                     if(direction == ItemTouchHelper.RIGHT){ //Se scorro verso destra modifico
                         if(!expensesList.paid){
-                            EditSpesaDialogFragment().newInstance(spesaAdapter.getItem(viewHolder.absoluteAdapterPosition)).show(childFragmentManager, EditSpesaDialogFragment.TAG)
-                            spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                            EditSpesaDialogFragment().newInstance(expenseAdapter.getItem(viewHolder.absoluteAdapterPosition)).show(childFragmentManager, EditSpesaDialogFragment.TAG)
+                            expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                         } else {
                             SnackbarUtils.showSnackbarError("Non puoi modificare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
-                            spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                            expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                         }
                     }
 
@@ -114,19 +115,19 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                             //Se non è saldato faccio uscire l'alert per la cancellazione della spesa
                             AlertDialog.Builder(context)
                                 .setTitle("Conferma")
-                                .setMessage("Vuoi cancellare la spesa ${spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).spesa}?")
+                                .setMessage("Vuoi cancellare la spesa ${expenseAdapter.getItem(viewHolder.absoluteAdapterPosition).expense}?")
                                 .setPositiveButton("SI") { _, _ ->
-                                    spesaModel.delete(spesaAdapter.getItem(viewHolder.absoluteAdapterPosition).id)
+                                    expenseViewModel.delete(expenseAdapter.getItem(viewHolder.absoluteAdapterPosition).id)
                                     SnackbarUtils.showSnackbarOK("Spesa cancellata", binding.root)
                                 }
                                 .setNegativeButton("NO") { _, _ ->
-                                    spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                                    expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                                 }
                                 .setCancelable(false)
                                 .show()
                         } else {
                             SnackbarUtils.showSnackbarError("Non puoi cancellare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
-                            spesaAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                            expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                         }
                     }
                 }

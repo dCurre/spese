@@ -3,10 +3,8 @@ package com.dcurreli.spese.data.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.dcurreli.spese.data.entity.User
 import com.dcurreli.spese.data.repository.UserRepository
-import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
 
@@ -17,36 +15,27 @@ class UserViewModel : ViewModel() {
     val userListLiveData: LiveData<List<User>> = _userListLiveData
 
     fun findAll() {
-        viewModelScope.launch {
-            _userListLiveData.value = repository.findAll()
-        }
+        repository.findAll(_userListLiveData)
     }
 
-    fun findById(uid : String) {
-        viewModelScope.launch {
-            _userLiveData.value = repository.findByID(uid)
-        }
+    fun findAllByUserIdList(uidList : List<String>) {
+        repository.findAllByIdList(uidList, _userListLiveData)
     }
 
-    fun findByIdList(uidList : List<String>) {
-        viewModelScope.launch {
-            _userListLiveData.value = repository.findAllByIdList(uidList)
-        }
+    fun findById(id : String) {
+        repository.findByID(id, _userLiveData)
     }
+
 
     fun insert(user: User) {
         repository.insert(user)
     }
 
-    fun update(id: String, user: User) {
-        viewModelScope.launch {
-            _userLiveData.value = repository.update(id, user)
-        }
+    fun update(id: String, updateMap: HashMap<String, Any>) {
+        repository.update(id, updateMap)
     }
 
     fun updateByField(id: String, field: String, value : Any) {
-        viewModelScope.launch {
-            _userLiveData.value = repository.updateByField(id, field, value)
-        }
+        repository.updateByField(id, field, value)
     }
 }

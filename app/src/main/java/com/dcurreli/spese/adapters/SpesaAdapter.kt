@@ -8,11 +8,11 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
-import com.dcurreli.spese.data.entity.Spesa
+import com.dcurreli.spese.data.entity.Expense
 
 class SpesaAdapter : RecyclerView.Adapter<SpesaAdapter.ViewHolder>() {
 
-    private var speseList = ArrayList<Spesa>()
+    private var speseList = ArrayList<Expense>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_spese_item, parent, false))
@@ -21,10 +21,10 @@ class SpesaAdapter : RecyclerView.Adapter<SpesaAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val spesa = speseList[position]
-        holder.spesa.text = spesa.spesa
-        holder.importo.text = spesa.importoAsTextEuro()
-        holder.data.text = spesa.data
-        holder.pagatore.text = spesa.pagatore
+        holder.spesa.text = spesa.expense
+        holder.importo.text = spesa.getAmountAsEur()
+        holder.data.text = spesa.expenseDate
+        holder.pagatore.text = spesa.buyer
 
     }
 
@@ -33,12 +33,12 @@ class SpesaAdapter : RecyclerView.Adapter<SpesaAdapter.ViewHolder>() {
         return speseList.size
     }
 
-    fun getItem(position: Int): Spesa {
+    fun getItem(position: Int): Expense {
         return speseList[position]
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addItems(newSpesaList : List<Spesa>){
+    fun addItems(newSpesaList : List<Expense>){
         speseList.clear()
         speseList.addAll(newSpesaList)
         notifyDataSetChanged()

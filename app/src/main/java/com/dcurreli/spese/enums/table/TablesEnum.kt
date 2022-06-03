@@ -5,8 +5,5 @@ enum class TablesEnum(val value: String) {
     EXPENSES_LISTS("ExpensesList"),
     USER("User"),
 
-
-    SPESA("spesa"),
-
     ;
 }

@@ -1,41 +1,46 @@
 package com.dcurreli.spese.data.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dcurreli.spese.data.entity.Expense
 import com.dcurreli.spese.data.repository.ExpenseRepository
-import com.dcurreli.spese.data.entity.Spesa
 
 class ExpenseViewModel : ViewModel() {
 
     private val repository = ExpenseRepository()
-
-    private val _spesaListLiveData = MutableLiveData<List<Spesa>>()
-    val spesaListLiveData: LiveData<List<Spesa>> = _spesaListLiveData
-    private val _spesaLiveData = MutableLiveData<Spesa>()
-    val spesaLiveData: LiveData<Spesa> = _spesaLiveData
+    private val _expenseLiveData = MutableLiveData<Expense>()
+    private val _expenseListLiveData = MutableLiveData<List<Expense>>()
+    val expenseLiveData: LiveData<Expense> = _expenseLiveData
+    val expenseListLiveData: LiveData<List<Expense>> = _expenseListLiveData
 
     fun findAll() {
-        repository.getAll(_spesaListLiveData)
+        repository.findAll(_expenseListLiveData)
     }
 
-    fun findByListaSpesaID(id : String) {
-        repository.findByListaSpesaID(_spesaListLiveData, id)
+    fun findByID(id : String){
+        repository.findByID(id, _expenseLiveData)
     }
 
-    fun update(spesa: Spesa) {
-        repository.update(spesa)
+    fun findAllByExpensesListID(id : String) {
+        Log.i("PROVA EXT", "ESTRAGGOOOOOOO")
+        repository.findAllByExpensesListID(id, _expenseListLiveData)
     }
 
-    fun insert(spesa: Spesa) {
-        repository.insert(spesa)
+    fun insert(expense: Expense) {
+        repository.insert(expense)
+    }
+
+    fun update(id: String, updateMap: HashMap<String, Any>) {
+        repository.update(id, updateMap)
     }
 
     fun delete(id: String) {
         repository.delete(id)
     }
 
-    fun deleteList(spesaList: List<Spesa>) {
-        repository.deleteList(spesaList)
+    fun deleteList(expenseList: List<Expense>) {
+        repository.deleteList(expenseList)
     }
 }

@@ -1,54 +1,60 @@
 package com.dcurreli.spese.data.repository
 
+import androidx.lifecycle.MutableLiveData
 import com.dcurreli.spese.data.entity.ExpensesList
 import com.dcurreli.spese.data.entity.ExpensesList.Companion.toExpensesList
 import com.dcurreli.spese.enums.entity.ExpensesListFieldEnum
 import com.dcurreli.spese.enums.table.TablesEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.tasks.await
 
 class ExpensesListRepository {
-    private val db = DBUtils.getDatabaseReferenceFirestore(TablesEnum.EXPENSES_LISTS)
+    private val db = DBUtils.getFirestoreReference(TablesEnum.EXPENSES_LISTS)
 
-    suspend fun findAll(): List<ExpensesList> {
-        return db.get().await().documents.mapNotNull { it.toExpensesList() }
+    fun findAll(liveData: MutableLiveData<List<ExpensesList>>) {
+        db.addSnapshotListener { value, _ ->
+            liveData.postValue(value!!.documents.mapNotNull { it.toExpensesList() })
+        }
     }
 
-    suspend fun findByID(id : String): ExpensesList? {
-        return db.document(id).get().await().toExpensesList()
+    fun findByID(id : String, liveData: MutableLiveData<ExpensesList>) {
+        db.document(id).addSnapshotListener { value, _ ->
+            liveData.postValue(value!!.toExpensesList())
+        }
     }
 
-    suspend fun findByUserIDAndIsPaid(userID: String, hidePaidLists: Boolean): List<ExpensesList> {
+    fun findAllByUserIDAndIsPaid(userID: String, hidePaidLists: Boolean, liveData: MutableLiveData<List<ExpensesList>>) {
         val query =
             if(hidePaidLists)
                 db.whereArrayContains(ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, userID)
-                  .whereNotEqualTo(ExpensesListFieldEnum.PAID.value, hidePaidLists)
+                    .whereNotEqualTo(ExpensesListFieldEnum.PAID.value, hidePaidLists)
             else
                 db.whereArrayContains(ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, userID)
 
-        return query
+        //Sorting
+        query
             .orderBy(ExpensesListFieldEnum.PAID.value, Query.Direction.ASCENDING)
             .orderBy(ExpensesListFieldEnum.TIMESTAMP_INS.value, Query.Direction.DESCENDING)
-            .get().await().documents.mapNotNull { it.toExpensesList() }
+
+        //Retrieving data
+        query.addSnapshotListener { value, _ ->
+            liveData.postValue(value!!.documents.mapNotNull { it.toExpensesList() })
+        }
     }
 
     fun insert(expensesList : ExpensesList) {
         db.document(expensesList.id!!).set(expensesList)
     }
 
-    fun update(id: String, expensesList : ExpensesList): ExpensesList {
-        db.document(id).set(expensesList)
-        return expensesList
+    fun update(id: String, updateMap: HashMap<String, Any>) {
+        db.document(id).update(updateMap)
     }
 
-    suspend fun updateByField(id: String, field : String, value : Any): ExpensesList? {
+    fun updateByField(id: String, field : String, value : Any) {
         db.document(id).update(field, value)
-        return findByID(id)
     }
 
     fun delete(id : String) {
         db.document(id).delete()
     }
-
 }

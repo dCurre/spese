@@ -13,15 +13,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
-import com.dcurreli.spese.data.entity.Spesa
-import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
+import com.dcurreli.spese.data.entity.Expense
 import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.AddSpesaBinding
 import com.dcurreli.spese.enums.table.TablesEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.DateUtils
 import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.utils.GenericUtils.dateStringToTimestampSeconds
 import com.dcurreli.spese.utils.SnackbarUtils
 import java.util.*
 
@@ -72,7 +73,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
 
         //Bottone "Aggiungi"
         binding.spesaButtonAddSpesa.setOnClickListener {
-            addSpesa(view)
+            insertExpense(view)
         }
 
         //TODO: tasto debug da togliere
@@ -82,12 +83,12 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         //TODO: tasto debug da togliere
         binding.spesaButtonAddSpesa10.setOnClickListener {
             for(i in 0 until 10){
-                addSpesa(view)
+                insertExpense(view)
             }
         }
     }
 
-    private fun addSpesa(view: View) {
+    private fun insertExpense(view: View) {
         //Chiudo la tastiera come prima cosa
         GenericUtils.hideSoftKeyBoard(requireContext(), view)
 
@@ -99,11 +100,12 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
             binding.spesaImporto.text.toString().toDouble().equals(0.00) -> { SnackbarUtils.showSnackbarError("Inserire importo maggiore di 0 !", binding.addSpesaConstraintLayout) }
             else -> {
                 expenseViewModel.insert(
-                    Spesa(
-                        DBUtils.getDatabaseReference(TablesEnum.SPESA).push().key!!,
+                    Expense(
+                        DBUtils.getFirestoreReference(TablesEnum.EXPENSE).document().id,
                         binding.spesaSpesaText.text.toString().trim(),
                         binding.spesaImporto.text.toString().trim().replace(",", ".").toDouble(),
                         binding.spesaData.text.toString().trim(),
+                        expenseDateTimestamp = dateStringToTimestampSeconds(binding.spesaData.text.toString().trim(), "dd/MM/yyyy"),
                         binding.spesaPagatoreText.text.toString().trim(),
                         arguments?.getString("idLista").toString()
                     )
@@ -140,13 +142,13 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         pagatoriList: ArrayList<String>,
         arrayAdapterPagatori: ArrayAdapter<String>
     ) {
-        expensesListViewModel.findById(arguments?.getString("idLista").toString())
+        expensesListViewModel.findByID(arguments?.getString("idLista").toString())
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
             val partecipanti = expensesList.partecipatingUsersID
             var countPartecipanti = partecipanti!!.size
 
             //TODO DA SISTEMARE DOPO CAMBIO A FIRESTORE
-            userModel.findByIdList(partecipanti)
+            userModel.findAllByUserIdList(partecipanti)
             userModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
                 for(user in userList){
                     countPartecipanti--
@@ -169,17 +171,17 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         arrayAdapterPagatori: ArrayAdapter<String>
     ) {
 
-        expenseViewModel.findByListaSpesaID(arguments?.getString("idLista").toString())
-        expenseViewModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
+        expenseViewModel.findAllByExpensesListID(arguments?.getString("idLista").toString())
+        expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
             val speseList = ArrayList<String>()
             pagatoriList.clear()
             arrayAdapterSpese.clear()
             arrayAdapterPagatori.clear()
 
             //Ciclo per ottenere spese e pagatori
-            spesaList.forEach { spesa ->
-                speseList.add(spesa.spesa)
-                pagatoriList.add(spesa.pagatore)
+            expenseList.forEach { spesa ->
+                speseList.add(spesa.expense)
+                pagatoriList.add(spesa.buyer)
             }
 
             //Faccio la distinct per filtrarmi le spese doppie, i pagatori li aggiungo dopo

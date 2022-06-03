@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
-import com.dcurreli.spese.data.entity.Spesa
+import com.dcurreli.spese.data.entity.Expense
 
 class SaldoAdapter : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
 
-    private val speseList = ArrayList<Spesa>()
+    private val speseList = ArrayList<Expense>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_saldo_totali_item, parent, false))
@@ -20,8 +20,8 @@ class SaldoAdapter : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val spesa = speseList[position]
-        holder.pagatore.text = spesa.pagatore
-        holder.importo.text = spesa.importoAsTextEuro()
+        holder.pagatore.text = spesa.buyer
+        holder.importo.text = spesa.getAmountAsEur()
 
     }
 
@@ -31,7 +31,7 @@ class SaldoAdapter : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addItems(newSpesaList : List<Spesa>){
+    fun addItems(newSpesaList : List<Expense>){
         speseList.clear()
         speseList.addAll(newSpesaList)
         notifyDataSetChanged()

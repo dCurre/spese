@@ -13,8 +13,8 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.SaldoCategoryAdapter
 import com.dcurreli.spese.data.dto.SaldoCategory
 import com.dcurreli.spese.data.dto.SaldoSubItem
-import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
 import com.dcurreli.spese.utils.GenericUtils
 import android.view.View as View1
@@ -47,27 +47,17 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
         super.onViewCreated(view, savedInstanceState)
 
         printSaldo()
-
-        //Stampo le spese
-
-        /*SpesaUtils.printSaldo(
-            binding,
-            requireContext(),
-            idListaSpese = arguments?.getString("idLista").toString(), //id lista
-            viewLifecycleOwner,
-            ViewModelProvider(this)[ListaSpeseViewModel::class.java]
-        )*/
     }
 
     private fun printSaldo() {
         //Aggiungo le spese estratte all'adapter
-        spesaModel.findByListaSpesaID(arguments?.getString("idLista").toString())
-        spesaModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
+        spesaModel.findAllByExpensesListID(arguments?.getString("idLista").toString())
+        spesaModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
             val mapSaldo = mutableMapOf<String, Double>()
             val dareAvereSUBITEMSArray = ArrayList<SaldoSubItem>()
             val dareAvereArray = ArrayList<SaldoCategory>()
 
-            if (spesaList.isEmpty()) {
+            if (expenseList.isEmpty()) {
                 binding.saldoNotPrintable.visibility = android.view.View.VISIBLE //MOSTRO LO SFONDO D'ERRORE
                 binding.totaleListaSpese.visibility =  android.view.View.INVISIBLE //NASCONDO SCRITTA TOTALE
             } else {
@@ -76,17 +66,17 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
             }
 
             //Riempio una mappa di <Pagatore, ImportiPagati>
-            for (spesa in spesaList) {
+            for (expense in expenseList) {
                 //Se la mappa non contiene il pagatore lo aggiungo, altrimenti sommo all'importo che già aveva
-                if (mapSaldo.containsKey(spesa.pagatore)) {
-                    mapSaldo[spesa.pagatore] = spesa.importo + mapSaldo[spesa.pagatore]!!
+                if (mapSaldo.containsKey(expense.buyer)) {
+                    mapSaldo[expense.buyer] = expense.amount + mapSaldo[expense.buyer]!!
                 } else {
-                    mapSaldo[spesa.pagatore] = spesa.importo
+                    mapSaldo[expense.buyer] = expense.amount
                 }
             }
 
             //AGGIORNO IL TOTALE A SCHERMO
-            expensesListViewModel.findById(arguments?.getString("idLista").toString())
+            expensesListViewModel.findByID(arguments?.getString("idLista").toString())
             expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
                 binding.totaleListaSpese.setTextColor(if (listaSpese.paid) ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark) else ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
                 binding.totaleListaSpese.text = GenericUtils.importoAsEur(mapSaldo.values.sum())

@@ -36,8 +36,6 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         userModel = ViewModelProvider(this)[UserViewModel::class.java]
         listaSpeseModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
 
-        //SpesaUtils.exportDataToFirestore(this, viewLifecycleOwner)
-
         printListaSpese()
 
         setupUserBar()
@@ -62,7 +60,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
         userModel.findById(loggedUser.uid)
         userModel.userLiveData.observe(viewLifecycleOwner) { user ->
-            listaSpeseModel.findByUserIDAndIsPaid(user.id, user.hidePaidLists)
+            listaSpeseModel.findAllByUserIDAndIsPaid(user.id, user.hidePaidLists)
         }
 
         //Recupero listaSpese a partire dall'utente
@@ -73,7 +71,6 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         //Setup griglia liste
         binding.listaSpese.layoutManager = GridLayoutManager(context, listsPerRow)
         binding.listaSpese.adapter = listaSpeseAdapter
-
     }
 
     @SuppressLint("SetTextI18n")

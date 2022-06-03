@@ -54,7 +54,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
     }
 
     private fun loadJoinGroupDetails(){
-        expensesListViewModel.findById(arguments?.getString("idLista").toString())
+        expensesListViewModel.findByID(arguments?.getString("idLista").toString())
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
             binding.nomeGruppo.text = listaSpese.name
             binding.counterCurrentUsers.text = listaSpese.partecipatingUsersID!!.size.toString()
@@ -66,7 +66,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
     private fun setupJoinButton(){
         val idLista = arguments?.getString("idLista").toString().replace(" ", "")
 
-            expensesListViewModel.findById(idLista)
+            expensesListViewModel.findByID(idLista)
             expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
                 binding.joinListaButton.setOnClickListener {
                     //Se l'utente è già presente in lista

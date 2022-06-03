@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +14,8 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.PartecipantiAdapter
 import com.dcurreli.spese.data.entity.ExpensesList
 import com.dcurreli.spese.data.entity.User
-import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
+import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
 import com.dcurreli.spese.enums.entity.ExpensesListFieldEnum
@@ -37,7 +36,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     private var _binding: ListaSettingsFragmentBinding? = null
     private lateinit var userViewModel : UserViewModel
     private lateinit var expensesListViewModel : ExpensesListViewModel
-    private lateinit var spesaModel : ExpenseViewModel
+    private lateinit var expenseViewModel : ExpenseViewModel
     private lateinit var currentUser : FirebaseUser
 
     // This property is only valid between onCreateView and onDestroyView.
@@ -52,7 +51,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         _binding = ListaSettingsFragmentBinding.inflate(inflater, container, false)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
-        spesaModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
+        expenseViewModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
         return binding.root
     }
 
@@ -78,12 +77,11 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
     private fun printPartecipanti(idLista: String) {
         val partecipantiAdapter = PartecipantiAdapter()
-        expensesListViewModel.findById(idLista)
+        expensesListViewModel.findByID(idLista)
         userViewModel.findAll()
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
             val partecipantiArray = ArrayList<User>()
             userViewModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
-                Log.i("<PRIMA>", "${userList}")
                 //TODO filtrare nella query per user id
                 userList.forEach { user ->
                     if(listaSpese.partecipatingUsersID!!.contains(user.id)){
@@ -120,7 +118,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     }
 
     private fun showHideDeleteButton(idLista: String) {
-        expensesListViewModel.findById(idLista)
+        expensesListViewModel.findByID(idLista)
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
             binding.buttonDelete.visibility = if (listaSpese.owner.equals(currentUser.uid)) View.VISIBLE else View.GONE
         }
@@ -134,11 +132,13 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
             .setPositiveButton("SI") { _, _ ->
 
                 //ELIMINO LE SPESE LEGATE A QUELLA LISTA
-                spesaModel.findByListaSpesaID(idLista)
-                spesaModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
-                    spesaModel.deleteList(spesaList)
+                expenseViewModel.findAllByExpensesListID(idLista)
+                expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
 
-                    //ELIMINO LA LISTA
+                    //Deleting every expense by idList
+                    expenseViewModel.deleteList(expenseList)
+
+                    //Deleting the list
                     expensesListViewModel.delete(idLista)
 
                     //REDIRECT MAIN PAGE
@@ -158,8 +158,8 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         val completeFileName = "Riepilogo_spese_$nomeLista.xlsx"
         val completePath = "$downloadFolder/$completeFileName"
 
-        spesaModel.findByListaSpesaID(idLista)
-        spesaModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
+        expenseViewModel.findAllByExpensesListID(idLista)
+        expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
             val hssfWorkbook = HSSFWorkbook()
             val hssfSheet: HSSFSheet = hssfWorkbook.createSheet(nomeLista)
             var rowCounter = 1
@@ -168,8 +168,8 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
             ExcelUtils.printHeaderRow(0, hssfSheet)
 
             //Ciclo per ottenere spese e le stampo
-            for (spesa in spesaList) {
-                ExcelUtils.printRow(rowCounter, spesa.spesa, spesa.importo, spesa.data, spesa.pagatore, hssfSheet)
+            for (expense in expenseList) {
+                ExcelUtils.printRow(rowCounter, expense.expense, expense.amount, expense.expenseDate, expense.buyer, hssfSheet)
                 rowCounter++
             }
 
@@ -192,7 +192,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
     private fun leaveList(idLista: String){
         var expensesList = ExpensesList(null, null, null, null, false, null)
-        this.expensesListViewModel.findById(idLista)
+        this.expensesListViewModel.findByID(idLista)
         this.expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { extractedExpensesList ->
             expensesList = extractedExpensesList
         }
@@ -231,7 +231,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
     private fun setupSwitches(idLista: String) {
 
-        expensesListViewModel.findById(idLista)
+        expensesListViewModel.findByID(idLista)
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
             GenericUtils.setupSwitch(binding.switchPaid, listaSpese.paid)
         }

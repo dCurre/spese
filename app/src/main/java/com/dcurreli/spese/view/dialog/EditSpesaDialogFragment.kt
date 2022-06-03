@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dcurreli.spese.R
-import com.dcurreli.spese.data.entity.Spesa
+import com.dcurreli.spese.data.entity.Expense
 import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
+import com.dcurreli.spese.enums.entity.ExpenseFieldEnum
 import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.utils.GenericUtils.dateStringToTimestampSeconds
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -19,7 +21,7 @@ import java.util.*
 
 class EditSpesaDialogFragment : DialogFragment() {
 
-    private lateinit var spesaModel : ExpenseViewModel
+    private lateinit var expenseViewModel : ExpenseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +30,7 @@ class EditSpesaDialogFragment : DialogFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.edit_spesa_dialog, container, false)
 
-        spesaModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
+        expenseViewModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
 
         setupInputText(view)
 
@@ -54,6 +56,7 @@ class EditSpesaDialogFragment : DialogFragment() {
         aggiornaButton.setOnClickListener {
             //Chiudo la tastiera come prima cosa
             GenericUtils.hideSoftKeyBoard(requireContext(), view)
+
             //Pulisco i messaggi d'errore
             clearErrors(view)
 
@@ -65,15 +68,17 @@ class EditSpesaDialogFragment : DialogFragment() {
                 importo.text.toString().toDouble().equals(0.00) -> { importoLayout.error = "Importo non valido" }
                 else -> {
 
+                    val updateMap: HashMap<String, Any> = HashMap()
+                    updateMap[ExpenseFieldEnum.EXPENSE.value] = spesa.text.toString().trim()
+                    updateMap[ExpenseFieldEnum.AMOUNT.value] = importo.text.toString().trim().replace(",", ".").toDouble()
+                    updateMap[ExpenseFieldEnum.EXPENSE_DATE.value] = data.text.toString().trim()
+                    updateMap[ExpenseFieldEnum.EXPENSE_DATE_TIMESTAMP.value] = dateStringToTimestampSeconds(data.text.toString().trim(), "dd/MM/yyyy")
+                    updateMap[ExpenseFieldEnum.BUYER.value] = pagatore.text.toString().trim()
+
                     //Update della spesa
-                    spesaModel.update(Spesa(
-                        arguments?.getString("id")!!,
-                        spesa.text.toString().trim(),
-                        importo.text.toString().trim().replace(",", ".").toDouble(),
-                        data.text.toString().trim(),
-                        pagatore.text.toString().trim(),
-                        GenericUtils.dateStringToTimestampSeconds(data.text.toString(), "dd/MM/yyyy").toString()
-                    ))
+                    expenseViewModel.update(arguments?.getString("id")!!, updateMap)
+
+                    //Chiudo il dialog
                     dismiss()
                 }
             }
@@ -81,7 +86,6 @@ class EditSpesaDialogFragment : DialogFragment() {
 
         //Bottone "X"
         exitButton.setOnClickListener { dismiss() }
-
     }
 
     private fun clearErrors(view: View) {
@@ -91,22 +95,18 @@ class EditSpesaDialogFragment : DialogFragment() {
     }
 
     private fun setupInputText(view: View) {
-        val spesa = view.findViewById<TextInputEditText>(R.id.edit_spesa_text)
-        val importo = view.findViewById<TextInputEditText>(R.id.edit_spesa_importo)
-        val pagatore = view.findViewById<TextInputEditText>(R.id.edit_spesa_pagatore_text)
-
-        spesa.setText(arguments?.getString("spesa"))
-        importo.setText(arguments?.getString("importo"))
-        pagatore.setText(arguments?.getString("pagatore"))
+        view.findViewById<TextInputEditText>(R.id.edit_spesa_text).setText(arguments?.getString("spesa"))
+        view.findViewById<TextInputEditText>(R.id.edit_spesa_importo).setText(arguments?.getString("importo"))
+        view.findViewById<TextInputEditText>(R.id.edit_spesa_pagatore_text).setText(arguments?.getString("pagatore"))
     }
 
-    fun newInstance(spesa: Spesa): EditSpesaDialogFragment {
+    fun newInstance(expense: Expense): EditSpesaDialogFragment {
         val bundle = Bundle()
-        bundle.putString("id", spesa.id)
-        bundle.putString("spesa", spesa.spesa)
-        bundle.putString("importo", spesa.importo.toString())
-        bundle.putString("data", spesa.data)
-        bundle.putString("pagatore", spesa.pagatore)
+        bundle.putString("id", expense.id)
+        bundle.putString("spesa", expense.expense)
+        bundle.putString("importo", expense.amount.toString())
+        bundle.putString("data", expense.expenseDate)
+        bundle.putString("pagatore", expense.buyer)
         val dialogFragment = EditSpesaDialogFragment()
         dialogFragment.arguments = bundle
         return dialogFragment

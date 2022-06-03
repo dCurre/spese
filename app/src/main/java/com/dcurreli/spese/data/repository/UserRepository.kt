@@ -1,40 +1,46 @@
 package com.dcurreli.spese.data.repository
 
+import androidx.lifecycle.MutableLiveData
 import com.dcurreli.spese.data.entity.User
 import com.dcurreli.spese.data.entity.User.Companion.toUser
 import com.dcurreli.spese.enums.entity.UserFieldEnum
 import com.dcurreli.spese.enums.table.TablesEnum
 import com.dcurreli.spese.utils.DBUtils
-import kotlinx.coroutines.tasks.await
 
 class UserRepository {
-    private val db = DBUtils.getDatabaseReferenceFirestore(TablesEnum.USER)
+    private val db = DBUtils.getFirestoreReference(TablesEnum.USER)
 
-    suspend fun findAll(): List<User> {
-        return db.get().await().documents.mapNotNull { it.toUser() }
+    fun findAll(liveData: MutableLiveData<List<User>>) {
+        db.addSnapshotListener { value, _ ->
+            liveData.postValue(value!!.documents.mapNotNull { it.toUser() })
+        }
     }
 
-    suspend fun findByID(id: String): User? {
-        return db.document(id).get().await().toUser()
+    fun findByID(id: String, liveData: MutableLiveData<User>) {
+        db.document(id).addSnapshotListener { value, _ ->
+            liveData.postValue(value!!.toUser())
+        }
     }
 
-    suspend fun findAllByIdList(idList: List<String>): List<User> {
-        return db.whereIn(UserFieldEnum.ID.value, idList).get().await().documents.mapNotNull { it.toUser() }
+    fun findAllByIdList(idList: List<String>, liveData: MutableLiveData<List<User>>) {
+        db.whereIn(UserFieldEnum.ID.value, idList).addSnapshotListener { value, _ ->
+            liveData.postValue(value!!.documents.mapNotNull { it.toUser() })
+        }
     }
 
     fun insert(user: User) {
         db.document(user.id).set(user)
     }
 
-    fun update(id: String, user : User): User {
-        db.document(id).set(user)
-        return user
+    fun update(id: String, updateMap: HashMap<String, Any>) {
+        db.document(id).update(updateMap)
     }
 
-    suspend fun updateByField(id: String, field : String, value : Any): User? {
+    fun updateByField(id: String, field : String, value : Any) {
         db.document(id).update(field, value)
-        return findByID(id)
     }
 
-
+    fun delete(id : String) {
+        db.document(id).delete()
+    }
 }
