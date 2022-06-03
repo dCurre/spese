@@ -1,5 +1,6 @@
 package com.dcurreli.spese.data.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dcurreli.spese.data.entity.ExpensesList
 import com.dcurreli.spese.data.entity.ExpensesList.Companion.toExpensesList
@@ -10,15 +11,24 @@ import com.google.firebase.firestore.Query
 
 class ExpensesListRepository {
     private val db = DBUtils.getFirestoreReference(TablesEnum.EXPENSES_LISTS)
+    private val TAG = "ExpensesListRepository"
 
     fun findAll(liveData: MutableLiveData<List<ExpensesList>>) {
-        db.addSnapshotListener { value, _ ->
+        db.addSnapshotListener { value, e ->
+            if (e != null){
+                Log.e(TAG, "Error in findAll, ${e.message}")
+                return@addSnapshotListener
+            }
             liveData.postValue(value!!.documents.mapNotNull { it.toExpensesList() })
         }
     }
 
     fun findByID(id : String, liveData: MutableLiveData<ExpensesList>) {
-        db.document(id).addSnapshotListener { value, _ ->
+        db.document(id).addSnapshotListener { value, e ->
+            if (e != null){
+                Log.e(TAG, "Error in findByID, ${e.message}")
+                return@addSnapshotListener
+            }
             liveData.postValue(value!!.toExpensesList())
         }
     }
@@ -31,14 +41,15 @@ class ExpensesListRepository {
             else
                 db.whereArrayContains(ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, userID)
 
-        //Sorting
-        query
-            .orderBy(ExpensesListFieldEnum.PAID.value, Query.Direction.ASCENDING)
+        //Sorting and retrieving data
+        query.orderBy(ExpensesListFieldEnum.PAID.value, Query.Direction.ASCENDING)
             .orderBy(ExpensesListFieldEnum.TIMESTAMP_INS.value, Query.Direction.DESCENDING)
-
-        //Retrieving data
-        query.addSnapshotListener { value, _ ->
-            liveData.postValue(value!!.documents.mapNotNull { it.toExpensesList() })
+            .addSnapshotListener { value, e ->
+                if (e != null){
+                    Log.e(TAG, "Error in findAllByUserIDAndIsPaid, ${e.message}")
+                    return@addSnapshotListener
+                }
+                liveData.postValue(value!!.documents.mapNotNull { it.toExpensesList() })
         }
     }
 

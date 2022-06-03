@@ -24,8 +24,8 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
     private val loggedUser = DBUtils.getLoggedUser()
-    private lateinit var userModel : UserViewModel
-    private lateinit var listaSpeseModel : ExpensesListViewModel
+    private lateinit var userViewModel : UserViewModel
+    private lateinit var expensesListViewModel : ExpensesListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,10 +33,10 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     ): View {
 
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
-        userModel = ViewModelProvider(this)[UserViewModel::class.java]
-        listaSpeseModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
 
-        printListaSpese()
+        printExpensesLists()
 
         setupUserBar()
 
@@ -54,18 +54,18 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         _binding = null
     }
 
-    private fun printListaSpese() {
+    private fun printExpensesLists() {
         val listaSpeseAdapter = ListaSpeseAdapter(findNavController())
         val listsPerRow = 2
 
-        userModel.findById(loggedUser.uid)
-        userModel.userLiveData.observe(viewLifecycleOwner) { user ->
-            listaSpeseModel.findAllByUserIDAndIsPaid(user.id, user.hidePaidLists)
+        userViewModel.findById(loggedUser.uid)
+        userViewModel.userLiveData.observe(viewLifecycleOwner) { user ->
+            expensesListViewModel.findAllByUserIDAndIsPaid(user.id, user.hidePaidLists)
         }
 
         //Recupero listaSpese a partire dall'utente
-        listaSpeseModel.expensesListListLiveData.observe(viewLifecycleOwner) { expensesListList ->
-            listaSpeseAdapter.addItems(expensesListList)
+        expensesListViewModel.expensesListsLiveData.observe(viewLifecycleOwner) { expensesLists ->
+            listaSpeseAdapter.addItems(expensesLists)
         }
 
         //Setup griglia liste

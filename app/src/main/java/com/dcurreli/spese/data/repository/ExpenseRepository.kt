@@ -1,5 +1,6 @@
 package com.dcurreli.spese.data.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dcurreli.spese.data.entity.Expense
 import com.dcurreli.spese.data.entity.Expense.Companion.toExpense
@@ -9,21 +10,34 @@ import com.dcurreli.spese.utils.DBUtils
 
 class ExpenseRepository {
     private val db = DBUtils.getFirestoreReference(TablesEnum.EXPENSE)
+    private val TAG = "ExpenseRepository"
 
     fun findAll(liveData: MutableLiveData<List<Expense>>) {
-        db.addSnapshotListener { value, _ ->
+        db.addSnapshotListener { value, e ->
+            if (e != null){
+                Log.e(TAG, "Error in findByID, ${e.message}")
+                return@addSnapshotListener
+            }
             liveData.postValue(value!!.documents.mapNotNull { it.toExpense() })
         }
     }
 
     fun findAllByExpensesListID(id: String, liveData: MutableLiveData<List<Expense>>) {
         db.whereEqualTo(ExpenseFieldEnum.EXPENSE_LIST_ID.value, id).addSnapshotListener { value, e ->
+            if (e != null){
+                Log.e(TAG, "Error in findByID, ${e.message}")
+                return@addSnapshotListener
+            }
             liveData.postValue(value!!.documents.mapNotNull { it.toExpense() })
         }
     }
 
     fun findByID(id : String, liveData: MutableLiveData<Expense>){
-        db.document(id).addSnapshotListener { value, _ ->
+        db.document(id).addSnapshotListener { value, e ->
+            if (e != null){
+                Log.e(TAG, "Error in findByID, ${e.message}")
+                return@addSnapshotListener
+            }
             liveData.postValue(value!!.toExpense())
         }
     }

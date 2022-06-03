@@ -10,16 +10,16 @@ class ExpensesListViewModel : ViewModel() {
 
     private val repository = ExpensesListRepository()
     private val _expensesListLiveData = MutableLiveData<ExpensesList>()
-    private val _expensesListListLiveData = MutableLiveData<List<ExpensesList>>()
+    private val _expensesListsLiveData = MutableLiveData<List<ExpensesList>>()
     val expensesListLiveData: LiveData<ExpensesList> = _expensesListLiveData
-    val expensesListListLiveData: LiveData<List<ExpensesList>> = _expensesListListLiveData
+    val expensesListsLiveData: LiveData<List<ExpensesList>> = _expensesListsLiveData
 
     fun findAll() {
-        repository.findAll(_expensesListListLiveData)
+        repository.findAll(_expensesListsLiveData)
     }
 
     fun findAllByUserIDAndIsPaid(userID: String, hidePaidLists: Boolean) {
-        repository.findAllByUserIDAndIsPaid(userID, hidePaidLists, _expensesListListLiveData)
+        repository.findAllByUserIDAndIsPaid(userID, hidePaidLists, _expensesListsLiveData)
     }
 
     fun findByID(id : String){

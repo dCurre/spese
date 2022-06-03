@@ -26,7 +26,6 @@ class UserViewModel : ViewModel() {
         repository.findByID(id, _userLiveData)
     }
 
-
     fun insert(user: User) {
         repository.insert(user)
     }
