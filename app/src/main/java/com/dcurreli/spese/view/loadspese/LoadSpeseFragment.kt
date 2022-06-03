@@ -12,6 +12,8 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.adapters.ViewPagerAdapter
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.databinding.LoadSpeseBinding
+import com.dcurreli.spese.enums.bundle.BundleArgumentEnum
+import com.dcurreli.spese.enums.bundle.DeepLinkEnum
 import com.dcurreli.spese.utils.GenericUtils
 import com.dcurreli.spese.view.MainActivity
 import com.google.firebase.dynamiclinks.DynamicLink
@@ -57,7 +59,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     private fun setupAddSpesaButton() {
-        listaSpeseModel.findByID(arguments?.getString("idLista").toString())
+        listaSpeseModel.findByID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
         listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
             binding.addSpesaButton.visibility = if(expensesList?.paid == true) View.GONE else View.VISIBLE
         }
@@ -86,7 +88,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         setHasOptionsMenu(true)
 
         //Cambio il titolo della toolbar
-        (activity as MainActivity).setToolbarTitle(arguments?.getString("nomeLista"))
+        (activity as MainActivity).setToolbarTitle(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_NAME.value))
         (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
     }
 
@@ -98,7 +100,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val listID = arguments?.getString("idLista")
+        val listID = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value)
         when (item.itemId) {
             R.id.share -> {
                 //Gestione dello share
@@ -123,7 +125,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
             .createDynamicLink()
             .setDomainUriPrefix("https://spesedc.page.link/join")
             .setLink(Uri.parse("https://spesedc.page.link/join"))
-            .setLongLink(Uri.parse("https://spesedc.page.link/?link=https://spesedc.page.link/join?group=$listID&apn=com.dcurreli.spese"))
+            .setLongLink(Uri.parse("https://spesedc.page.link/?link=https://spesedc.page.link/join?${DeepLinkEnum.LIST.value}=$listID&apn=com.dcurreli.spese"))
             .buildDynamicLink()
     }
 

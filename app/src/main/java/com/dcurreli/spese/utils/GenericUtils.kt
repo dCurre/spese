@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.dcurreli.spese.R
 import com.dcurreli.spese.databinding.AddListaSpeseBinding
 import com.dcurreli.spese.databinding.AddSpesaBinding
+import com.dcurreli.spese.enums.bundle.BundleArgumentEnum
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
@@ -61,9 +62,9 @@ object GenericUtils {
     fun createBundleForListaSpese(idLista: String, nomeLista: String?, owner: String?): Bundle {
         //Utile per creare un bundle per load spese fragment
         val bundle = Bundle()
-        bundle.putString("idLista", idLista)
-        bundle.putString("nomeLista", nomeLista)
-        bundle.putString("owner", owner)
+        bundle.putString(BundleArgumentEnum.EXPENSES_LIST_ID.value, idLista)
+        bundle.putString(BundleArgumentEnum.EXPENSES_LIST_NAME.value, nomeLista)
+        bundle.putString(BundleArgumentEnum.EXPENSES_LIST_OWNER.value, owner)
         return bundle
     }
 

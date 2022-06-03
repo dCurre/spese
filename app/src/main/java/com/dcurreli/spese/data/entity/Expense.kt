@@ -22,7 +22,7 @@ data class Expense(
         return bd.setScale(2, RoundingMode.HALF_EVEN).toDouble()
     }
 
-    fun getAmountAsEur(): String {
+    fun amountAsEur(): String {
         return importoAsEur(getFormattedAmount())
     }
 

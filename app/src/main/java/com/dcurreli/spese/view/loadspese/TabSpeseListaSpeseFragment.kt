@@ -17,6 +17,7 @@ import com.dcurreli.spese.data.entity.ExpensesList
 import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSpeseBinding
+import com.dcurreli.spese.enums.bundle.BundleArgumentEnum
 import com.dcurreli.spese.utils.SnackbarUtils
 import com.dcurreli.spese.view.dialog.EditSpesaDialogFragment
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
@@ -68,7 +69,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
 
     private fun printSpese() {
         //Adding expenses to the adapter
-        expenseViewModel.findAllByExpensesListID(arguments?.getString("idLista").toString())
+        expenseViewModel.findAllByExpensesListID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
         expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
             expenseAdapter.addItems(expenseList)
             binding.speseNotFound.visibility = if(expenseList.isNotEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
@@ -89,7 +90,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     var expensesList = ExpensesList()
 
-                    listaSpeseModel.findByID(arguments?.getString("idLista").toString())
+                    listaSpeseModel.findByID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
                     listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
                         expensesList = listaSpeseExtracted ?: ExpensesList()
                     }

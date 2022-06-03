@@ -14,6 +14,7 @@ import com.dcurreli.spese.data.dto.BalanceSubItem
 import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.databinding.LoadSpeseTabSaldoBinding
+import com.dcurreli.spese.enums.bundle.BundleArgumentEnum
 import com.dcurreli.spese.utils.GenericUtils
 import android.view.View as View1
 
@@ -47,7 +48,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
 
     private fun printBalance() {
 
-        spesaModel.findAllByExpensesListID(arguments?.getString("idLista").toString())
+        spesaModel.findAllByExpensesListID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
         spesaModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
             val mapSaldo = mutableMapOf<String, Double>()
             val balanceCategorySubItems = ArrayList<BalanceSubItem>()
@@ -72,7 +73,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
             }
 
             //UPDATE TOTAL
-            expensesListViewModel.findByID(arguments?.getString("idLista").toString())
+            expensesListViewModel.findByID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
             expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesLists ->
                 binding.totaleListaSpese.setTextColor(if (expensesLists?.paid == true) ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark) else ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
                 binding.totaleListaSpese.text = GenericUtils.importoAsEur(mapSaldo.values.sum())

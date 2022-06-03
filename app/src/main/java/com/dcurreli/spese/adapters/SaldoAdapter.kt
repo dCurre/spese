@@ -21,7 +21,7 @@ class SaldoAdapter : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
 
         val spesa = speseList[position]
         holder.pagatore.text = spesa.buyer
-        holder.importo.text = spesa.getAmountAsEur()
+        holder.importo.text = spesa.amountAsEur()
 
     }
 

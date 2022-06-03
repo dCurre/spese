@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.databinding.JoinFragmentBinding
+import com.dcurreli.spese.enums.bundle.BundleArgumentEnum
 import com.dcurreli.spese.enums.entity.ExpensesListFieldEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.SnackbarUtils
@@ -54,7 +55,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
     }
 
     private fun loadJoinGroupDetails(){
-        expensesListViewModel.findByID(arguments?.getString("idLista").toString())
+        expensesListViewModel.findByID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
 
             if (listaSpese != null) {
@@ -67,7 +68,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
     }
 
     private fun setupJoinButton(){
-        val idLista = arguments?.getString("idLista").toString().replace(" ", "")
+        val idLista = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString().replace(" ", "")
 
             expensesListViewModel.findByID(idLista)
             expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->

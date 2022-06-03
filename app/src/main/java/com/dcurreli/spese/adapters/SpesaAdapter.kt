@@ -22,7 +22,7 @@ class SpesaAdapter : RecyclerView.Adapter<SpesaAdapter.ViewHolder>() {
 
         val spesa = speseList[position]
         holder.spesa.text = spesa.expense
-        holder.importo.text = spesa.getAmountAsEur()
+        holder.importo.text = spesa.amountAsEur()
         holder.data.text = spesa.expenseDate
         holder.pagatore.text = spesa.buyer
 

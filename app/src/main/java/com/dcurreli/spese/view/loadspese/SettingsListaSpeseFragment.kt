@@ -18,6 +18,7 @@ import com.dcurreli.spese.data.viewmodel.ExpenseViewModel
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.ListaSettingsFragmentBinding
+import com.dcurreli.spese.enums.bundle.BundleArgumentEnum
 import com.dcurreli.spese.enums.entity.ExpensesListFieldEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.ExcelUtils
@@ -58,9 +59,9 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val idLista = arguments?.getString("idLista").toString()
-        val nomeLista = arguments?.getString("nomeLista").toString()
-        val owner = arguments?.getString("owner").toString()
+        val idLista = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString()
+        val nomeLista = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_NAME.value).toString()
+        val owner = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_OWNER.value).toString()
 
         printPartecipanti(idLista, owner)
 
