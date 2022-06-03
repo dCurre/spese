@@ -74,7 +74,7 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
             //UPDATE TOTAL
             expensesListViewModel.findByID(arguments?.getString("idLista").toString())
             expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesLists ->
-                binding.totaleListaSpese.setTextColor(if (expensesLists.paid) ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark) else ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
+                binding.totaleListaSpese.setTextColor(if (expensesLists?.paid == true) ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark) else ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
                 binding.totaleListaSpese.text = GenericUtils.importoAsEur(mapSaldo.values.sum())
             }
 

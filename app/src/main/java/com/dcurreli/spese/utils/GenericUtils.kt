@@ -33,8 +33,8 @@ object GenericUtils {
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun dateStringToTimestampSeconds(data: String, pattern: String): Long {
-        return dateToTimestampSeconds(SimpleDateFormat(pattern).parse(data))
+    fun dateStringToTimestampSeconds(data: String): Long {
+        return dateToTimestampSeconds(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(data))
     }
 
     fun dateToTimestampSeconds(date: Date?): Long {
@@ -58,19 +58,12 @@ object GenericUtils {
         (activity)?.supportActionBar?.subtitle = message
     }
 
-    fun createBundleForListaSpese(idLista: String, nomeLista: String?): Bundle {
+    fun createBundleForListaSpese(idLista: String, nomeLista: String?, owner: String?): Bundle {
         //Utile per creare un bundle per load spese fragment
         val bundle = Bundle()
         bundle.putString("idLista", idLista)
         bundle.putString("nomeLista", nomeLista)
-        return bundle
-    }
-
-    fun createBundleForListaSpese(arguments: Bundle?): Bundle {
-        //Utile per creare un bundle per load spese fragment
-        val bundle = Bundle()
-        bundle.putString("idLista", arguments?.getString("idLista"))
-        bundle.putString("nomeLista", arguments?.getString("nomeLista"))
+        bundle.putString("owner", owner)
         return bundle
     }
 

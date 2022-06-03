@@ -25,7 +25,7 @@ class BalanceCategoryAdapter(private val context: Context) : RecyclerView.Adapte
 
         val balanceCategory = balanceCategoryList[position]
         holder.buyerTextView.text = "${balanceCategory.buyer} ha speso:"
-        holder.paidAmountTextView.text =  balanceCategory.getPaidAmountAsEUR()
+        holder.paidAmountTextView.text = balanceCategory.getPaidAmountAsEUR()
         setSublist(holder.subItemsRecyclerView, balanceCategoryList[position].amountsToReceive)
 
     }

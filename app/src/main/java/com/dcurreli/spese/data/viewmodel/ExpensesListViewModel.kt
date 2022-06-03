@@ -11,7 +11,7 @@ class ExpensesListViewModel : ViewModel() {
     private val repository = ExpensesListRepository()
     private val _expensesListLiveData = MutableLiveData<ExpensesList>()
     private val _expensesListsLiveData = MutableLiveData<List<ExpensesList>>()
-    val expensesListLiveData: LiveData<ExpensesList> = _expensesListLiveData
+    val expensesListLiveData: LiveData<ExpensesList?> = _expensesListLiveData
     val expensesListsLiveData: LiveData<List<ExpensesList>> = _expensesListsLiveData
 
     fun findAll() {

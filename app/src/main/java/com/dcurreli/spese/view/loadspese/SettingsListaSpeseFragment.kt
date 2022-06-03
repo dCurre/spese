@@ -60,8 +60,9 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
         val idLista = arguments?.getString("idLista").toString()
         val nomeLista = arguments?.getString("nomeLista").toString()
+        val owner = arguments?.getString("owner").toString()
 
-        printPartecipanti(idLista)
+        printPartecipanti(idLista, owner)
 
         setupSwitches(idLista)
 
@@ -75,26 +76,29 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         _binding = null
     }
 
-    private fun printPartecipanti(idLista: String) {
+    private fun printPartecipanti(idLista: String, owner: String) {
         val partecipantiAdapter = PartecipantiAdapter()
+
         expensesListViewModel.findByID(idLista)
-        userViewModel.findAll()
-        expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
+        expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
+            if(expensesList == null)
+                return@observe
+
+            userViewModel.findAllByUserIdList(expensesList.partecipatingUsersID!!)
+        }
+
+        userViewModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
             val partecipantiArray = ArrayList<User>()
-            userViewModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
-                //TODO filtrare nella query per user id
-                userList.forEach { user ->
-                    if(listaSpese.partecipatingUsersID!!.contains(user.id)){
-                        //Se l'utente è anche owner lo aggiungo in cima
-                        if(listaSpese.owner!!.contains(user.id)){
-                            partecipantiArray.add(0, user)
-                        } else {
-                            partecipantiArray.add(user)
-                        }
-                    }
+
+            userList.forEach { user ->
+                //Se l'utente è anche owner lo aggiungo in cima
+                if(user.id == owner){
+                    partecipantiArray.add(0, user)
+                } else {
+                    partecipantiArray.add(user)
                 }
-                partecipantiAdapter.addItems(partecipantiArray)
             }
+            partecipantiAdapter.addItems(partecipantiArray)
         }
         binding.listaPartecipanti.adapter = partecipantiAdapter
         binding.listaPartecipanti.layoutManager = LinearLayoutManager(context)
@@ -120,7 +124,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     private fun showHideDeleteButton(idLista: String) {
         expensesListViewModel.findByID(idLista)
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
-            binding.buttonDelete.visibility = if (listaSpese.owner.equals(currentUser.uid)) View.VISIBLE else View.GONE
+            binding.buttonDelete.visibility = if (currentUser.uid == listaSpese?.owner) View.VISIBLE else View.GONE
         }
     }
 
@@ -191,10 +195,10 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     }
 
     private fun leaveList(idLista: String){
-        var expensesList = ExpensesList(null, null, null, null, false, null)
+        var expensesList = ExpensesList()
         this.expensesListViewModel.findByID(idLista)
         this.expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { extractedExpensesList ->
-            expensesList = extractedExpensesList
+            expensesList = extractedExpensesList ?: ExpensesList()
         }
 
         if(expensesList.partecipatingUsersID!!.size == 1 && expensesList.partecipatingUsersID!![0].equals(currentUser.uid, ignoreCase = true)){
@@ -232,9 +236,10 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     private fun setupSwitches(idLista: String) {
 
         expensesListViewModel.findByID(idLista)
-        expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
-            GenericUtils.setupSwitch(binding.switchPaid, listaSpese.paid)
+        expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
+            GenericUtils.setupSwitch(binding.switchPaid, expensesList?.paid ?: false)
         }
+
 
         binding.switchPaid.setOnCheckedChangeListener { _, bool ->
             expensesListViewModel.updateByField(idLista, ExpensesListFieldEnum.PAID.value, bool)

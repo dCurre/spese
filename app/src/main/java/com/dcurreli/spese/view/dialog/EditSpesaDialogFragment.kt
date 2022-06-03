@@ -72,7 +72,7 @@ class EditSpesaDialogFragment : DialogFragment() {
                     updateMap[ExpenseFieldEnum.EXPENSE.value] = spesa.text.toString().trim()
                     updateMap[ExpenseFieldEnum.AMOUNT.value] = importo.text.toString().trim().replace(",", ".").toDouble()
                     updateMap[ExpenseFieldEnum.EXPENSE_DATE.value] = data.text.toString().trim()
-                    updateMap[ExpenseFieldEnum.EXPENSE_DATE_TIMESTAMP.value] = dateStringToTimestampSeconds(data.text.toString().trim(), "dd/MM/yyyy")
+                    updateMap[ExpenseFieldEnum.EXPENSE_DATE_TIMESTAMP.value] = dateStringToTimestampSeconds(data.text.toString().trim())
                     updateMap[ExpenseFieldEnum.BUYER.value] = pagatore.text.toString().trim()
 
                     //Update della spesa

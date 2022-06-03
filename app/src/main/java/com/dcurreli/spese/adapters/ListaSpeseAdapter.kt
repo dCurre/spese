@@ -32,7 +32,8 @@ class ListaSpeseAdapter(private val navController: NavController) : RecyclerView
                 R.id.action_HomeFragment_to_loadSpeseFragment,
                 GenericUtils.createBundleForListaSpese(
                     expensesList.id!!,
-                    holder.nomeSpesa.text.toString()
+                    holder.nomeSpesa.text.toString(),
+                    expensesList.owner
                 )
             )
         }

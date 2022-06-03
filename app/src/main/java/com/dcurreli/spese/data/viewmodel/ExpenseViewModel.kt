@@ -24,7 +24,6 @@ class ExpenseViewModel : ViewModel() {
     }
 
     fun findAllByExpensesListID(id : String) {
-        Log.i("PROVA EXT", "ESTRAGGOOOOOOO")
         repository.findAllByExpensesListID(id, _expenseListLiveData)
     }
 

@@ -13,7 +13,6 @@ import com.dcurreli.spese.adapters.ViewPagerAdapter
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
 import com.dcurreli.spese.databinding.LoadSpeseBinding
 import com.dcurreli.spese.utils.GenericUtils
-import com.dcurreli.spese.utils.GenericUtils.createBundleForListaSpese
 import com.dcurreli.spese.view.MainActivity
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
@@ -60,7 +59,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private fun setupAddSpesaButton() {
         listaSpeseModel.findByID(arguments?.getString("idLista").toString())
         listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
-            binding.addSpesaButton.visibility = if(expensesList.paid) View.GONE else View.VISIBLE
+            binding.addSpesaButton.visibility = if(expensesList?.paid == true) View.GONE else View.VISIBLE
         }
 
         binding.addSpesaButton.setOnClickListener{
@@ -111,9 +110,8 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
                 startActivity(Intent.createChooser(intent, "Condividi la lista con: "))
             }
             R.id.edit -> {
-                //Navigo sul fragment successivo passandogli il bundle con id lista e nome lista
-                //TODO togliere il metodo createBundleForListaSpese perchè è inutile
-                findNavController().navigate(R.id.action_loadSpeseFragment_to_listaSettingsFragment, createBundleForListaSpese(arguments))
+                //Navigo sul fragment successivo passandogli il bundle con i dati ricevuti in precedenza
+                findNavController().navigate(R.id.action_loadSpeseFragment_to_listaSettingsFragment, arguments)
             }
         }
 

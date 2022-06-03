@@ -67,15 +67,13 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     }
 
     private fun printSpese() {
-        //Aggiungo le spese estratte all'adapter
+        //Adding expenses to the adapter
         expenseViewModel.findAllByExpensesListID(arguments?.getString("idLista").toString())
         expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
-            //TODO CAMBIARE CON UNA QUERY SERIA
-            expenseAdapter.addItems(expenseList.sortedBy { it.expenseDateTimestamp }.toCollection(ArrayList()))
+            expenseAdapter.addItems(expenseList)
             binding.speseNotFound.visibility = if(expenseList.isNotEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
         }
 
-        //Setup spese
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = expenseAdapter
     }
@@ -89,11 +87,11 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    var expensesList = ExpensesList(null, null, null, null, false, null)
+                    var expensesList = ExpensesList()
 
                     listaSpeseModel.findByID(arguments?.getString("idLista").toString())
                     listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
-                        expensesList = listaSpeseExtracted
+                        expensesList = listaSpeseExtracted ?: ExpensesList()
                     }
 
                     if(direction == ItemTouchHelper.RIGHT){ //Se scorro verso destra modifico

@@ -94,7 +94,7 @@ open class MainActivity : AppCompatActivity() {
 
                 if (deepLink != null) {
                     //Navigo sul fragment successivo passandogli il bundle con id lista
-                    navController.navigate(R.id.joinFragment, GenericUtils.createBundleForListaSpese(deepLink.getQueryParameter("group")!!, null))
+                    navController.navigate(R.id.joinFragment, GenericUtils.createBundleForListaSpese(deepLink.getQueryParameter("group")!!, null, null))
                 }
             }
             .addOnFailureListener(this) { e -> Log.w(ContentValues.TAG, "getDynamicLink:onFailure", e) }

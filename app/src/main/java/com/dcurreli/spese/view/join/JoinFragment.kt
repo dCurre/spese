@@ -56,8 +56,11 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
     private fun loadJoinGroupDetails(){
         expensesListViewModel.findByID(arguments?.getString("idLista").toString())
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
-            binding.nomeGruppo.text = listaSpese.name
-            binding.counterCurrentUsers.text = listaSpese.partecipatingUsersID!!.size.toString()
+
+            if (listaSpese != null) {
+                binding.nomeGruppo.text = listaSpese.name
+                binding.counterCurrentUsers.text = listaSpese.partecipatingUsersID!!.size.toString()
+            }
             binding.counterMaxUsers.text = "8"
             binding.joinListaButton.text = "Unisciti"
         }
@@ -70,23 +73,29 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
             expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
                 binding.joinListaButton.setOnClickListener {
                     //Se l'utente è già presente in lista
-                    if(expensesList.partecipatingUsersID!!.contains(currentUser.uid)){
-                        SnackbarUtils.showSnackbarError("Fai già parte della lista!", binding.root)
-                        return@setOnClickListener
+                    if (expensesList != null) {
+                        if(expensesList.partecipatingUsersID!!.contains(currentUser.uid)){
+                            SnackbarUtils.showSnackbarError("Fai già parte della lista!", binding.root)
+                            return@setOnClickListener
+                        }
+
+                        if(expensesList.partecipatingUsersID.size >= binding.counterMaxUsers.text.toString().toInt()) {
+                            SnackbarUtils.showSnackbarError(
+                                "Numero massimo di utenti raggiunto!",
+                                binding.root
+                            )
+                            return@setOnClickListener
+                        }
+
+                        expensesList.partecipatingUsersID.add(currentUser.uid)
+
+                        expensesListViewModel.updateByField(idLista, ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
+
+                        SnackbarUtils.showSnackbarOKOverBottomnav("Ti sei aggiunto alla lista ${expensesList.name}", binding.root)
+                        findNavController().popBackStack()
                     }
 
-                    //Se ho raggiunto il massimo numero di utenti
-                    if(expensesList.partecipatingUsersID.size >= binding.counterMaxUsers.text.toString().toInt()){
-                        SnackbarUtils.showSnackbarError("Numero massimo di utenti raggiunto!", binding.root)
-                        return@setOnClickListener
-                    }
 
-                    expensesList.partecipatingUsersID.add(currentUser.uid)
-
-                    expensesListViewModel.updateByField(idLista, ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
-
-                    SnackbarUtils.showSnackbarOKOverBottomnav("Ti sei aggiunto alla lista ${expensesList.name}", binding.root)
-                    findNavController().popBackStack()
                 }
             }
     }

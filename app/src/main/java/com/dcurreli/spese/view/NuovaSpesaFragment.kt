@@ -101,7 +101,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                         binding.spesaSpesaText.text.toString().trim(),
                         binding.spesaImporto.text.toString().trim().replace(",", ".").toDouble(),
                         binding.spesaData.text.toString().trim(),
-                        expenseDateTimestamp = dateStringToTimestampSeconds(binding.spesaData.text.toString().trim(), "dd/MM/yyyy"),
+                        expenseDateTimestamp = dateStringToTimestampSeconds(binding.spesaData.text.toString().trim()),
                         binding.spesaPagatoreText.text.toString().trim(),
                         arguments?.getString("idLista").toString()
                     )
@@ -140,7 +140,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     ) {
         expensesListViewModel.findByID(arguments?.getString("idLista").toString())
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
-            val partecipanti = expensesList.partecipatingUsersID
+            val partecipanti = expensesList?.partecipatingUsersID
             var countPartecipanti = partecipanti!!.size
 
             //TODO DA SISTEMARE DOPO CAMBIO A FIRESTORE

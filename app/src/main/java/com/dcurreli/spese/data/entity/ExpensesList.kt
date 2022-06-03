@@ -12,6 +12,7 @@ data class ExpensesList(
     val paid: Boolean,
     val timestampIns: Long?
         ) {
+    constructor() : this(null, null, null, null, false, null)
 
     companion object {
         fun DocumentSnapshot.toExpensesList(): ExpensesList? {

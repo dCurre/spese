@@ -7,6 +7,7 @@ import com.dcurreli.spese.data.entity.Expense.Companion.toExpense
 import com.dcurreli.spese.enums.entity.ExpenseFieldEnum
 import com.dcurreli.spese.enums.table.TablesEnum
 import com.dcurreli.spese.utils.DBUtils
+import com.google.firebase.firestore.Query
 
 class ExpenseRepository {
     private val db = DBUtils.getFirestoreReference(TablesEnum.EXPENSE)
@@ -23,7 +24,9 @@ class ExpenseRepository {
     }
 
     fun findAllByExpensesListID(id: String, liveData: MutableLiveData<List<Expense>>) {
-        db.whereEqualTo(ExpenseFieldEnum.EXPENSE_LIST_ID.value, id).addSnapshotListener { value, e ->
+        db.whereEqualTo(ExpenseFieldEnum.EXPENSE_LIST_ID.value, id)
+            .orderBy(ExpenseFieldEnum.EXPENSE_DATE_TIMESTAMP.value, Query.Direction.ASCENDING)
+            .addSnapshotListener { value, e ->
             if (e != null){
                 Log.e(TAG, "Error in findByID, ${e.message}")
                 return@addSnapshotListener
