@@ -11,9 +11,9 @@ import com.dcurreli.spese.R
 import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.SettingsFragmentBinding
 import com.dcurreli.spese.enums.entity.UserFieldEnum
-import com.dcurreli.spese.view.login.LoginActivity
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.view.login.LoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

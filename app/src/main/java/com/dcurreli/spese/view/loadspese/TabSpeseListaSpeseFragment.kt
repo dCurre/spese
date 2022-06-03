@@ -2,11 +2,9 @@ package com.dcurreli.spese.view.loadspese
 
 import android.app.AlertDialog
 import android.graphics.Canvas
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -43,7 +41,6 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     private lateinit var expenseViewModel : ExpenseViewModel
     private lateinit var listaSpeseModel : ExpensesListViewModel
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,7 +56,6 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

@@ -2,10 +2,8 @@ package com.dcurreli.spese.view.loadspese
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,7 +26,6 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private val binding get() = _binding!!
     private lateinit var listaSpeseModel : ExpensesListViewModel
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

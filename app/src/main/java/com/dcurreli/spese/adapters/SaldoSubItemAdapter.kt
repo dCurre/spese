@@ -7,9 +7,9 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dcurreli.spese.R
-import com.dcurreli.spese.data.dto.SaldoSubItem
+import com.dcurreli.spese.data.dto.BalanceSubItem
 
-class SaldoSubItemAdapter(private val saldoSubItemList: ArrayList<SaldoSubItem>) : RecyclerView.Adapter<SaldoSubItemAdapter.ViewHolder>() {
+class SaldoSubItemAdapter(private val saldoSubItemList: ArrayList<BalanceSubItem>) : RecyclerView.Adapter<SaldoSubItemAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_saldo_subitem, parent, false))
@@ -18,9 +18,9 @@ class SaldoSubItemAdapter(private val saldoSubItemList: ArrayList<SaldoSubItem>)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dareAvere = saldoSubItemList[position]
 
-        holder.daPagareA.text = "deve a ${dareAvere.daPagareA}"
-        holder.importoDaPagare.text = dareAvere.importoDaPagareFixedAsEur
-        holder.importoDaPagare.setTextColor(if(dareAvere.importoFixed == 0.00) holder.itemView.resources.getColor(R.color.green) else holder.itemView.resources.getColor(R.color.red))
+        holder.daPagareA.text = "deve a ${dareAvere.receiver}"
+        holder.importoDaPagare.text = dareAvere.getAmountToPayAsEur()
+        holder.importoDaPagare.setTextColor(if(dareAvere.getAmountToPayFixed() == 0.00) holder.itemView.resources.getColor(R.color.green) else holder.itemView.resources.getColor(R.color.red))
 
         //Per tutte le righe dispari
         if(position%2 != 0){

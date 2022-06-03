@@ -2,13 +2,11 @@ package com.dcurreli.spese.view
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -51,8 +49,6 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         return binding.root
     }
 
-    @SuppressLint("SimpleDateFormat", "SetTextI18n")
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
