@@ -157,10 +157,10 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
         val completeFileName = "Riepilogo_spese_$nomeLista.xlsx"
         val completePath = "$downloadFolder/$completeFileName"
-        val hssfWorkbook = HSSFWorkbook()
 
         spesaModel.findByListaSpesaID(idLista)
         spesaModel.spesaListLiveData.observe(viewLifecycleOwner) { spesaList ->
+            val hssfWorkbook = HSSFWorkbook()
             val hssfSheet: HSSFSheet = hssfWorkbook.createSheet(nomeLista)
             var rowCounter = 1
 
