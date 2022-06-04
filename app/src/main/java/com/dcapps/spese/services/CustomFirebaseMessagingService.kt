@@ -9,6 +9,8 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.dcapps.spese.R
 import com.dcapps.spese.data.dto.notification.NotificationMessage
+import com.dcapps.spese.enums.firebase.notification.NotificationDataFieldsEnum
+import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.views.MainActivity
 import com.dcapps.spese.views.dialog.EditSpesaDialogFragment
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -26,7 +28,13 @@ class CustomFirebaseMessagingService : FirebaseMessagingService(){
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "New message received from: ${remoteMessage.from}")
-        showNotification(remoteMessage)
+
+        Log.i(TAG, "SENDER: ${remoteMessage.data[NotificationDataFieldsEnum.SENDER.value]}")
+        Log.i(TAG, "USER: ${DBUtils.getLoggedUser().uid}")
+
+        if(DBUtils.getLoggedUser().uid != remoteMessage.data[NotificationDataFieldsEnum.SENDER.value]){
+            showNotification(remoteMessage)
+        }
     }
 
     override fun onMessageSent(msgId: String) {
@@ -35,7 +43,7 @@ class CustomFirebaseMessagingService : FirebaseMessagingService(){
     }
 
     companion object {
-        public fun sendNotification(notificationMessage: NotificationMessage) = CoroutineScope(Dispatchers.IO).launch {
+        fun sendNotification(notificationMessage: NotificationMessage) = CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitInstanceService.api.postNotification(notificationMessage)
                 if(!response.isSuccessful) {
@@ -57,9 +65,9 @@ class CustomFirebaseMessagingService : FirebaseMessagingService(){
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(remoteMessage.notification?.title)
-            .setContentText(remoteMessage.notification?.body)
-            .setSmallIcon(R.drawable.ic_excel)
+            .setContentTitle(remoteMessage.data[NotificationDataFieldsEnum.TITLE.value])
+            .setContentText(remoteMessage.data[NotificationDataFieldsEnum.BODY.value])
+            .setSmallIcon(R.mipmap.ic_launcher_round)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()

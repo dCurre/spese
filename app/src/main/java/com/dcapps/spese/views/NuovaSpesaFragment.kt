@@ -122,8 +122,10 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                     CustomFirebaseMessagingService.sendNotification(
                         NotificationMessage(
                             NotificationData(
-                                arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString(), //Expense name
-                                "${user.fullname} ha aggiunto la spesa '$expense'"),
+                                title = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString(), //Expense name
+                                body = "${user.fullname} ha aggiunto la spesa '$expense'",
+                                sender = user.id
+                            ),
                             to = "${FirebaseConstants.TOPICS}/${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString()}")
                     )
                 }
