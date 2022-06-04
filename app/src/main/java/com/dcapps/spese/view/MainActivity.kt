@@ -24,8 +24,8 @@ import com.dcapps.spese.R
 import com.dcapps.spese.data.viewmodel.ExpensesListViewModel
 import com.dcapps.spese.data.viewmodel.UserViewModel
 import com.dcapps.spese.databinding.ActivityMainBinding
-import com.dcapps.spese.enums.bundle.DeepLinkEnum
-import com.dcapps.spese.enums.entity.UserFieldEnum
+import com.dcapps.spese.enums.firebase.deeplink.DeepLinkParametersEnum
+import com.dcapps.spese.enums.entity.UserFieldsEnum
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.view.dialog.EditSpesaDialogFragment
@@ -65,6 +65,10 @@ open class MainActivity : AppCompatActivity() {
 
         //Message token set or update
         manageMessagingToken()
+
+        //Subscribe to topic
+        //FirebaseMessaging.getInstance().subscribeToTopic("DATA")
+        //Firebase.messaging.subscribeToTopic("DATA")
 
         //Controllo se ho un dynamic link attivo
         checkDynamicLink()
@@ -108,7 +112,7 @@ open class MainActivity : AppCompatActivity() {
                 val deepLink: Uri? = pendingDynamicLinkData?.link
 
                 if (deepLink != null) {
-                    val expensesListID = deepLink.getQueryParameter(DeepLinkEnum.LIST.value)!!
+                    val expensesListID = deepLink.getQueryParameter(DeepLinkParametersEnum.LIST.value)!!
                     expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
                     expensesListViewModel.findByID(expensesListID)
                     expensesListViewModel.expensesListLiveData.observeOnce { expensesList ->
@@ -189,7 +193,7 @@ open class MainActivity : AppCompatActivity() {
 
                 messageTokenList.add(task.result)
 
-                userViewModel.updateByField(user.id, UserFieldEnum.MESSAGING_TOKEN_LIST.value, messageTokenList)
+                userViewModel.updateByField(user.id, UserFieldsEnum.MESSAGING_TOKEN_LIST.value, messageTokenList)
             })
         }
     }

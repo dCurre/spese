@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dcapps.spese.data.entity.Expense
 import com.dcapps.spese.data.entity.Expense.Companion.toExpense
-import com.dcapps.spese.enums.entity.ExpenseFieldEnum
+import com.dcapps.spese.enums.entity.ExpenseFieldsEnum
 import com.dcapps.spese.enums.table.TablesEnum
 import com.dcapps.spese.utils.DBUtils
 import com.google.firebase.firestore.Query
@@ -24,8 +24,8 @@ class ExpenseRepository {
     }
 
     fun findAllByExpensesListID(id: String, liveData: MutableLiveData<List<Expense>>) {
-        db.whereEqualTo(ExpenseFieldEnum.EXPENSE_LIST_ID.value, id)
-            .orderBy(ExpenseFieldEnum.EXPENSE_DATE_TIMESTAMP.value, Query.Direction.ASCENDING)
+        db.whereEqualTo(ExpenseFieldsEnum.EXPENSE_LIST_ID.value, id)
+            .orderBy(ExpenseFieldsEnum.EXPENSE_DATE_TIMESTAMP.value, Query.Direction.ASCENDING)
             .addSnapshotListener { value, e ->
             if (e != null){
                 Log.e(TAG, "Error in findByID, ${e.message}")

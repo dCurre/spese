@@ -1,6 +1,6 @@
 package com.dcapps.spese.enums.entity
 
-enum class UserFieldEnum(val value: String) {
+enum class UserFieldsEnum(val value: String) {
     ID("id"),
     FULLNAME("fullname"),
     EMAIL("email"),

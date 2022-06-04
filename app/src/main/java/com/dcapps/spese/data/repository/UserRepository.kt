@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dcapps.spese.data.entity.User
 import com.dcapps.spese.data.entity.User.Companion.toUser
-import com.dcapps.spese.enums.entity.UserFieldEnum
+import com.dcapps.spese.enums.entity.UserFieldsEnum
 import com.dcapps.spese.enums.table.TablesEnum
 import com.dcapps.spese.utils.DBUtils
 
@@ -33,7 +33,7 @@ class UserRepository {
     }
 
     fun findAllByIdList(idList: List<String>, liveData: MutableLiveData<List<User>>) {
-        db.whereIn(UserFieldEnum.ID.value, idList).addSnapshotListener { value, e ->
+        db.whereIn(UserFieldsEnum.ID.value, idList).addSnapshotListener { value, e ->
             if (e != null){
                 Log.e(TAG, "Error in findByID, ${e.message}")
                 return@addSnapshotListener

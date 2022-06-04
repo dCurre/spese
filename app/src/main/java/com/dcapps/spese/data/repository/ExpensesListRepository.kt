@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dcapps.spese.data.entity.ExpensesList
 import com.dcapps.spese.data.entity.ExpensesList.Companion.toExpensesList
-import com.dcapps.spese.enums.entity.ExpensesListFieldEnum
+import com.dcapps.spese.enums.entity.ExpensesListFieldsEnum
 import com.dcapps.spese.enums.table.TablesEnum
 import com.dcapps.spese.utils.DBUtils
 import com.google.firebase.firestore.Query
@@ -36,14 +36,14 @@ class ExpensesListRepository {
     fun findAllByUserIDAndIsPaid(userID: String, hidePaidLists: Boolean, liveData: MutableLiveData<List<ExpensesList>>) {
         val query =
             if(hidePaidLists)
-                db.whereArrayContains(ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, userID)
-                    .whereNotEqualTo(ExpensesListFieldEnum.PAID.value, hidePaidLists)
+                db.whereArrayContains(ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, userID)
+                    .whereNotEqualTo(ExpensesListFieldsEnum.PAID.value, hidePaidLists)
             else
-                db.whereArrayContains(ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, userID)
+                db.whereArrayContains(ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, userID)
 
         //Sorting and retrieving data
-        query.orderBy(ExpensesListFieldEnum.PAID.value, Query.Direction.ASCENDING)
-            .orderBy(ExpensesListFieldEnum.TIMESTAMP_INS.value, Query.Direction.DESCENDING)
+        query.orderBy(ExpensesListFieldsEnum.PAID.value, Query.Direction.ASCENDING)
+            .orderBy(ExpensesListFieldsEnum.TIMESTAMP_INS.value, Query.Direction.DESCENDING)
             .addSnapshotListener { value, e ->
                 if (e != null){
                     Log.e(TAG, "Error in findAllByUserIDAndIsPaid, ${e.message}")

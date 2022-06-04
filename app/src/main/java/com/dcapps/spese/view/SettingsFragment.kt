@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dcapps.spese.R
 import com.dcapps.spese.data.viewmodel.UserViewModel
 import com.dcapps.spese.databinding.SettingsFragmentBinding
-import com.dcapps.spese.enums.entity.UserFieldEnum
+import com.dcapps.spese.enums.entity.UserFieldsEnum
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.view.login.LoginActivity
@@ -70,12 +70,12 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
         //Changes the theme
         binding.switchDarkTheme.setOnCheckedChangeListener { _, bool ->
-            userModel.updateByField(currentUser.uid, UserFieldEnum.DARKTHEME.value, bool)
+            userModel.updateByField(currentUser.uid, UserFieldsEnum.DARKTHEME.value, bool)
         }
 
         //Changes the visibility of paid lists
         binding.switchHidePaidLists.setOnCheckedChangeListener { _, bool ->
-            userModel.updateByField(currentUser.uid, UserFieldEnum.HIDE_PAID_LISTS.value, bool)
+            userModel.updateByField(currentUser.uid, UserFieldsEnum.HIDE_PAID_LISTS.value, bool)
         }
 
         //Logs the user out

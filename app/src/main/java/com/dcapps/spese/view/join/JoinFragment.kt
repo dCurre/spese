@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.dcapps.spese.R
 import com.dcapps.spese.data.viewmodel.ExpensesListViewModel
 import com.dcapps.spese.databinding.JoinFragmentBinding
-import com.dcapps.spese.enums.bundle.BundleArgumentEnum
-import com.dcapps.spese.enums.entity.ExpensesListFieldEnum
+import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
+import com.dcapps.spese.enums.entity.ExpensesListFieldsEnum
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.SnackbarUtils
 import com.dcapps.spese.view.MainActivity
@@ -55,7 +55,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
     }
 
     private fun loadJoinGroupDetails(){
-        expensesListViewModel.findByID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
+        expensesListViewModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
 
             if (listaSpese != null) {
@@ -68,7 +68,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
     }
 
     private fun setupJoinButton(){
-        val idLista = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString().replace(" ", "")
+        val idLista = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString().replace(" ", "")
 
             expensesListViewModel.findByID(idLista)
             expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
@@ -90,7 +90,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
 
                         expensesList.partecipatingUsersID.add(currentUser.uid)
 
-                        expensesListViewModel.updateByField(idLista, ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
+                        expensesListViewModel.updateByField(idLista, ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
 
                         SnackbarUtils.showSnackbarOKOverBottomnav("Ti sei aggiunto alla lista ${expensesList.name}", binding.root)
                         findNavController().popBackStack()

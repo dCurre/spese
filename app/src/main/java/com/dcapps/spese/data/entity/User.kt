@@ -1,7 +1,7 @@
 package com.dcapps.spese.data.entity
 
 import android.util.Log
-import com.dcapps.spese.enums.entity.UserFieldEnum
+import com.dcapps.spese.enums.entity.UserFieldsEnum
 import com.google.firebase.firestore.DocumentSnapshot
 
 data class User (
@@ -20,12 +20,12 @@ data class User (
             return try {
                 User(
                     id,
-                    getString(UserFieldEnum.FULLNAME.value)!!,
-                    getString(UserFieldEnum.EMAIL.value)!!,
-                    getString(UserFieldEnum.PROFILE_IMAGE.value)!!,
-                    getBoolean(UserFieldEnum.DARKTHEME.value)!!,
-                    getBoolean(UserFieldEnum.HIDE_PAID_LISTS.value)!!,
-                    get(UserFieldEnum.MESSAGING_TOKEN_LIST.value) as ArrayList<String>,
+                    getString(UserFieldsEnum.FULLNAME.value)!!,
+                    getString(UserFieldsEnum.EMAIL.value)!!,
+                    getString(UserFieldsEnum.PROFILE_IMAGE.value)!!,
+                    getBoolean(UserFieldsEnum.DARKTHEME.value)!!,
+                    getBoolean(UserFieldsEnum.HIDE_PAID_LISTS.value)!!,
+                    get(UserFieldsEnum.MESSAGING_TOKEN_LIST.value) as ArrayList<String>,
                 )
 
             } catch (e: Exception) {

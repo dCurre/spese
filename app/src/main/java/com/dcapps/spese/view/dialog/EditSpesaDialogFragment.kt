@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dcapps.spese.R
 import com.dcapps.spese.data.entity.Expense
 import com.dcapps.spese.data.viewmodel.ExpenseViewModel
-import com.dcapps.spese.enums.entity.ExpenseFieldEnum
+import com.dcapps.spese.enums.entity.ExpenseFieldsEnum
 import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.utils.GenericUtils.dateStringToTimestampSeconds
 import com.google.android.material.button.MaterialButton
@@ -69,11 +69,11 @@ class EditSpesaDialogFragment : DialogFragment() {
                 else -> {
 
                     val updateMap: HashMap<String, Any> = HashMap()
-                    updateMap[ExpenseFieldEnum.EXPENSE.value] = spesa.text.toString().trim()
-                    updateMap[ExpenseFieldEnum.AMOUNT.value] = importo.text.toString().trim().replace(",", ".").toDouble()
-                    updateMap[ExpenseFieldEnum.EXPENSE_DATE.value] = data.text.toString().trim()
-                    updateMap[ExpenseFieldEnum.EXPENSE_DATE_TIMESTAMP.value] = dateStringToTimestampSeconds(data.text.toString().trim())
-                    updateMap[ExpenseFieldEnum.BUYER.value] = pagatore.text.toString().trim()
+                    updateMap[ExpenseFieldsEnum.EXPENSE.value] = spesa.text.toString().trim()
+                    updateMap[ExpenseFieldsEnum.AMOUNT.value] = importo.text.toString().trim().replace(",", ".").toDouble()
+                    updateMap[ExpenseFieldsEnum.EXPENSE_DATE.value] = data.text.toString().trim()
+                    updateMap[ExpenseFieldsEnum.EXPENSE_DATE_TIMESTAMP.value] = dateStringToTimestampSeconds(data.text.toString().trim())
+                    updateMap[ExpenseFieldsEnum.BUYER.value] = pagatore.text.toString().trim()
 
                     //Update della spesa
                     expenseViewModel.update(arguments?.getString("id")!!, updateMap)

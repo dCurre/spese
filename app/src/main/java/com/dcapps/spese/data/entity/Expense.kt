@@ -1,7 +1,7 @@
 package com.dcapps.spese.data.entity
 
 import android.util.Log
-import com.dcapps.spese.enums.entity.ExpenseFieldEnum
+import com.dcapps.spese.enums.entity.ExpenseFieldsEnum
 import com.dcapps.spese.utils.GenericUtils.importoAsEur
 import com.google.firebase.firestore.DocumentSnapshot
 import java.math.BigDecimal
@@ -31,12 +31,12 @@ data class Expense(
             return try {
                 Expense(
                     id,
-                    getString(ExpenseFieldEnum.EXPENSE.value)!!,
-                    getDouble(ExpenseFieldEnum.AMOUNT.value)!!,
-                    getString(ExpenseFieldEnum.EXPENSE_DATE.value)!!,
-                    getLong(ExpenseFieldEnum.EXPENSE_DATE_TIMESTAMP.value)!!,
-                    getString(ExpenseFieldEnum.BUYER.value)!!,
-                    getString(ExpenseFieldEnum.EXPENSE_LIST_ID.value)!!
+                    getString(ExpenseFieldsEnum.EXPENSE.value)!!,
+                    getDouble(ExpenseFieldsEnum.AMOUNT.value)!!,
+                    getString(ExpenseFieldsEnum.EXPENSE_DATE.value)!!,
+                    getLong(ExpenseFieldsEnum.EXPENSE_DATE_TIMESTAMP.value)!!,
+                    getString(ExpenseFieldsEnum.BUYER.value)!!,
+                    getString(ExpenseFieldsEnum.EXPENSE_LIST_ID.value)!!
                 )
 
             } catch (e: Exception) {

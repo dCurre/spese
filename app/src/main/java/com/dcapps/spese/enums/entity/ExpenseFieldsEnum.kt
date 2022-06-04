@@ -1,6 +1,6 @@
 package com.dcapps.spese.enums.entity
 
-enum class ExpenseFieldEnum(val value: String) {
+enum class ExpenseFieldsEnum(val value: String) {
     ID("id"),
     EXPENSE("expense"),
     AMOUNT("amount"),

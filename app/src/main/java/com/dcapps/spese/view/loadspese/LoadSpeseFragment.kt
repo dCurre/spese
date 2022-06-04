@@ -12,8 +12,8 @@ import com.dcapps.spese.R
 import com.dcapps.spese.adapters.ViewPagerAdapter
 import com.dcapps.spese.data.viewmodel.ExpensesListViewModel
 import com.dcapps.spese.databinding.LoadSpeseBinding
-import com.dcapps.spese.enums.bundle.BundleArgumentEnum
-import com.dcapps.spese.enums.bundle.DeepLinkEnum
+import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
+import com.dcapps.spese.enums.firebase.deeplink.DeepLinkParametersEnum
 import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.view.MainActivity
 import com.google.firebase.dynamiclinks.DynamicLink
@@ -59,7 +59,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     private fun setupAddSpesaButton() {
-        listaSpeseModel.findByID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
+        listaSpeseModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
         listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
             binding.addSpesaButton.visibility = if(expensesList?.paid == true) View.GONE else View.VISIBLE
         }
@@ -88,7 +88,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
         setHasOptionsMenu(true)
 
         //Cambio il titolo della toolbar
-        (activity as MainActivity).setToolbarTitle(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_NAME.value))
+        (activity as MainActivity).setToolbarTitle(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value))
         (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
     }
 
@@ -100,7 +100,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val listID = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value)
+        val listID = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value)
         when (item.itemId) {
             R.id.share -> {
                 //Gestione dello share
@@ -125,7 +125,7 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
             .createDynamicLink()
             .setDomainUriPrefix("https://spesedc.page.link/join")
             .setLink(Uri.parse("https://spesedc.page.link/join"))
-            .setLongLink(Uri.parse("https://spesedc.page.link/?link=https://spesedc.page.link/join?${DeepLinkEnum.LIST.value}=$listID&apn=com.dcurreli.spese"))
+            .setLongLink(Uri.parse("https://spesedc.page.link/?link=https://spesedc.page.link/join?${DeepLinkParametersEnum.LIST.value}=$listID&apn=com.dcurreli.spese"))
             .buildDynamicLink()
     }
 

@@ -18,8 +18,8 @@ import com.dcapps.spese.data.viewmodel.ExpenseViewModel
 import com.dcapps.spese.data.viewmodel.ExpensesListViewModel
 import com.dcapps.spese.data.viewmodel.UserViewModel
 import com.dcapps.spese.databinding.ListaSettingsFragmentBinding
-import com.dcapps.spese.enums.bundle.BundleArgumentEnum
-import com.dcapps.spese.enums.entity.ExpensesListFieldEnum
+import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
+import com.dcapps.spese.enums.entity.ExpensesListFieldsEnum
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.ExcelUtils
 import com.dcapps.spese.utils.GenericUtils
@@ -59,9 +59,9 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val idLista = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString()
-        val nomeLista = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_NAME.value).toString()
-        val owner = arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_OWNER.value).toString()
+        val idLista = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString()
+        val nomeLista = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString()
+        val owner = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_OWNER.value).toString()
 
         printPartecipanti(idLista, owner)
 
@@ -224,10 +224,10 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
         //Se ero l'owner allora passo l'ownership al primo della lista
         if(expensesList.owner.equals(currentUser.uid, ignoreCase = true)){
-            this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldEnum.OWNER.value, expensesList.partecipatingUsersID[0])
+            this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldsEnum.OWNER.value, expensesList.partecipatingUsersID[0])
         }
 
-        this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
+        this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
 
         //REDIRECT MAIN PAGE
         activity?.finish()
@@ -243,7 +243,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
 
         binding.switchPaid.setOnCheckedChangeListener { _, bool ->
-            expensesListViewModel.updateByField(idLista, ExpensesListFieldEnum.PAID.value, bool)
+            expensesListViewModel.updateByField(idLista, ExpensesListFieldsEnum.PAID.value, bool)
         }
     }
 

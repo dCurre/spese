@@ -15,6 +15,7 @@ import com.dcapps.spese.data.viewmodel.ExpensesListViewModel
 import com.dcapps.spese.data.viewmodel.UserViewModel
 import com.dcapps.spese.databinding.HomeFragmentBinding
 import com.dcapps.spese.utils.DBUtils
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient
 import com.squareup.picasso.Picasso
 
 

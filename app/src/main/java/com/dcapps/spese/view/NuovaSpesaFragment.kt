@@ -16,7 +16,7 @@ import com.dcapps.spese.data.viewmodel.ExpenseViewModel
 import com.dcapps.spese.data.viewmodel.ExpensesListViewModel
 import com.dcapps.spese.data.viewmodel.UserViewModel
 import com.dcapps.spese.databinding.AddSpesaBinding
-import com.dcapps.spese.enums.bundle.BundleArgumentEnum
+import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
 import com.dcapps.spese.enums.table.TablesEnum
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.DateUtils
@@ -104,7 +104,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
                         binding.spesaData.text.toString().trim(),
                         expenseDateTimestamp = dateStringToTimestampSeconds(binding.spesaData.text.toString().trim()),
                         binding.spesaPagatoreText.text.toString().trim(),
-                        arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString()
+                        arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString()
                     )
                 )
 
@@ -139,7 +139,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         pagatoriList: ArrayList<String>,
         arrayAdapterPagatori: ArrayAdapter<String>
     ) {
-        expensesListViewModel.findByID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
+        expensesListViewModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
             val partecipanti = expensesList?.partecipatingUsersID
             var countPartecipanti = partecipanti!!.size
@@ -168,7 +168,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
         arrayAdapterPagatori: ArrayAdapter<String>
     ) {
 
-        expenseViewModel.findAllByExpensesListID(arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_ID.value).toString())
+        expenseViewModel.findAllByExpensesListID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
         expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
             val speseList = ArrayList<String>()
             pagatoriList.clear()
@@ -187,7 +187,7 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     }
 
     private fun setupToolbar() {
-        val titolo =  if(arguments == null) "Aggiungi una spesa" else "Aggiungi a ${arguments?.getString(BundleArgumentEnum.EXPENSES_LIST_NAME.value).toString()}"
+        val titolo =  if(arguments == null) "Aggiungi una spesa" else "Aggiungi a ${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString()}"
 
         //Cambio il titolo della toolbar
         (activity as MainActivity).setToolbarTitle(titolo)
