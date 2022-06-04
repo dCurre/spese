@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.dcapps.spese.view.HomeFragment"
+        android:name="com.dcapps.spese.views.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/home_fragment">
 
@@ -31,12 +31,12 @@
     </fragment>
     <fragment
         android:id="@+id/addSpesaFragment"
-        android:name="com.dcapps.spese.view.NuovaSpesaFragment"
+        android:name="com.dcapps.spese.views.NuovaSpesaFragment"
         android:label="@string/add_spesa_fragment_label"
         tools:layout="@layout/add_spesa"/>
     <fragment
         android:id="@+id/loadSpeseFragment"
-        android:name="com.dcapps.spese.view.loadspese.LoadSpeseFragment"
+        android:name="com.dcapps.spese.views.loadspese.LoadSpeseFragment"
         android:label="Riepilogo spese">
         <action
             android:id="@+id/action_loadSpeseFragment_to_addSpesaFragment"
@@ -56,18 +56,18 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.dcapps.spese.view.SettingsFragment"
+        android:name="com.dcapps.spese.views.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/settings_fragment" />
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.dcapps.spese.view.CalendarFragment"
+        android:name="com.dcapps.spese.views.CalendarFragment"
         android:label="Calendario"
         tools:layout="@layout/calendar_fragment" />
     <fragment
         android:id="@+id/addListaSpeseFragment"
-        android:name="com.dcapps.spese.view.NuovaListaSpeseFragment"
+        android:name="com.dcapps.spese.views.NuovaListaSpeseFragment"
         android:label="@string/add_lista_spese_fragment_label"
         tools:layout="@layout/add_lista_spese">
         <action
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/joinFragment"
-        android:name="com.dcapps.spese.view.join.JoinFragment"
+        android:name="com.dcapps.spese.views.join.JoinFragment"
         android:label="Unisciti ad una lista"
         tools:layout="@layout/join_fragment" />
     <action
@@ -84,12 +84,12 @@
         app:destination="@id/joinFragment" />
     <fragment
         android:id="@+id/listaSettingsFragment"
-        android:name="com.dcapps.spese.view.loadspese.SettingsListaSpeseFragment"
+        android:name="com.dcapps.spese.views.loadspese.SettingsListaSpeseFragment"
         android:label="lista_settings_fragment"
         tools:layout="@layout/lista_settings_fragment" />
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.dcapps.spese.view.MainActivity"
+        android:name="com.dcapps.spese.views.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
 </navigation>

@@ -1,4 +1,9 @@
 package com.dcapps.spese.enums.firebase.notification
 
-class NotificationMessageFieldsEnum {
+enum class NotificationMessageFieldsEnum(val value: String) {
+
+    TITLE("title"),
+    BODY("body"),
+
+    ;
 }

@@ -8,7 +8,7 @@
     android:paddingTop="200dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.login.LoginActivity">
+    tools:context=".views.login.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

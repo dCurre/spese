@@ -4,6 +4,7 @@
     package="com.dcapps.spese">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
 
@@ -31,7 +32,7 @@
 
         <!-- SPLASH SCREEN -->
         <activity
-            android:name="com.dcapps.spese.view.splash.SplashActivity"
+            android:name="com.dcapps.spese.views.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Spese.Splashscreen"
@@ -54,14 +55,14 @@
 
         <!-- LOGIN -->
         <activity
-            android:name="com.dcapps.spese.view.login.LoginActivity"
+            android:name="com.dcapps.spese.views.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Spese.NoActionBar"
             android:launchMode = "singleInstance"/>
 
         <!-- MAIN APP -->
         <activity
-            android:name="com.dcapps.spese.view.MainActivity"
+            android:name="com.dcapps.spese.views.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -70,10 +71,12 @@
         </activity>
 
         <service
-            android:name=".service.CustomFirebaseMessagingService"
-            android:exported="false">
+            android:name=".services.CustomFirebaseMessagingService"
+            android:exported="false"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
     </application>

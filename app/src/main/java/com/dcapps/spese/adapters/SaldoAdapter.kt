@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dcapps.spese.R
-import com.dcapps.spese.data.entity.Expense
+import com.dcapps.spese.data.entities.Expense
 
 class SaldoAdapter : RecyclerView.Adapter<SaldoAdapter.ViewHolder>() {
 

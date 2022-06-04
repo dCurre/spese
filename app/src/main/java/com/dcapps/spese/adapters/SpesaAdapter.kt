@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dcapps.spese.R
-import com.dcapps.spese.data.entity.Expense
+import com.dcapps.spese.data.entities.Expense
 
 class SpesaAdapter : RecyclerView.Adapter<SpesaAdapter.ViewHolder>() {
 

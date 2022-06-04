@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dcapps.spese.R
-import com.dcapps.spese.data.dto.BalanceCategory
-import com.dcapps.spese.data.dto.BalanceSubItem
+import com.dcapps.spese.data.dto.balance.BalanceCategory
+import com.dcapps.spese.data.dto.balance.BalanceSubItem
 
 class BalanceCategoryAdapter(private val context: Context) : RecyclerView.Adapter<BalanceCategoryAdapter.ViewHolder>() {
 

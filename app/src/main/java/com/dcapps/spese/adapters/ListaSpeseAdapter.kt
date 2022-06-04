@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.dcapps.spese.R
-import com.dcapps.spese.data.entity.ExpensesList
+import com.dcapps.spese.data.entities.ExpensesList
 import com.dcapps.spese.utils.GenericUtils
 
 class ListaSpeseAdapter(private val navController: NavController) : RecyclerView.Adapter<ListaSpeseAdapter.ViewHolder>() {

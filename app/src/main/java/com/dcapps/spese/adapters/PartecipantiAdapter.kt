@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dcapps.spese.R
-import com.dcapps.spese.data.entity.User
+import com.dcapps.spese.data.entities.User
 
 
 class PartecipantiAdapter : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>() {
