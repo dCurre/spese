@@ -88,7 +88,7 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     }
 
     private fun setupSwitches(){
-        userModel.findById(currentUser.uid)
+        userModel.findByID(currentUser.uid)
         userModel.userLiveData.observe(viewLifecycleOwner) { user ->
             GenericUtils.setupSwitch(binding.switchDarkTheme, user.darkTheme)
             GenericUtils.setupSwitch(binding.switchHidePaidLists, user.hidePaidLists)

@@ -22,7 +22,7 @@ class UserViewModel : ViewModel() {
         repository.findAllByIdList(uidList, _userListLiveData)
     }
 
-    fun findById(id : String) {
+    fun findByID(id : String) {
         repository.findByID(id, _userLiveData)
     }
 

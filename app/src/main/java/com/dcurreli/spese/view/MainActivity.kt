@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -21,12 +22,17 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dcurreli.spese.R
 import com.dcurreli.spese.data.viewmodel.ExpensesListViewModel
+import com.dcurreli.spese.data.viewmodel.UserViewModel
 import com.dcurreli.spese.databinding.ActivityMainBinding
 import com.dcurreli.spese.enums.bundle.DeepLinkEnum
+import com.dcurreli.spese.enums.entity.UserFieldEnum
 import com.dcurreli.spese.utils.DBUtils
 import com.dcurreli.spese.utils.GenericUtils
+import com.dcurreli.spese.view.dialog.EditSpesaDialogFragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 open class MainActivity : AppCompatActivity() {
 
@@ -34,6 +40,7 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var expensesListViewModel : ExpensesListViewModel
+    private lateinit var userViewModel : UserViewModel
     private val className = javaClass.simpleName
     private val requestExternalStorage = 1
     private val permissionStorage = arrayOf(
@@ -44,6 +51,7 @@ open class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
@@ -54,6 +62,9 @@ open class MainActivity : AppCompatActivity() {
 
         //Bottom navigation bar
         binding.bottomNav.setupWithNavController(navController)
+
+        //Message token set or update
+        manageMessagingToken()
 
         //Controllo se ho un dynamic link attivo
         checkDynamicLink()
@@ -152,4 +163,35 @@ open class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun manageMessagingToken() {
+        userViewModel.findByID(DBUtils.getLoggedUser().uid)
+        userViewModel.userLiveData.observeOnce { user ->
+
+            //Update token
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(EditSpesaDialogFragment.TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                val messageTokenList = user.messagingTokenList ?: ArrayList<String>()
+
+                if(messageTokenList.contains(task.result)){
+                    Log.w(EditSpesaDialogFragment.TAG, "Message token already stored")
+                    return@OnCompleteListener
+                }
+
+                //A user can store a maximum of 10 tokens per account
+                if(messageTokenList.size == 10){
+                    messageTokenList.removeAt(0)
+                }
+
+                messageTokenList.add(task.result)
+
+                userViewModel.updateByField(user.id, UserFieldEnum.MESSAGING_TOKEN_LIST.value, messageTokenList)
+            })
+        }
+    }
+
 }

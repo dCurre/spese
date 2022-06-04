@@ -7,6 +7,7 @@ enum class UserFieldEnum(val value: String) {
     PROFILE_IMAGE("profileImage"),
     DARKTHEME("darkTheme"),
     HIDE_PAID_LISTS("hidePaidLists"),
+    MESSAGING_TOKEN_LIST("messagingTokenList"),
 
     ;
 

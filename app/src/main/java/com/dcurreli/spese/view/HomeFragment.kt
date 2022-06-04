@@ -58,7 +58,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         val listaSpeseAdapter = ListaSpeseAdapter(findNavController())
         val listsPerRow = 2
 
-        userViewModel.findById(loggedUser.uid)
+        userViewModel.findByID(loggedUser.uid)
         userViewModel.userLiveData.observe(viewLifecycleOwner) { user ->
             expensesListViewModel.findAllByUserIDAndIsPaid(user.id, user.hidePaidLists)
         }

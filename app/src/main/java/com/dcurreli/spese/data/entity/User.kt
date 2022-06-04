@@ -10,7 +10,8 @@ data class User (
     val email : String,
     val profileImage : String,
     val darkTheme : Boolean,
-    val hidePaidLists : Boolean
+    val hidePaidLists : Boolean,
+    val messagingTokenList : ArrayList<String>?
         ) {
 
     companion object {
@@ -23,7 +24,8 @@ data class User (
                     getString(UserFieldEnum.EMAIL.value)!!,
                     getString(UserFieldEnum.PROFILE_IMAGE.value)!!,
                     getBoolean(UserFieldEnum.DARKTHEME.value)!!,
-                    getBoolean(UserFieldEnum.HIDE_PAID_LISTS.value)!!
+                    getBoolean(UserFieldEnum.HIDE_PAID_LISTS.value)!!,
+                    get(UserFieldEnum.MESSAGING_TOKEN_LIST.value) as ArrayList<String>,
                 )
 
             } catch (e: Exception) {
