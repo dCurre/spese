@@ -40,9 +40,7 @@
         android:label="Riepilogo spese">
         <action
             android:id="@+id/action_loadSpeseFragment_to_addSpesaFragment"
-            app:destination="@id/addSpesaFragment"
-            app:enterAnim="@anim/enter_to_top_left"
-            app:popEnterAnim="@anim/exit_to_bottom_right" />
+            app:destination="@id/addSpesaFragment" />
         <action
             android:id="@+id/action_loadSpeseFragment_to_listaSettingsFragment"
             app:destination="@id/listaSettingsFragment"

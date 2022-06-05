@@ -53,6 +53,7 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
         expenseViewModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         return binding.root
     }
 
@@ -68,13 +69,24 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
         //Setup autocomplete fields
         setupAutocompleteInputs()
 
-        //Se premo lo sfondo
+        setupButtons(view)
+
+
+    }
+
+    private fun setupButtons(view: View) {
+
+        binding.buttonCloseNewExpenseFragment.setOnClickListener{
+            findNavController().popBackStack()
+        }
+
+        //On background click
         binding.addSpesaConstraintLayout.setOnClickListener {
             GenericUtils.hideSoftKeyBoard(requireContext(), view) //Chiudo la tastiera
             GenericUtils.clearTextViewFocusAddSpesa(binding) //Tolgo il focus dagli altri bottoni
         }
 
-        //Bottone "Aggiungi"
+        //"Aggiungi" button
         binding.spesaButtonAddSpesa.setOnClickListener {
             insertExpense(view)
         }
@@ -131,7 +143,6 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
                 }
 
                 SnackbarUtils.showSnackbarOK("Spesa creata : )", binding.addSpesaConstraintLayout)
-
                 findNavController().popBackStack()
             }
         }
@@ -139,6 +150,7 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         _binding = null
     }
 
@@ -219,7 +231,7 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
     }
 
     private fun setupToolbar() {
-        val titolo =  if(arguments == null) "Aggiungi una spesa" else "Aggiungi a ${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString()}"
+        val titolo =  if(arguments == null) "Aggiungi una spesa" else "Aggiungi spesa a ${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString()}"
 
         //Cambio il titolo della toolbar
         (activity as MainActivity).setToolbarTitle(titolo)

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -102,72 +103,72 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
 
     private fun setupCardSlider() {
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-                override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                    //Non penso venga usato, dovrebbe uscire un alert sul movimento degli item nella lista (ma sono bloccati)
-                    SnackbarUtils.showSnackbarOK("ON MOVE", binding.root)
-                    return false
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                //Non penso venga usato, dovrebbe uscire un alert sul movimento degli item nella lista (ma sono bloccati)
+                SnackbarUtils.showSnackbarOK("ON MOVE", binding.root)
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                var expensesList = ExpensesList()
+
+                listaSpeseModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
+                listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
+                    expensesList = listaSpeseExtracted ?: ExpensesList()
                 }
 
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    var expensesList = ExpensesList()
-
-                    listaSpeseModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
-                    listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpeseExtracted ->
-                        expensesList = listaSpeseExtracted ?: ExpensesList()
-                    }
-
-                    if(direction == ItemTouchHelper.RIGHT){ //Se scorro verso destra modifico
-                        if(!expensesList.paid){
-                            EditSpesaDialogFragment().newInstance(expenseAdapter.getItem(viewHolder.absoluteAdapterPosition)).show(childFragmentManager, EditSpesaDialogFragment.TAG)
-                            expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                        } else {
-                            SnackbarUtils.showSnackbarError("Non puoi modificare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
-                            expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                        }
-                    }
-
-                    if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
-                        if(!expensesList.paid){
-                            //Se non è saldato faccio uscire l'alert per la cancellazione della spesa
-                            AlertDialog.Builder(context)
-                                .setTitle("Conferma")
-                                .setMessage("Vuoi cancellare la spesa ${expenseAdapter.getItem(viewHolder.absoluteAdapterPosition).expense}?")
-                                .setPositiveButton("SI") { _, _ ->
-                                    expenseViewModel.delete(expenseAdapter.getItem(viewHolder.absoluteAdapterPosition).id)
-                                    SnackbarUtils.showSnackbarOK("Spesa cancellata", binding.root)
-                                }
-                                .setNegativeButton("NO") { _, _ ->
-                                    expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                                }
-                                .setCancelable(false)
-                                .show()
-                        } else {
-                            SnackbarUtils.showSnackbarError("Non puoi cancellare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
-                            expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
-                        }
+                if(direction == ItemTouchHelper.RIGHT){ //Se scorro verso destra modifico
+                    if(!expensesList.paid){
+                        EditSpesaDialogFragment().newInstance(expenseAdapter.getItem(viewHolder.absoluteAdapterPosition)).show(childFragmentManager, EditSpesaDialogFragment.TAG)
+                        expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                    } else {
+                        SnackbarUtils.showSnackbarError("Non puoi modificare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
+                        expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                     }
                 }
 
-                override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-                    RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                            //LEFT
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
-                        .addSwipeLeftLabel("CANCELLA")
-                        .setSwipeLeftLabelColor(ContextCompat.getColor(requireContext(), R.color.onPrimary))
-                        .addSwipeLeftActionIcon(R.drawable.ic_delete)
-                            //RIGHT
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green))
-                        .addSwipeRightLabel("MODIFICA")
-                        .setSwipeRightLabelColor(ContextCompat.getColor(requireContext(), R.color.onPrimary))
-                        .addSwipeRightActionIcon(R.drawable.ic_pencil_edit)
-                            //BOTH
-                        .setActionIconTint(ContextCompat.getColor(requireContext(), R.color.onPrimary))
-                        .create()
-                        .decorate()
-
-                    super.onChildDraw(c, recyclerView, viewHolder,dX, dY, actionState, isCurrentlyActive)
+                if(direction == ItemTouchHelper.LEFT){ //Se scorro verso sinistra cancello
+                    if(!expensesList.paid){
+                        //Se non è saldato faccio uscire l'alert per la cancellazione della spesa
+                        AlertDialog.Builder(context)
+                            .setTitle("Conferma")
+                            .setMessage("Vuoi cancellare la spesa ${expenseAdapter.getItem(viewHolder.absoluteAdapterPosition).expense}?")
+                            .setPositiveButton("SI") { _, _ ->
+                                expenseViewModel.delete(expenseAdapter.getItem(viewHolder.absoluteAdapterPosition).id)
+                                SnackbarUtils.showSnackbarOK("Spesa cancellata", binding.root)
+                            }
+                            .setNegativeButton("NO") { _, _ ->
+                                expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                            }
+                            .setCancelable(false)
+                            .show()
+                    } else {
+                        SnackbarUtils.showSnackbarError("Non puoi cancellare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
+                        expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                    }
                 }
             }
+
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        //LEFT
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
+                    .addSwipeLeftLabel("CANCELLA")
+                    .setSwipeLeftLabelColor(ContextCompat.getColor(requireContext(), R.color.onPrimary))
+                    .addSwipeLeftActionIcon(R.drawable.ic_delete)
+                        //RIGHT
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green))
+                    .addSwipeRightLabel("MODIFICA")
+                    .setSwipeRightLabelColor(ContextCompat.getColor(requireContext(), R.color.onPrimary))
+                    .addSwipeRightActionIcon(R.drawable.ic_pencil_edit)
+                        //BOTH
+                    .setActionIconTint(ContextCompat.getColor(requireContext(), R.color.onPrimary))
+                    .create()
+                    .decorate()
+
+                super.onChildDraw(c, recyclerView, viewHolder,dX, dY, actionState, isCurrentlyActive)
+            }
+        }
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.listaSpese)
@@ -182,13 +183,21 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
         setupScrollListener(binding.listaSpese)
 
         binding.addSpesaButton.setOnClickListener{
-            findNavController().navigate(R.id.action_loadSpeseFragment_to_addSpesaFragment, arguments)
+            findNavController().navigate(
+                R.id.action_loadSpeseFragment_to_addSpesaFragment,
+                arguments,
+                NavOptions.Builder() //ANIMATION
+                    .setEnterAnim(R.anim.enter_to_top_left)
+                    .setExitAnim(R.anim.exit_to_bottom_right)
+                    .setPopEnterAnim(R.anim.enter_to_top_left)
+                    .setPopExitAnim(R.anim.exit_to_bottom_right)
+                    .build()
+            )
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 
