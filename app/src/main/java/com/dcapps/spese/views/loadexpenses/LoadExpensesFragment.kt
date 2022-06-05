@@ -1,4 +1,4 @@
-package com.dcapps.spese.views.loadspese
+package com.dcapps.spese.views.loadexpenses
 
 import android.content.Intent
 import android.net.Uri
@@ -38,9 +38,6 @@ class LoadExpensesFragment : Fragment(R.layout.load_spese) {
         //Setto il nome della toolbar in base al bottone di spesa che ho clickato
         setupToolbar()
 
-        //Configurazione bottone aggiunta spesa
-        setupAddSpesaButton()
-
         //Setup tab layout (schede orizzontali)
         setupTabLayout()
 
@@ -58,21 +55,10 @@ class LoadExpensesFragment : Fragment(R.layout.load_spese) {
         _binding = null
     }
 
-    private fun setupAddSpesaButton() {
-        listaSpeseModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
-        listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
-            binding.addSpesaButton.visibility = if(expensesList?.paid == true) View.GONE else View.VISIBLE
-        }
-
-        binding.addSpesaButton.setOnClickListener{
-            findNavController().navigate(R.id.action_loadSpeseFragment_to_addSpesaFragment, arguments)
-        }
-    }
-
     private fun setupTabLayout(){
         //Setup tab layout (schede orizzontali)
         val adapter = ViewPagerAdapter(childFragmentManager)
-        adapter.addFragment(ExpensesListExpensesFragment.newInstance(arguments), "Spese", R.drawable.ic_shopping_cart)
+        adapter.addFragment(ExpensesPrinterFragment.newInstance(arguments), "Spese", R.drawable.ic_shopping_cart)
         adapter.addFragment(ExpensesListBalanceFragment.newInstance(arguments), "Saldo", R.drawable.ic_euro)
         binding.viewPagerSchede.adapter = adapter
         binding.tableLayoutSchede.setupWithViewPager(binding.viewPagerSchede)

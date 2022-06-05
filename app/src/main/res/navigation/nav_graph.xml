@@ -36,7 +36,7 @@
         tools:layout="@layout/add_spesa"/>
     <fragment
         android:id="@+id/loadSpeseFragment"
-        android:name="com.dcapps.spese.views.loadspese.LoadExpensesFragment"
+        android:name="com.dcapps.spese.views.loadexpenses.LoadExpensesFragment"
         android:label="Riepilogo spese">
         <action
             android:id="@+id/action_loadSpeseFragment_to_addSpesaFragment"
@@ -84,7 +84,7 @@
         app:destination="@id/joinFragment" />
     <fragment
         android:id="@+id/listaSettingsFragment"
-        android:name="com.dcapps.spese.views.loadspese.SettingsExpensesListFragment"
+        android:name="com.dcapps.spese.views.loadexpenses.SettingsExpensesListFragment"
         android:label="lista_settings_fragment"
         tools:layout="@layout/lista_settings_fragment" />
     <activity

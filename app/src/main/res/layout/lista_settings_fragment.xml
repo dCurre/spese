@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginVertical="20dp"
-    tools:context=".views.loadspese.SettingsExpensesListFragment">
+    tools:context=".views.loadexpenses.SettingsExpensesListFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,13 +1,15 @@
-package com.dcapps.spese.views.loadspese
+package com.dcapps.spese.views.loadexpenses
 
 import android.app.AlertDialog
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,14 +23,13 @@ import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
 import com.dcapps.spese.utils.SnackbarUtils
 import com.dcapps.spese.views.dialog.EditSpesaDialogFragment
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
-import android.view.View as View1
 
 
-class ExpensesListExpensesFragment : Fragment(R.layout.load_spese_tab_spese) {
+class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
 
     companion object {
-        fun newInstance(args: Bundle?): ExpensesListExpensesFragment{
-            val fragment = ExpensesListExpensesFragment().apply{
+        fun newInstance(args: Bundle?): ExpensesPrinterFragment{
+            val fragment = ExpensesPrinterFragment().apply{
                 arguments =  args
             }
             return fragment
@@ -46,28 +47,30 @@ class ExpensesListExpensesFragment : Fragment(R.layout.load_spese_tab_spese) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View1 {
+    ): View {
 
         _binding = LoadSpeseTabSpeseBinding.inflate(inflater, container, false)
         expenseAdapter = ExpenseAdapter()
         expenseViewModel = ViewModelProvider(requireActivity())[ExpenseViewModel::class.java]
         listaSpeseModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
 
-
         return binding.root
     }
 
-    override fun onViewCreated(view: View1, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //Stampo le spese
-        printSpese()
+        printExpenses()
+
+        //Configurazione bottone aggiunta spesa
+        setupAddSpesaButton()
 
         //Gestisco il cardslider passandogli l'adapter
         setupCardSlider()
     }
 
-    private fun printSpese() {
+    private fun printExpenses() {
         //Adding expenses to the adapter
         expenseViewModel.findAllByExpensesListID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
         expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
@@ -77,6 +80,24 @@ class ExpensesListExpensesFragment : Fragment(R.layout.load_spese_tab_spese) {
 
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
         binding.listaSpese.adapter = expenseAdapter
+    }
+
+    private fun setupScrollListener(listaSpese: RecyclerView) {
+        val scrollListener = object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                //SCROLLING UP SHOWS THE BUTTON
+                if (dy<0 && !binding.addSpesaButton.isShown){
+                    binding.addSpesaButton.show()
+                }
+
+                //SCROLLING DOWN HIDES THE BUTTON
+                if(dy>0 && binding.addSpesaButton.isShown){
+                    binding.addSpesaButton.hide();
+                }
+            }
+        }
+        listaSpese.addOnScrollListener(scrollListener)
     }
 
     private fun setupCardSlider() {
@@ -150,6 +171,19 @@ class ExpensesListExpensesFragment : Fragment(R.layout.load_spese_tab_spese) {
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.listaSpese)
+    }
+
+    private fun setupAddSpesaButton() {
+        listaSpeseModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
+        listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
+            binding.addSpesaButton.visibility = if(expensesList?.paid == true) View.GONE else View.VISIBLE
+        }
+
+        setupScrollListener(binding.listaSpese)
+
+        binding.addSpesaButton.setOnClickListener{
+            findNavController().navigate(R.id.action_loadSpeseFragment_to_addSpesaFragment, arguments)
+        }
     }
 
     override fun onDestroyView() {

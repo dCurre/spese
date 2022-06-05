@@ -1,4 +1,4 @@
-package com.dcapps.spese.views.loadspese
+package com.dcapps.spese.views.loadexpenses
 
 import android.app.AlertDialog
 import android.content.Intent

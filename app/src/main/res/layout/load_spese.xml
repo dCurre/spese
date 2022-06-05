@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.loadspese.LoadExpensesFragment">
+    tools:context=".views.loadexpenses.LoadExpensesFragment">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -33,17 +33,6 @@
                 android:layout_height="match_parent"
                 android:layout_below="@id/table_layout_schede" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/add_spesa_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:backgroundTint="?colorPrimary"
-                app:srcCompat="@drawable/ic_plus"
-                app:tint="@color/white"
-                app:useCompatPadding="true"
-                tools:ignore="ContentDescription" />
         </RelativeLayout>
     </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
