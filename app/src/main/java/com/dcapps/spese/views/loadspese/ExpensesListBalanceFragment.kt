@@ -18,7 +18,7 @@ import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
 import com.dcapps.spese.utils.GenericUtils
 import android.view.View as View1
 
-class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
+class ExpensesListBalanceFragment : Fragment(R.layout.load_spese_tab_saldo) {
 
     private var _binding: LoadSpeseTabSaldoBinding? = null
     private val className = javaClass.simpleName
@@ -130,8 +130,8 @@ class TabSaldoListaSpeseFragment : Fragment(R.layout.load_spese_tab_saldo) {
     }
 
     companion object {
-        fun newInstance(args: Bundle?): TabSaldoListaSpeseFragment{
-            val fragment = TabSaldoListaSpeseFragment().apply{
+        fun newInstance(args: Bundle?): ExpensesListBalanceFragment{
+            val fragment = ExpensesListBalanceFragment().apply{
                 arguments =  args
             }
             return fragment

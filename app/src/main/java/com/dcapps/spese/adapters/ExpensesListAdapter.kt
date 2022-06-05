@@ -12,7 +12,7 @@ import com.dcapps.spese.R
 import com.dcapps.spese.data.entities.ExpensesList
 import com.dcapps.spese.utils.GenericUtils
 
-class ListaSpeseAdapter(private val navController: NavController) : RecyclerView.Adapter<ListaSpeseAdapter.ViewHolder>() {
+class ExpensesListAdapter(private val navController: NavController) : RecyclerView.Adapter<ExpensesListAdapter.ViewHolder>() {
 
     private var expensesListList = ArrayList<ExpensesList>()
 

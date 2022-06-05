@@ -31,7 +31,7 @@ class BalanceCategoryAdapter(private val context: Context) : RecyclerView.Adapte
     }
 
     private fun setSublist(subListRecyclerView: RecyclerView, amountToReceiveList: ArrayList<BalanceSubItem>) {
-        val subItemAdapter = SaldoSubItemAdapter(amountToReceiveList)
+        val subItemAdapter = BalanceCategorySubItemAdapter(amountToReceiveList)
         subListRecyclerView.layoutManager = LinearLayoutManager(context)
         subListRecyclerView.adapter = subItemAdapter
     }

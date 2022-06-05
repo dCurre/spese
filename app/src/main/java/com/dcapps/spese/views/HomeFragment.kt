@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dcapps.spese.R
-import com.dcapps.spese.adapters.ListaSpeseAdapter
+import com.dcapps.spese.adapters.ExpensesListAdapter
 import com.dcapps.spese.data.viewmodels.ExpensesListViewModel
 import com.dcapps.spese.data.viewmodels.UserViewModel
 import com.dcapps.spese.databinding.HomeFragmentBinding
@@ -55,7 +55,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     }
 
     private fun printExpensesLists() {
-        val listaSpeseAdapter = ListaSpeseAdapter(findNavController())
+        val expensesListAdapter = ExpensesListAdapter(findNavController())
         val listsPerRow = 2
 
         userViewModel.findByID(loggedUser.uid)
@@ -65,12 +65,12 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
         //Recupero listaSpese a partire dall'utente
         expensesListViewModel.expensesListsLiveData.observe(viewLifecycleOwner) { expensesLists ->
-            listaSpeseAdapter.addItems(expensesLists)
+            expensesListAdapter.addItems(expensesLists)
         }
 
         //Setup griglia liste
         binding.listaSpese.layoutManager = GridLayoutManager(context, listsPerRow)
-        binding.listaSpese.adapter = listaSpeseAdapter
+        binding.listaSpese.adapter = expensesListAdapter
     }
 
     @SuppressLint("SetTextI18n")

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dcapps.spese.R
 import com.dcapps.spese.data.dto.balance.BalanceSubItem
 
-class SaldoSubItemAdapter(private val saldoSubItemList: ArrayList<BalanceSubItem>) : RecyclerView.Adapter<SaldoSubItemAdapter.ViewHolder>() {
+class BalanceCategorySubItemAdapter(private val saldoSubItemList: ArrayList<BalanceSubItem>) : RecyclerView.Adapter<BalanceCategorySubItemAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.load_spese_tab_saldo_subitem, parent, false))

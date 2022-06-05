@@ -11,7 +11,7 @@ import com.dcapps.spese.R
 import com.dcapps.spese.data.entities.User
 
 
-class PartecipantiAdapter : RecyclerView.Adapter<PartecipantiAdapter.ViewHolder>() {
+class PartecipantsAdapter : RecyclerView.Adapter<PartecipantsAdapter.ViewHolder>() {
 
     private val userList = ArrayList<User>()
 

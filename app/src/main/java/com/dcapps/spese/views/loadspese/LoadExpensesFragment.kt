@@ -20,7 +20,7 @@ import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 
 
-class LoadSpeseFragment : Fragment(R.layout.load_spese) {
+class LoadExpensesFragment : Fragment(R.layout.load_spese) {
 
     private var _binding: LoadSpeseBinding? = null
     private val className = javaClass.simpleName
@@ -72,8 +72,8 @@ class LoadSpeseFragment : Fragment(R.layout.load_spese) {
     private fun setupTabLayout(){
         //Setup tab layout (schede orizzontali)
         val adapter = ViewPagerAdapter(childFragmentManager)
-        adapter.addFragment(TabSpeseListaSpeseFragment.newInstance(arguments), "Spese", R.drawable.ic_shopping_cart)
-        adapter.addFragment(TabSaldoListaSpeseFragment.newInstance(arguments), "Saldo", R.drawable.ic_euro)
+        adapter.addFragment(ExpensesListExpensesFragment.newInstance(arguments), "Spese", R.drawable.ic_shopping_cart)
+        adapter.addFragment(ExpensesListBalanceFragment.newInstance(arguments), "Saldo", R.drawable.ic_euro)
         binding.viewPagerSchede.adapter = adapter
         binding.tableLayoutSchede.setupWithViewPager(binding.viewPagerSchede)
 

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dcapps.spese.R
 import com.dcapps.spese.data.entities.Expense
 
-class SpesaAdapter : RecyclerView.Adapter<SpesaAdapter.ViewHolder>() {
+class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
 
     private var speseList = ArrayList<Expense>()
 
@@ -25,7 +25,6 @@ class SpesaAdapter : RecyclerView.Adapter<SpesaAdapter.ViewHolder>() {
         holder.importo.text = spesa.amountAsEur()
         holder.data.text = spesa.expenseDate
         holder.pagatore.text = spesa.buyer
-
     }
 
     // return the number of the items in the list

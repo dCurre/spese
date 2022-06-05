@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcapps.spese.R
-import com.dcapps.spese.adapters.PartecipantiAdapter
+import com.dcapps.spese.adapters.PartecipantsAdapter
 import com.dcapps.spese.constants.FirebaseConstants
 import com.dcapps.spese.data.dto.notification.NotificationData
 import com.dcapps.spese.data.dto.notification.NotificationMessage
@@ -39,7 +39,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
 
-class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
+class SettingsExpensesListFragment : Fragment(R.layout.lista_settings_fragment) {
 
     private val className = javaClass.simpleName
     private var _binding: ListaSettingsFragmentBinding? = null
@@ -86,7 +86,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
     }
 
     private fun printPartecipanti(idLista: String, owner: String) {
-        val partecipantiAdapter = PartecipantiAdapter()
+        val partecipantsAdapter = PartecipantsAdapter()
 
         expensesListViewModel.findByID(idLista)
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
@@ -107,9 +107,9 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
                     partecipantiArray.add(user)
                 }
             }
-            partecipantiAdapter.addItems(partecipantiArray)
+            partecipantsAdapter.addItems(partecipantiArray)
         }
-        binding.listaPartecipanti.adapter = partecipantiAdapter
+        binding.listaPartecipanti.adapter = partecipantsAdapter
         binding.listaPartecipanti.layoutManager = LinearLayoutManager(context)
     }
 
@@ -146,7 +146,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
 
                 //ELIMINO LE SPESE LEGATE A QUELLA LISTA
                 expenseViewModel.findAllByExpensesListID(idLista)
-                expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
+                expenseViewModel.expenseListLiveData.observeOnce { expenseList ->
 
                     //Deleting every expense by idList
                     expenseViewModel.deleteList(expenseList)
@@ -154,8 +154,9 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
                     //Deleting the list
                     expensesListViewModel.delete(idLista)
 
+                    //THERE IS NO API TO DELETE A TOPIC ENTIRELY
                     //The user gets also unsubscribed from push notifications related to this list
-                    Firebase.messaging.unsubscribeFromTopic(idLista)
+                    //Firebase.messaging.unsubscribeFromTopic(idLista)
 
                     //REDIRECT MAIN PAGE
                     activity?.finish()

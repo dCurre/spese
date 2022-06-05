@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dcapps.spese.R
-import com.dcapps.spese.adapters.SpesaAdapter
+import com.dcapps.spese.adapters.ExpenseAdapter
 import com.dcapps.spese.data.entities.ExpensesList
 import com.dcapps.spese.data.viewmodels.ExpenseViewModel
 import com.dcapps.spese.data.viewmodels.ExpensesListViewModel
@@ -24,11 +24,11 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import android.view.View as View1
 
 
-class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
+class ExpensesListExpensesFragment : Fragment(R.layout.load_spese_tab_spese) {
 
     companion object {
-        fun newInstance(args: Bundle?): TabSpeseListaSpeseFragment{
-            val fragment = TabSpeseListaSpeseFragment().apply{
+        fun newInstance(args: Bundle?): ExpensesListExpensesFragment{
+            val fragment = ExpensesListExpensesFragment().apply{
                 arguments =  args
             }
             return fragment
@@ -38,7 +38,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     private var _binding: LoadSpeseTabSpeseBinding? = null
     private val className = javaClass.simpleName
     private val binding get() = _binding!!
-    private lateinit var expenseAdapter : SpesaAdapter
+    private lateinit var expenseAdapter : ExpenseAdapter
     private lateinit var expenseViewModel : ExpenseViewModel
     private lateinit var listaSpeseModel : ExpensesListViewModel
 
@@ -49,7 +49,7 @@ class TabSpeseListaSpeseFragment : Fragment(R.layout.load_spese_tab_spese) {
     ): View1 {
 
         _binding = LoadSpeseTabSpeseBinding.inflate(inflater, container, false)
-        expenseAdapter = SpesaAdapter()
+        expenseAdapter = ExpenseAdapter()
         expenseViewModel = ViewModelProvider(requireActivity())[ExpenseViewModel::class.java]
         listaSpeseModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
 
