@@ -4,14 +4,20 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dcapps.spese.R
 import com.dcapps.spese.adapters.PartecipantiAdapter
+import com.dcapps.spese.constants.FirebaseConstants
+import com.dcapps.spese.data.dto.notification.NotificationData
+import com.dcapps.spese.data.dto.notification.NotificationMessage
 import com.dcapps.spese.data.entities.ExpensesList
 import com.dcapps.spese.data.entities.User
 import com.dcapps.spese.data.viewmodels.ExpenseViewModel
@@ -20,6 +26,7 @@ import com.dcapps.spese.data.viewmodels.UserViewModel
 import com.dcapps.spese.databinding.ListaSettingsFragmentBinding
 import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
 import com.dcapps.spese.enums.entity.ExpensesListFieldsEnum
+import com.dcapps.spese.services.CustomFirebaseMessagingService
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.ExcelUtils
 import com.dcapps.spese.utils.GenericUtils
@@ -249,9 +256,27 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
             GenericUtils.setupSwitch(binding.switchPaid, expensesList?.paid ?: false)
         }
 
-
         binding.switchPaid.setOnCheckedChangeListener { _, bool ->
-            expensesListViewModel.updateByField(idLista, ExpensesListFieldsEnum.PAID.value, bool)
+            userViewModel.findByID(DBUtils.getLoggedUser().uid)
+            userViewModel.userLiveData.observeOnce { user ->
+                if(bool){
+                    Log.i("PROVA", "EUREKA")
+
+                    //Notifico gli che la lista è stata saldata
+                    CustomFirebaseMessagingService.sendNotification(
+                        NotificationMessage(
+                            NotificationData(
+                                title = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString(),
+                                body = "è stata saldata da ${user.fullname}",
+                                sender = user.id
+                            ),
+                            to = "${FirebaseConstants.TOPICS}/${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString()}")
+                    )
+
+                    Log.i("PROVA", "EUREKA DUE")
+                }
+                expensesListViewModel.updateByField(idLista, ExpensesListFieldsEnum.PAID.value, bool)
+            }
         }
     }
 
@@ -259,5 +284,14 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         //Cambio il titolo della toolbar
         (activity as MainActivity).setToolbarTitle("Impostazioni $nomeLista")
         (activity as MainActivity).supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+    }
+
+    private fun <T> LiveData<T>.observeOnce(observer: (T) -> Unit) {
+        observeForever(object: Observer<T> {
+            override fun onChanged(value: T) {
+                removeObserver(this)
+                observer(value)
+            }
+        })
     }
 }

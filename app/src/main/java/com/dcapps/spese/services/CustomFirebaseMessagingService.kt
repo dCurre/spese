@@ -85,7 +85,7 @@ class CustomFirebaseMessagingService : FirebaseMessagingService(){
     private fun createNotificationChannel(notificationManager: NotificationManager) {
         val channelName = "Notifiche"
         val channel = NotificationChannel(CHANNEL_ID, channelName, IMPORTANCE_HIGH).apply {
-            description = "My channel description"
+            description = ""
             enableLights(true)
             lightColor = Color.GREEN
         }

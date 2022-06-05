@@ -1,7 +1,6 @@
 package com.dcapps.spese.views.join
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dcapps.spese.R
+import com.dcapps.spese.constants.FirebaseConstants
+import com.dcapps.spese.data.dto.notification.NotificationData
+import com.dcapps.spese.data.dto.notification.NotificationMessage
 import com.dcapps.spese.data.viewmodels.ExpensesListViewModel
+import com.dcapps.spese.data.viewmodels.UserViewModel
 import com.dcapps.spese.databinding.JoinFragmentBinding
 import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
 import com.dcapps.spese.enums.entity.ExpensesListFieldsEnum
+import com.dcapps.spese.services.CustomFirebaseMessagingService
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.SnackbarUtils
 import com.dcapps.spese.views.MainActivity
@@ -29,6 +33,8 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
     private var _binding: JoinFragmentBinding? = null
     private var currentUser: FirebaseUser = DBUtils.getLoggedUser()
     private lateinit var expensesListViewModel : ExpensesListViewModel
+    private lateinit var userViewModel : UserViewModel
+    private lateinit var listName : String
 
     private val binding get() = _binding!!
 
@@ -39,6 +45,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
         _binding = JoinFragmentBinding.inflate(inflater, container, false)
         currentUser = DBUtils.getLoggedUser()
         expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         //Nascondo bottom nav
         (activity as MainActivity).setBottomNavVisibility(false)
@@ -61,11 +68,12 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
 
     private fun loadJoinGroupDetails(){
         expensesListViewModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
-        expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { listaSpese ->
+        expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
 
-            if (listaSpese != null) {
-                binding.nomeGruppo.text = listaSpese.name
-                binding.counterCurrentUsers.text = listaSpese.partecipatingUsersID!!.size.toString()
+            if (expensesList != null) {
+                binding.nomeGruppo.text = expensesList.name
+                binding.counterCurrentUsers.text = expensesList.partecipatingUsersID!!.size.toString()
+                listName = expensesList.name.toString()
             }
             binding.counterMaxUsers.text = "8"
             binding.joinListaButton.text = "Unisciti"
@@ -98,9 +106,20 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
                     expensesListViewModel.updateByField(idLista, ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
 
                     //The user gets also added to the notification topic of this list
-                    Log.i("JOIN FRAGMENT", "${expensesList.id}")
-
                     Firebase.messaging.subscribeToTopic(expensesList.id!!)
+
+                    userViewModel.findByID(DBUtils.getLoggedUser().uid)
+                    userViewModel.userLiveData.observeOnce { user ->
+                        CustomFirebaseMessagingService.sendNotification(
+                            NotificationMessage(
+                                NotificationData(
+                                    title = listName,
+                                    body = "${user.fullname} si è unito al gruppo",
+                                    sender = user.id
+                                ),
+                                to = "${FirebaseConstants.TOPICS}/${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString()}")
+                        )
+                    }
 
                     SnackbarUtils.showSnackbarOKOverBottomnav("Ti sei aggiunto alla lista ${expensesList.name}", binding.root)
                     findNavController().popBackStack()
