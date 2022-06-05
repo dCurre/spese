@@ -16,8 +16,7 @@ import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.utils.GenericUtils.dateToTimestampSeconds
 import com.dcapps.spese.utils.SnackbarUtils
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
 
 class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
@@ -77,7 +76,7 @@ class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
                     )
 
                 //The user gets also added to the notification topic of this list
-                Firebase.messaging.subscribeToTopic(newExpensesListID)
+                FirebaseMessaging.getInstance().subscribeToTopic(newExpensesListID)
 
                 SnackbarUtils.showSnackbarOKOverBottomnav("Lista creata : )", binding.addListaSpeseConstraintLayout)
 

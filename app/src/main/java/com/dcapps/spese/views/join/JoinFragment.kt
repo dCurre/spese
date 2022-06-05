@@ -1,6 +1,7 @@
 package com.dcapps.spese.views.join
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,6 +98,8 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
                     expensesListViewModel.updateByField(idLista, ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
 
                     //The user gets also added to the notification topic of this list
+                    Log.i("JOIN FRAGMENT", "${expensesList.id}")
+
                     Firebase.messaging.subscribeToTopic(expensesList.id!!)
 
                     SnackbarUtils.showSnackbarOKOverBottomnav("Ti sei aggiunto alla lista ${expensesList.name}", binding.root)

@@ -26,6 +26,8 @@ import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.utils.SnackbarUtils
 import com.dcapps.spese.views.MainActivity
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import java.io.File
@@ -146,6 +148,9 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
                     //Deleting the list
                     expensesListViewModel.delete(idLista)
 
+                    //The user gets also unsubscribed from push notifications related to this list
+                    Firebase.messaging.unsubscribeFromTopic(idLista)
+
                     //REDIRECT MAIN PAGE
                     activity?.finish()
                     startActivity(Intent(Intent(context, MainActivity::class.java)))
@@ -213,7 +218,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
             AlertDialog.Builder(context)
                 .setTitle("Conferma")
                 .setMessage("Vuoi veramente abbandonare la lista?")
-                .setPositiveButton("SI") { _, _ -> leaveListAndChangeOwnership(expensesList) }
+                .setPositiveButton("SI") { _, _ -> leaveListAndChangeOwnership(expensesList)  }
                 .setNegativeButton("NO") { _, _ -> }
                 .show()
         }
@@ -228,6 +233,9 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         }
 
         this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
+
+        //The user gets also unsubscribed from push notifications related to this list
+        Firebase.messaging.unsubscribeFromTopic(expensesList.id!!)
 
         //REDIRECT MAIN PAGE
         activity?.finish()

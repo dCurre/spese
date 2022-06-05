@@ -90,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
                                     loggedUser.photoUrl.toString(),
                                     darkTheme = false,
                                     hidePaidLists = false,
-                                    ArrayList<String>()
+                                    messagingToken = ""
                                 )
                             )
                         }

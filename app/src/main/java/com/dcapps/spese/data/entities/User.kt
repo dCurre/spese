@@ -11,7 +11,7 @@ data class User (
     val profileImage : String,
     val darkTheme : Boolean,
     val hidePaidLists : Boolean,
-    val messagingTokenList : ArrayList<String>?
+    val messagingToken : String
         ) {
 
     companion object {
@@ -25,7 +25,7 @@ data class User (
                     getString(UserFieldsEnum.PROFILE_IMAGE.value)!!,
                     getBoolean(UserFieldsEnum.DARKTHEME.value)!!,
                     getBoolean(UserFieldsEnum.HIDE_PAID_LISTS.value)!!,
-                    get(UserFieldsEnum.MESSAGING_TOKEN_LIST.value) as ArrayList<String>,
+                    getString(UserFieldsEnum.MESSAGING_TOKEN.value)!!,
                 )
 
             } catch (e: Exception) {

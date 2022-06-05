@@ -68,7 +68,6 @@ open class MainActivity : AppCompatActivity() {
 
         //Subscribe to topic
         //FirebaseMessaging.getInstance().subscribeToTopic("DATA")
-        //Firebase.messaging.subscribeToTopic("DATA")
 
         //Controllo se ho un dynamic link attivo
         checkDynamicLink()
@@ -180,21 +179,12 @@ open class MainActivity : AppCompatActivity() {
                     return@OnCompleteListener
                 }
 
-                val messageTokenList = user.messagingTokenList ?: ArrayList<String>()
-
-                if(messageTokenList.contains(task.result)){
+                if(task.result.equals(user.messagingToken)){
                     Log.w(EditSpesaDialogFragment.TAG, "Message token already stored")
                     return@OnCompleteListener
                 }
 
-                //A user can store a maximum of 10 tokens per account
-                if(messageTokenList.size == 10){
-                    messageTokenList.removeAt(0)
-                }
-
-                messageTokenList.add(task.result)
-
-                userViewModel.updateByField(user.id, UserFieldsEnum.MESSAGING_TOKEN_LIST.value, messageTokenList)
+                userViewModel.updateByField(user.id, UserFieldsEnum.MESSAGING_TOKEN.value, task.result)
             })
         }
     }
