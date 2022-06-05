@@ -39,7 +39,6 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
         setupUserBar()
 
-
         return binding.root
     }
 

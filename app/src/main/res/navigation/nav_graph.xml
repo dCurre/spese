@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/addSpesaFragment"
-        android:name="com.dcapps.spese.views.NuovaSpesaFragment"
+        android:name="com.dcapps.spese.views.NewExpenseFragment"
         android:label="@string/add_spesa_fragment_label"
         tools:layout="@layout/add_spesa"/>
     <fragment
@@ -67,7 +67,7 @@
         tools:layout="@layout/calendar_fragment" />
     <fragment
         android:id="@+id/addListaSpeseFragment"
-        android:name="com.dcapps.spese.views.NuovaListaSpeseFragment"
+        android:name="com.dcapps.spese.views.NewExpensesListFragment"
         android:label="@string/add_lista_spese_fragment_label"
         tools:layout="@layout/add_lista_spese">
         <action

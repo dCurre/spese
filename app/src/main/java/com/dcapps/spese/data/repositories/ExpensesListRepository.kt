@@ -34,7 +34,8 @@ class ExpensesListRepository {
     }
 
     fun findAllByUserID(userID: String, liveData: MutableLiveData<List<ExpensesList>>) {
-        db.orderBy(ExpensesListFieldsEnum.TIMESTAMP_INS.value, Query.Direction.DESCENDING)
+        db.whereArrayContains(ExpensesListFieldsEnum.PARTECIPANTS.value, userID)
+            .orderBy(ExpensesListFieldsEnum.TIMESTAMP_INS.value, Query.Direction.DESCENDING)
             .addSnapshotListener { value, e ->
                 if (e != null){
                     Log.e(TAG, "Error in findAllByUserIDAndIsPaid, ${e.message}")
@@ -47,10 +48,10 @@ class ExpensesListRepository {
     fun findAllByUserIDAndIsPaid(userID: String, hidePaidLists: Boolean, liveData: MutableLiveData<List<ExpensesList>>) {
         val query =
             if(hidePaidLists)
-                db.whereArrayContains(ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, userID)
+                db.whereArrayContains(ExpensesListFieldsEnum.PARTECIPANTS.value, userID)
                     .whereNotEqualTo(ExpensesListFieldsEnum.PAID.value, hidePaidLists)
             else
-                db.whereArrayContains(ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, userID)
+                db.whereArrayContains(ExpensesListFieldsEnum.PARTECIPANTS.value, userID)
 
         //Sorting and retrieving data
         query.orderBy(ExpensesListFieldsEnum.PAID.value, Query.Direction.ASCENDING)

@@ -72,7 +72,7 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
 
             if (expensesList != null) {
                 binding.nomeGruppo.text = expensesList.name
-                binding.counterCurrentUsers.text = expensesList.partecipatingUsersID!!.size.toString()
+                binding.counterCurrentUsers.text = expensesList.partecipants!!.size.toString()
                 listName = expensesList.name.toString()
             }
             binding.counterMaxUsers.text = "8"
@@ -88,12 +88,12 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
             expensesListViewModel.expensesListLiveData.observeOnce { expensesList ->
                 //Se l'utente è già presente in lista
                 if (expensesList != null) {
-                    if(expensesList.partecipatingUsersID!!.contains(currentUser.uid)){
+                    if(expensesList.partecipants!!.contains(currentUser.uid)){
                         SnackbarUtils.showSnackbarError("Fai già parte della lista!", binding.root)
                         return@observeOnce
                     }
 
-                    if(expensesList.partecipatingUsersID.size >= binding.counterMaxUsers.text.toString().toInt()) {
+                    if(expensesList.partecipants.size >= binding.counterMaxUsers.text.toString().toInt()) {
                         SnackbarUtils.showSnackbarError(
                             "Numero massimo di utenti raggiunto!",
                             binding.root
@@ -101,9 +101,9 @@ class JoinFragment : Fragment(R.layout.join_fragment) {
                         return@observeOnce
                     }
 
-                    expensesList.partecipatingUsersID.add(currentUser.uid)
+                    expensesList.partecipants.add(currentUser.uid)
 
-                    expensesListViewModel.updateByField(idLista, ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
+                    expensesListViewModel.updateByField(idLista, ExpensesListFieldsEnum.PARTECIPANTS.value, expensesList.partecipants)
 
                     //The user gets also added to the notification topic of this list
                     Firebase.messaging.subscribeToTopic(expensesList.id!!)

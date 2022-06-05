@@ -32,7 +32,7 @@ import com.dcapps.spese.utils.SnackbarUtils
 import java.util.*
 
 
-class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
+class NewExpenseFragment : Fragment(R.layout.add_spesa) {
 
     private val className = javaClass.simpleName
     private var _binding: AddSpesaBinding? = null
@@ -173,11 +173,11 @@ class NuovaSpesaFragment : Fragment(R.layout.add_spesa) {
     ) {
         expensesListViewModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
         expensesListViewModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
-            val partecipanti = expensesList?.partecipatingUsersID
-            var countPartecipanti = partecipanti!!.size
+            val partecipants = expensesList?.partecipants
+            var countPartecipanti = partecipants!!.size
 
             //TODO DA SISTEMARE DOPO CAMBIO A FIRESTORE
-            userViewModel.findAllByUserIdList(partecipanti)
+            userViewModel.findAllByUserIdList(partecipants)
             userViewModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
                 for(user in userList){
                     countPartecipanti--

@@ -93,7 +93,7 @@ class SettingsExpensesListFragment : Fragment(R.layout.lista_settings_fragment) 
             if(expensesList == null)
                 return@observe
 
-            userViewModel.findAllByUserIdList(expensesList.partecipatingUsersID!!)
+            userViewModel.findAllByUserIdList(expensesList.partecipants!!)
         }
 
         userViewModel.userListLiveData.observe(viewLifecycleOwner) { userList ->
@@ -214,7 +214,7 @@ class SettingsExpensesListFragment : Fragment(R.layout.lista_settings_fragment) 
             expensesList = extractedExpensesList ?: ExpensesList()
         }
 
-        if(expensesList.partecipatingUsersID!!.size == 1 && expensesList.partecipatingUsersID!![0].equals(currentUser.uid, ignoreCase = true)){
+        if(expensesList.partecipants!!.size == 1 && expensesList.partecipants!![0].equals(currentUser.uid, ignoreCase = true)){
             AlertDialog.Builder(context)
                 .setTitle("Conferma")
                 .setMessage("Sei l'unico partecipante di questa lista, vuoi cancellarla?")
@@ -232,14 +232,14 @@ class SettingsExpensesListFragment : Fragment(R.layout.lista_settings_fragment) 
     }
 
     private fun leaveListAndChangeOwnership(expensesList: ExpensesList) {
-        expensesList.partecipatingUsersID!!.remove(currentUser.uid)
+        expensesList.partecipants!!.remove(currentUser.uid)
 
         //Se ero l'owner allora passo l'ownership al primo della lista
         if(expensesList.owner.equals(currentUser.uid, ignoreCase = true)){
-            this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldsEnum.OWNER.value, expensesList.partecipatingUsersID[0])
+            this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldsEnum.OWNER.value, expensesList.partecipants[0])
         }
 
-        this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
+        this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldsEnum.PARTECIPANTS.value, expensesList.partecipants)
 
         //The user gets also unsubscribed from push notifications related to this list
         Firebase.messaging.unsubscribeFromTopic(expensesList.id)

@@ -123,7 +123,7 @@ open class MainActivity : AppCompatActivity() {
 
                 //If the user is already partecipanting in the list --> redirection to the list fragment else join fragment
                 navController.navigate(
-                    if(expensesList.partecipatingUsersID?.contains(DBUtils.getLoggedUser().uid) == true) R.id.loadSpeseFragment else R.id.joinFragment,
+                    if(expensesList.partecipants?.contains(DBUtils.getLoggedUser().uid) == true) R.id.loadSpeseFragment else R.id.joinFragment,
                     GenericUtils.createBundleForListaSpese(
                         expensesListID,
                         expensesList.name,

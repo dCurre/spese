@@ -19,7 +19,7 @@ import com.dcapps.spese.utils.SnackbarUtils
 import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
 
-class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
+class NewExpensesListFragment : Fragment(R.layout.add_lista_spese) {
 
     private val className = javaClass.simpleName
     private var _binding: AddListaSpeseBinding? = null
@@ -66,12 +66,12 @@ class NuovaListaSpeseFragment : Fragment(R.layout.add_lista_spese) {
                 ViewModelProvider(this)[ExpensesListViewModel::class.java]
                     .insert(
                         ExpensesList(
-                            newExpensesListID,
-                            binding.listaSpeseNomeText.text.toString().trim(),
-                            arrayListOf(currentUser.uid),
-                            currentUser.uid,
+                            id = newExpensesListID,
+                            name = binding.listaSpeseNomeText.text.toString().trim(),
+                            partecipants = arrayListOf(currentUser.uid),
+                            owner = currentUser.uid,
                             paid = false,
-                            dateToTimestampSeconds(Date())
+                            timestampIns = dateToTimestampSeconds(Date())
                         )
                     )
 

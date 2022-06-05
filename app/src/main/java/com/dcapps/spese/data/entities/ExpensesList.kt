@@ -4,10 +4,11 @@ import android.util.Log
 import com.dcapps.spese.enums.entity.ExpensesListFieldsEnum
 import com.google.firebase.firestore.DocumentSnapshot
 
+@Suppress("UNCHECKED_CAST")
 data class ExpensesList(
     val id: String?,
     val name: String?,
-    val partecipatingUsersID: ArrayList<String>?,
+    val partecipants: ArrayList<String>?,
     val owner: String?,
     val paid: Boolean,
     val timestampIns: Long?
@@ -20,7 +21,7 @@ data class ExpensesList(
                 ExpensesList(
                     id,
                     getString(ExpensesListFieldsEnum.NAME.value)!!,
-                    get(ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value) as ArrayList<String>,
+                    get(ExpensesListFieldsEnum.PARTECIPANTS.value) as ArrayList<String>,
                     getString(ExpensesListFieldsEnum.OWNER.value)!!,
                     getBoolean(ExpensesListFieldsEnum.PAID.value)!!,
                     getLong(ExpensesListFieldsEnum.TIMESTAMP_INS.value)!!
