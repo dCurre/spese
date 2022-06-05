@@ -1,6 +1,7 @@
 package com.dcapps.spese.views.login
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import com.dcapps.spese.R
 import com.dcapps.spese.data.entities.User
 import com.dcapps.spese.data.viewmodels.UserViewModel
 import com.dcapps.spese.databinding.ActivityLoginBinding
+import com.dcapps.spese.enums.entity.UserFieldsEnum
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.views.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -25,13 +27,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var mAuth : FirebaseAuth
-    private lateinit var userModel : UserViewModel
+    private lateinit var userViewModel : UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        userModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         mAuth = DBUtils.getAuthentication()
 
         // Configure Google Sign In
@@ -79,20 +81,22 @@ class LoginActivity : AppCompatActivity() {
                     //DOPO LA LOGIN CREO L'UTENTE SE NON ESITE
                     val loggedUser = DBUtils.getLoggedUser()
 
-                    userModel.findByID(loggedUser.uid)
-                    userModel.userLiveData.observe(this) { user ->
+                    userViewModel.findByID(loggedUser.uid)
+                    userViewModel.userLiveData.observe(this) { user ->
                         if (user == null) {
-                            userModel.insert(
+                            userViewModel.insert(
                                 User(
                                     loggedUser.uid,
                                     loggedUser.displayName!!,
                                     loggedUser.email!!,
                                     loggedUser.photoUrl.toString(),
-                                    darkTheme = false,
+                                    darkTheme = isDeviceDarkTheme(),
                                     hidePaidLists = false,
                                     messagingToken = ""
                                 )
                             )
+                        } else {
+                            userViewModel.updateByField(user.id, UserFieldsEnum.DARKTHEME.value, isDeviceDarkTheme())
                         }
                         startActivity(Intent(this, MainActivity::class.java))
                         finish()
@@ -103,5 +107,9 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         private const val RC_SIGN_IN = 120
+    }
+
+    private fun isDeviceDarkTheme() : Boolean {
+        return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 }

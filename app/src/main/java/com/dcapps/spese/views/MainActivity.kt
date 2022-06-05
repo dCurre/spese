@@ -28,6 +28,7 @@ import com.dcapps.spese.enums.entity.UserFieldsEnum
 import com.dcapps.spese.enums.firebase.deeplink.DeepLinkParametersEnum
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.GenericUtils
+import com.dcapps.spese.utils.SnackbarUtils
 import com.dcapps.spese.views.dialog.EditSpesaDialogFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -67,9 +68,6 @@ open class MainActivity : AppCompatActivity() {
         //Message token set or update
         manageMessagingToken()
 
-        //Subscribe to topic
-        //FirebaseMessaging.getInstance().subscribeToTopic("DATA")
-
         //Controllo se ho un dynamic link attivo
         checkDynamicLink()
     }
@@ -107,42 +105,33 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun checkDynamicLink() {
-        Firebase.dynamicLinks.getDynamicLink(intent)
-            .addOnSuccessListener(this) { pendingDynamicLinkData ->
-                // Get deep link from result (may be null if no link is found)
-                val deepLink: Uri? = pendingDynamicLinkData?.link
+        Firebase.dynamicLinks.getDynamicLink(intent).addOnSuccessListener(this) { pendingDynamicLinkData ->
+            // Get deep link from result (may be null if no link is found) --> if null returns
+            val deepLink: Uri = pendingDynamicLinkData?.link ?: return@addOnSuccessListener
 
-                if (deepLink != null) {
-                    val expensesListID = deepLink.getQueryParameter(DeepLinkParametersEnum.LIST.value)!!
-                    expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
-                    expensesListViewModel.findByID(expensesListID)
-                    expensesListViewModel.expensesListLiveData.observeOnce { expensesList ->
-                        if (expensesList != null && expensesList.partecipatingUsersID?.contains(
-                                DBUtils.getLoggedUser().uid
-                            ) == true
-                        ) {
-                            navController.navigate(
-                                R.id.loadSpeseFragment,
-                                GenericUtils.createBundleForListaSpese(
-                                    expensesListID,
-                                    expensesList.name,
-                                    expensesList.owner
-                                )
-                            )
-                        } else {
-                            //Navigo sul fragment successivo passandogli il bundle con id lista
-                            navController.navigate(
-                                R.id.joinFragment,
-                                GenericUtils.createBundleForListaSpese(
-                                    expensesListID,
-                                    null,
-                                    null
-                                )
-                            )
-                        }
-                    }
+            val expensesListID = deepLink.getQueryParameter(DeepLinkParametersEnum.LIST.value)!!
+            expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
+            expensesListViewModel.findByID(expensesListID)
+            expensesListViewModel.expensesListLiveData.observeOnce { expensesList ->
+
+                //If the list doesnt exists anymore
+                if(expensesList == null) {
+                    Log.e("CHECK", "A QUANTO PARE LA LISTA E' NULLA")
+                    SnackbarUtils.showSnackbarErrorOverBottomnav("La lista non esiste più", binding.root)
+                    return@observeOnce
                 }
+
+                //If the user is already partecipanting in the list --> redirection to the list fragment else join fragment
+                navController.navigate(
+                    if(expensesList.partecipatingUsersID?.contains(DBUtils.getLoggedUser().uid) == true) R.id.loadSpeseFragment else R.id.joinFragment,
+                    GenericUtils.createBundleForListaSpese(
+                        expensesListID,
+                        expensesList.name,
+                        expensesList.owner
+                    )
+                )
             }
+        }
     }
 
     fun setBottomNavVisibility(bool : Boolean){

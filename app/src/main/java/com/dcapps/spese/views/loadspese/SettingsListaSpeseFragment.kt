@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -242,7 +241,7 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         this.expensesListViewModel.updateByField(expensesList.id!!,ExpensesListFieldsEnum.PARTECIPATING_USERS_ID.value, expensesList.partecipatingUsersID)
 
         //The user gets also unsubscribed from push notifications related to this list
-        Firebase.messaging.unsubscribeFromTopic(expensesList.id!!)
+        Firebase.messaging.unsubscribeFromTopic(expensesList.id)
 
         //REDIRECT MAIN PAGE
         activity?.finish()
@@ -259,21 +258,19 @@ class SettingsListaSpeseFragment : Fragment(R.layout.lista_settings_fragment) {
         binding.switchPaid.setOnCheckedChangeListener { _, bool ->
             userViewModel.findByID(DBUtils.getLoggedUser().uid)
             userViewModel.userLiveData.observeOnce { user ->
-                if(bool){
-                    Log.i("PROVA", "EUREKA")
-
-                    //Notifico gli che la lista è stata saldata
-                    CustomFirebaseMessagingService.sendNotification(
-                        NotificationMessage(
-                            NotificationData(
-                                title = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString(),
-                                body = "è stata saldata da ${user.fullname}",
-                                sender = user.id
-                            ),
-                            to = "${FirebaseConstants.TOPICS}/${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString()}")
-                    )
-
-                    Log.i("PROVA", "EUREKA DUE")
+                expensesListViewModel.expensesListLiveData.observeOnce { expensesList ->
+                    if (expensesList != null && !expensesList.paid) {
+                        //Notifico gli che la lista è stata saldata
+                        CustomFirebaseMessagingService.sendNotification(
+                            NotificationMessage(
+                                NotificationData(
+                                    title = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString(),
+                                    body = "è stata saldata da ${user.fullname}",
+                                    sender = user.id
+                                ),
+                                to = "${FirebaseConstants.TOPICS}/${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString()}")
+                        )
+                    }
                 }
                 expensesListViewModel.updateByField(idLista, ExpensesListFieldsEnum.PAID.value, bool)
             }
