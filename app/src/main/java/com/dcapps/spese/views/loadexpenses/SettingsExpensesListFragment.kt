@@ -2,11 +2,10 @@ package com.dcapps.spese.views.loadexpenses
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -25,6 +24,7 @@ import com.dcapps.spese.data.viewmodels.UserViewModel
 import com.dcapps.spese.databinding.ListaSettingsFragmentBinding
 import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
 import com.dcapps.spese.enums.entity.ExpensesListFieldsEnum
+import com.dcapps.spese.enums.firebase.deeplink.DeepLinkParametersEnum
 import com.dcapps.spese.services.CustomFirebaseMessagingService
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.ExcelUtils
@@ -32,6 +32,8 @@ import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.utils.SnackbarUtils
 import com.dcapps.spese.views.MainActivity
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import org.apache.poi.hssf.usermodel.HSSFSheet
@@ -56,6 +58,7 @@ class SettingsExpensesListFragment : Fragment(R.layout.lista_settings_fragment) 
         savedInstanceState: Bundle?
     ): View {
 
+        setHasOptionsMenu(true)
         currentUser = DBUtils.getLoggedUser()
         _binding = ListaSettingsFragmentBinding.inflate(inflater, container, false)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
@@ -79,6 +82,40 @@ class SettingsExpensesListFragment : Fragment(R.layout.lista_settings_fragment) 
 
         setupToolbar(nomeLista)
     }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        //Showing share button share button
+        menu.findItem(R.id.share).isVisible = true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val listID = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value)
+        when (item.itemId) {
+            R.id.share -> {
+                //Gestione dello share
+                val intent = Intent()
+                intent.action = Intent.ACTION_SEND
+                intent.putExtra(Intent.EXTRA_TEXT, "Ciao, entra nel gruppo ${generateDynamicLink(listID).uri}")
+                intent.type = "text/plain"
+
+                startActivity(Intent.createChooser(intent, "Condividi la lista con: "))
+            }
+            R.id.list_settings -> { }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun generateDynamicLink(listID: String?): DynamicLink {
+        return FirebaseDynamicLinks.getInstance()
+            .createDynamicLink()
+            .setDomainUriPrefix("https://spesedc.page.link/join")
+            .setLink(Uri.parse("https://spesedc.page.link/join"))
+            .setLongLink(Uri.parse("https://spesedc.page.link/?link=https://spesedc.page.link/join?${DeepLinkParametersEnum.LIST.value}=$listID&apn=com.dcurreli.spese"))
+            .buildDynamicLink()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

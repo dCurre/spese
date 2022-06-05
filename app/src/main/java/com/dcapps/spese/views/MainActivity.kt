@@ -79,7 +79,7 @@ open class MainActivity : AppCompatActivity() {
 
         //Nascondo il menu appena creato
         menu.findItem(R.id.share).isVisible = false
-        menu.findItem(R.id.edit).isVisible = false
+        menu.findItem(R.id.list_settings).isVisible = false
 
         return true
     }

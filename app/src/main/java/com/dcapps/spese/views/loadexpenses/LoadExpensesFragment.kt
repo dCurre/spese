@@ -1,7 +1,5 @@
 package com.dcapps.spese.views.loadexpenses
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +11,8 @@ import com.dcapps.spese.adapters.ViewPagerAdapter
 import com.dcapps.spese.data.viewmodels.ExpensesListViewModel
 import com.dcapps.spese.databinding.LoadSpeseBinding
 import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
-import com.dcapps.spese.enums.firebase.deeplink.DeepLinkParametersEnum
 import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.views.MainActivity
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 
 
 class LoadExpensesFragment : Fragment(R.layout.load_spese) {
@@ -79,25 +74,14 @@ class LoadExpensesFragment : Fragment(R.layout.load_spese) {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        val itemShare : MenuItem = menu.findItem(R.id.share)
-        val itemEdit : MenuItem = menu.findItem(R.id.edit)
-        itemShare.isVisible = true
-        itemEdit.isVisible = true
+        //Showing settings button share button
+        menu.findItem(R.id.list_settings).isVisible = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val listID = arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value)
         when (item.itemId) {
-            R.id.share -> {
-                //Gestione dello share
-                val intent = Intent()
-                intent.action = Intent.ACTION_SEND
-                intent.putExtra(Intent.EXTRA_TEXT, "Ciao, entra nel gruppo ${generateDynamicLink(listID).uri}")
-                intent.type = "text/plain"
-
-                startActivity(Intent.createChooser(intent, "Condividi la lista con: "))
-            }
-            R.id.edit -> {
+            R.id.share -> { }
+            R.id.list_settings -> {
                 //Navigo sul fragment successivo passandogli il bundle con i dati ricevuti in precedenza
                 findNavController().navigate(R.id.action_loadSpeseFragment_to_listaSettingsFragment, arguments)
             }
@@ -105,14 +89,4 @@ class LoadExpensesFragment : Fragment(R.layout.load_spese) {
 
         return super.onOptionsItemSelected(item)
     }
-
-    private fun generateDynamicLink(listID: String?): DynamicLink {
-        return FirebaseDynamicLinks.getInstance()
-            .createDynamicLink()
-            .setDomainUriPrefix("https://spesedc.page.link/join")
-            .setLink(Uri.parse("https://spesedc.page.link/join"))
-            .setLongLink(Uri.parse("https://spesedc.page.link/?link=https://spesedc.page.link/join?${DeepLinkParametersEnum.LIST.value}=$listID&apn=com.dcurreli.spese"))
-            .buildDynamicLink()
-    }
-
 }
