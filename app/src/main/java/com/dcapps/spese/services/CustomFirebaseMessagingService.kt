@@ -37,7 +37,6 @@ class CustomFirebaseMessagingService : FirebaseMessagingService(){
         if(DBUtils.getLoggedUser().uid != remoteMessage.data[NotificationDataFieldsEnum.SENDER.value]){
             showNotification(remoteMessage)
         }
-
     }
 
     override fun onMessageSent(msgId: String) {
@@ -74,7 +73,7 @@ class CustomFirebaseMessagingService : FirebaseMessagingService(){
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(remoteMessage.data[NotificationDataFieldsEnum.TITLE.value])
             .setContentText(remoteMessage.data[NotificationDataFieldsEnum.BODY.value])
-            .setSmallIcon(R.drawable.ic_euro)
+            .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()

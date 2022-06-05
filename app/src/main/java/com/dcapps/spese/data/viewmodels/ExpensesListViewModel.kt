@@ -18,6 +18,10 @@ class ExpensesListViewModel : ViewModel() {
         repository.findAll(_expensesListsLiveData)
     }
 
+    fun findAllByUserID(userID: String) {
+        repository.findAllByUserID(userID, _expensesListsLiveData)
+    }
+
     fun findAllByUserIDAndIsPaid(userID: String, hidePaidLists: Boolean) {
         repository.findAllByUserIDAndIsPaid(userID, hidePaidLists, _expensesListsLiveData)
     }

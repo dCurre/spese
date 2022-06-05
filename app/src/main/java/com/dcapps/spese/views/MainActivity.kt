@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 
 open class MainActivity : AppCompatActivity() {
 
@@ -184,6 +185,14 @@ open class MainActivity : AppCompatActivity() {
                     return@OnCompleteListener
                 }
 
+                //If this point is reached I need to resubscribe every list in which the user partecipates
+                expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
+                expensesListViewModel.findAllByUserID(user.id)
+                expensesListViewModel.expensesListsLiveData.observeOnce { expensesLists ->
+                    expensesLists.forEach { expensesList -> Firebase.messaging.subscribeToTopic(expensesList.id!!) }
+                }
+
+                //And then store the new token for future comparisons
                 userViewModel.updateByField(user.id, UserFieldsEnum.MESSAGING_TOKEN.value, task.result)
             })
         }

@@ -33,6 +33,17 @@ class ExpensesListRepository {
         }
     }
 
+    fun findAllByUserID(userID: String, liveData: MutableLiveData<List<ExpensesList>>) {
+        db.orderBy(ExpensesListFieldsEnum.TIMESTAMP_INS.value, Query.Direction.DESCENDING)
+            .addSnapshotListener { value, e ->
+                if (e != null){
+                    Log.e(TAG, "Error in findAllByUserIDAndIsPaid, ${e.message}")
+                    return@addSnapshotListener
+                }
+                liveData.postValue(value!!.documents.mapNotNull { it.toExpensesList() })
+            }
+    }
+
     fun findAllByUserIDAndIsPaid(userID: String, hidePaidLists: Boolean, liveData: MutableLiveData<List<ExpensesList>>) {
         val query =
             if(hidePaidLists)
