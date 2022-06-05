@@ -105,7 +105,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/spesa_button_add_spesa"
             android:layout_width="245dp"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/button"
             android:layout_below="@id/spesa_pagatore_layout"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
