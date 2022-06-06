@@ -31,7 +31,6 @@ class BalanceCategoryAdapter(private val context: Context) : RecyclerView.Adapte
             holder.subItemsRecyclerView.visibility = if(holder.subItemsRecyclerView.visibility == View.GONE) View.VISIBLE else View.GONE
         }
         setSublist(holder.subItemsRecyclerView, balanceCategoryList[position].amountsToReceive)
-
     }
 
     private fun setSublist(subListRecyclerView: RecyclerView, amountToReceiveList: ArrayList<BalanceSubItem>) {

@@ -3,6 +3,8 @@ package com.dcapps.spese.views.loadexpenses
 import android.app.AlertDialog
 import android.graphics.Canvas
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -134,7 +136,7 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
                             .setTitle("Conferma")
                             .setMessage("Vuoi cancellare la spesa ${expenseAdapter.getItem(viewHolder.absoluteAdapterPosition).expense}?")
                             .setPositiveButton("SI") { _, _ ->
-                                expenseViewModel.delete(expenseAdapter.getItem(viewHolder.absoluteAdapterPosition).id)
+                                expenseAdapter.deleteItem(viewHolder.absoluteAdapterPosition, expenseViewModel)
                                 SnackbarUtils.showSnackbarOK("Spesa cancellata", binding.root)
                             }
                             .setNegativeButton("NO") { _, _ ->

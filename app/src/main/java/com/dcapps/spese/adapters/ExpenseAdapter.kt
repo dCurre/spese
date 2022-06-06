@@ -1,6 +1,8 @@
 package com.dcapps.spese.adapters
 
 import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dcapps.spese.R
 import com.dcapps.spese.data.entities.Expense
+import com.dcapps.spese.data.viewmodels.ExpenseViewModel
 
 class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
 
@@ -34,6 +37,20 @@ class ExpenseAdapter : RecyclerView.Adapter<ExpenseAdapter.ViewHolder>() {
 
     fun getItem(position: Int): Expense {
         return speseList[position]
+    }
+
+    fun deleteItem(position: Int, expenseViewModel: ExpenseViewModel) {
+        val idToRemove = getItem(position).id
+
+        speseList.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, speseList.size)
+
+        //Delaying 1 second before so i can get the animation
+        Handler(Looper.getMainLooper()).postDelayed({
+                expenseViewModel.delete(idToRemove)
+            },500
+        )
     }
 
     @SuppressLint("NotifyDataSetChanged")
