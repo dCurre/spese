@@ -35,7 +35,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/join_lista_button"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/button"
             android:layout_below="@id/nome_gruppo"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@id/counter_current_users"

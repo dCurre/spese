@@ -30,6 +30,7 @@
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/ic_welcome.xml" value="0.21770833333333334" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/lista_liste_da_saldare.xml" value="0.2785" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/lista_liste_saldato.xml" value="0.2785" />
+        <entry key="..\:/Coding/spese/app/src/main/res/drawable/load_spese_bottom_line.xml" value="0.1945" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/navigation_enter.xml" value="0.2805" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/saldo_category_style.xml" value="0.3145" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/saldo_subitems_style.xml" value="0.3145" />
@@ -38,6 +39,7 @@
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/text_line.xml" value="0.3635" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/text_view_first_item_list_bottom_line.xml" value="0.2785" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/text_view_list_bottom_line.xml" value="0.294" />
+        <entry key="..\:/Coding/spese/app/src/main/res/drawable/text_view_list_bottom_line_load_spese_item.xml" value="0.1945" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/toolbar_style.xml" value="0.275" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/top_line_text_view.xml" value="0.202" />
         <entry key="..\:/Coding/spese/app/src/main/res/drawable/user_bar_style.xml" value="0.2605" />

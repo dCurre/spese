@@ -22,11 +22,11 @@
                 android:id="@+id/table_layout_schede"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:backgroundTint="?colorOnPrimary"
-                app:tabInlineLabel="true"
+                android:background="@drawable/load_spese_bottom_line"
                 app:tabIconTint="?colorPrimary"
-                app:tabTextColor="?colorPrimary"
-                />
+                app:tabInlineLabel="true"
+                app:tabTextColor="?colorPrimary" />
+
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager_schede"
                 android:layout_width="match_parent"

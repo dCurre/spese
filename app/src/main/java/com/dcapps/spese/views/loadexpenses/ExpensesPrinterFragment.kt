@@ -3,6 +3,7 @@ package com.dcapps.spese.views.loadexpenses
 import android.app.AlertDialog
 import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,12 +84,12 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
         binding.listaSpese.adapter = expenseAdapter
     }
 
-    private fun setupScrollListener(listaSpese: RecyclerView) {
+    private fun setupScrollListener(listaSpese: RecyclerView, isPaid : Boolean) {
         val scrollListener = object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 //SCROLLING UP SHOWS THE BUTTON
-                if (dy<0 && !binding.addSpesaButton.isShown){
+                if (dy<0 && !binding.addSpesaButton.isShown && !isPaid){
                     binding.addSpesaButton.show()
                 }
 
@@ -178,9 +179,9 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
         listaSpeseModel.findByID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
         listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
             binding.addSpesaButton.visibility = if(expensesList?.paid == true) View.GONE else View.VISIBLE
+            setupScrollListener(binding.listaSpese, expensesList?.paid == true)
+            Log.i("SCROLLO", "MINCHIA SE SCROLLO")
         }
-
-        setupScrollListener(binding.listaSpese)
 
         binding.addSpesaButton.setOnClickListener{
             findNavController().navigate(
