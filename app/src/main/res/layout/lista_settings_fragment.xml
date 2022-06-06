@@ -91,7 +91,7 @@
             app:icon="@drawable/ic_download"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
-            app:iconTint="@color/primary" />
+            app:iconTint="?colorPrimary" />
 
         <Button
             android:id="@+id/button_leave"

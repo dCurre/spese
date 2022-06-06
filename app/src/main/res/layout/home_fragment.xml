@@ -24,7 +24,7 @@
                 android:layout_height="54dp"
                 android:layout_centerVertical="true"
                 android:layout_margin="20dp"
-                app:cardBackgroundColor="@color/onPrimary"
+                app:cardBackgroundColor="?colorOnPrimary"
                 app:cardCornerRadius="250dp">
 
                 <androidx.cardview.widget.CardView
@@ -50,7 +50,7 @@
                 android:fontFamily="@font/monsterrat_bold"
                 android:gravity="center_vertical"
                 android:text="lorem"
-                android:textColor="@color/onPrimary"
+                android:textColor="?colorOnPrimary"
                 android:textSize="16sp" />
         </RelativeLayout>
 

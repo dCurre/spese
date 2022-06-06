@@ -22,7 +22,7 @@
                 android:id="@+id/table_layout_schede"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/onPrimary"
+                android:background="?colorOnPrimary"
                 android:elevation="10dp"
                 app:tabIconTint="?colorPrimary"
                 app:tabInlineLabel="true"

@@ -23,7 +23,7 @@
             android:id="@+id/spesa_load_category_layout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="@color/primary"
+            android:background="?colorPrimary"
             android:clickable="true"
             android:foreground="@drawable/foreground_ripple"
             android:paddingHorizontal="10dp">
@@ -35,7 +35,7 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/monsterrat_bold"
                 android:text="Pagatore"
-                android:textColor="@color/onPrimary"
+                android:textColor="?colorOnPrimary"
                 android:textSize="8pt" />
 
             <TextView
@@ -47,7 +47,7 @@
                 android:fontFamily="@font/monsterrat_bold"
                 android:text="Importo"
                 android:textAlignment="textEnd"
-                android:textColor="@color/onPrimary"
+                android:textColor="?colorOnPrimary"
                 android:textSize="8pt" />
         </RelativeLayout>
 
