@@ -13,7 +13,6 @@ class CalendarFragment : Fragment(R.layout.calendar_fragment) {
 
     private var _binding: CalendarFragmentBinding? = null
     private val binding get() = _binding!! // This property is only valid between onCreateView and onDestroyView.
-    private val className = javaClass.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

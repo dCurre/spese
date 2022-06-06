@@ -1,5 +1,6 @@
 package com.dcapps.spese.data.repositories
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dcapps.spese.data.entities.Expense
@@ -11,7 +12,6 @@ import com.google.firebase.firestore.Query
 
 class ExpenseRepository {
     private val db = DBUtils.getFirestoreReference(TablesEnum.EXPENSE)
-    private val TAG = "ExpenseRepository"
 
     fun findAll(liveData: MutableLiveData<List<Expense>>) {
         db.addSnapshotListener { value, e ->

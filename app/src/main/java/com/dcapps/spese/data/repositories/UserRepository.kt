@@ -8,9 +8,9 @@ import com.dcapps.spese.enums.entity.UserFieldsEnum
 import com.dcapps.spese.enums.table.TablesEnum
 import com.dcapps.spese.utils.DBUtils
 
+import android.content.ContentValues.TAG
 class UserRepository {
     private val db = DBUtils.getFirestoreReference(TablesEnum.USER)
-    private val TAG = "UserRepository"
 
     fun findAll(liveData: MutableLiveData<List<User>>) {
         db.addSnapshotListener { value, e ->

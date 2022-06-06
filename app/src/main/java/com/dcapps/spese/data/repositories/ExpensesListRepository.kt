@@ -8,10 +8,10 @@ import com.dcapps.spese.enums.entity.ExpensesListFieldsEnum
 import com.dcapps.spese.enums.table.TablesEnum
 import com.dcapps.spese.utils.DBUtils
 import com.google.firebase.firestore.Query
+import android.content.ContentValues.TAG
 
 class ExpensesListRepository {
     private val db = DBUtils.getFirestoreReference(TablesEnum.EXPENSES_LISTS)
-    private val TAG = "ExpensesListRepository"
 
     fun findAll(liveData: MutableLiveData<List<ExpensesList>>) {
         db.addSnapshotListener { value, e ->

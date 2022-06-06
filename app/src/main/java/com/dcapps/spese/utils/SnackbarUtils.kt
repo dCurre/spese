@@ -11,7 +11,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.dcapps.spese.R
 import com.google.android.material.snackbar.Snackbar
 
-
 object SnackbarUtils {
 
     fun showSnackbarError(message: String, constraintLayout: ConstraintLayout) {
@@ -104,7 +103,6 @@ object SnackbarUtils {
         snackbar.show()
     }
 
-    private val className = javaClass.simpleName
     private val successColor = Color.rgb(0, 128, 0)
     private val errorColor = Color.rgb(180, 0, 0)
 

@@ -5,7 +5,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow
 import org.apache.poi.hssf.usermodel.HSSFSheet
 
 object ExcelUtils {
-    private val className = javaClass.simpleName
 
     fun printFormula(i: Int, descFormula: String, formula: String, hssfSheet: HSSFSheet) {
         val hssfRow: HSSFRow = hssfSheet.createRow(i)

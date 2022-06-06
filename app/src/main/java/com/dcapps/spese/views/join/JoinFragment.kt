@@ -29,7 +29,6 @@ import com.google.firebase.messaging.ktx.messaging
 
 class JoinFragment : Fragment(R.layout.join_fragment) {
 
-    private val className = javaClass.simpleName
     private var _binding: JoinFragmentBinding? = null
     private var currentUser: FirebaseUser = DBUtils.getLoggedUser()
     private lateinit var expensesListViewModel : ExpensesListViewModel

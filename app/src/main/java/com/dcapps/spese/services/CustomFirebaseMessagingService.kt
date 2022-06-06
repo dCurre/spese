@@ -25,7 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-private val TAG = "NotificationMessage"
+private const val TAG = "NotificationMessage"
 private const val CHANNEL_ID = "spese"
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")

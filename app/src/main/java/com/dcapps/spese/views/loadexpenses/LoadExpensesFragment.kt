@@ -3,6 +3,7 @@ package com.dcapps.spese.views.loadexpenses
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,12 +14,12 @@ import com.dcapps.spese.databinding.LoadSpeseBinding
 import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
 import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.views.MainActivity
+import com.google.android.material.tabs.TabLayoutMediator
 
 
 class LoadExpensesFragment : Fragment(R.layout.load_spese) {
 
     private var _binding: LoadSpeseBinding? = null
-    private val className = javaClass.simpleName
     private val binding get() = _binding!!
     private lateinit var listaSpeseModel : ExpensesListViewModel
 
@@ -33,13 +34,17 @@ class LoadExpensesFragment : Fragment(R.layout.load_spese) {
         //Setto il nome della toolbar in base al bottone di spesa che ho clickato
         setupToolbar()
 
-        //Setup tab layout (schede orizzontali)
-        setupTabLayout()
-
         //Nascondo bottom nav
         (activity as MainActivity).setBottomNavVisibility(false)
 
         return this.binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //Setup tab layout (schede orizzontali)
+        setupTabLayout()
     }
 
     override fun onDestroyView() {
@@ -51,17 +56,15 @@ class LoadExpensesFragment : Fragment(R.layout.load_spese) {
     }
 
     private fun setupTabLayout(){
-        //Setup tab layout (schede orizzontali)
-        val adapter = ViewPagerAdapter(childFragmentManager)
-        adapter.addFragment(ExpensesPrinterFragment.newInstance(arguments), "Spese", R.drawable.ic_shopping_cart)
-        adapter.addFragment(ExpensesBalanceFragment.newInstance(arguments), "Saldo", R.drawable.ic_euro)
+        val adapter = ViewPagerAdapter(activity)
+        adapter.addFragment(ExpensesPrinterFragment.newInstance(arguments), "Spese", ContextCompat.getDrawable(requireActivity(), R.drawable.ic_shopping_cart))
+        adapter.addFragment(ExpensesBalanceFragment.newInstance(arguments), "Saldo", ContextCompat.getDrawable(requireActivity(), R.drawable.ic_euro))
         binding.viewPagerSchede.adapter = adapter
-        binding.tableLayoutSchede.setupWithViewPager(binding.viewPagerSchede)
 
-        //Aggiungo le icone ad ogni scheda -- ciclo quindi il codice non cambierà mai
-        for(i in 0 until adapter.count){
-            binding.tableLayoutSchede.getTabAt(i)!!.setIcon(adapter.getIcon(i))
-        }
+        TabLayoutMediator(binding.tableLayoutSchede, binding.viewPagerSchede) { tab, position ->
+            tab.text = adapter.getTabTitle(position)
+            tab.icon = adapter.getIcon(position)
+        }.attach()
     }
 
     private fun setupToolbar() {

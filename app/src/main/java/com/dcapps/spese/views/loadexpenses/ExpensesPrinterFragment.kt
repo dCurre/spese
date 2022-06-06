@@ -24,7 +24,6 @@ import com.dcapps.spese.utils.SnackbarUtils
 import com.dcapps.spese.views.dialog.EditSpesaDialogFragment
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
-
 class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
 
     companion object {
@@ -37,7 +36,6 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
     }
 
     private var _binding: LoadSpeseTabSpeseBinding? = null
-    private val className = javaClass.simpleName
     private val binding get() = _binding!!
     private lateinit var expenseAdapter : ExpenseAdapter
     private lateinit var expenseViewModel : ExpenseViewModel
@@ -75,7 +73,7 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
         expenseViewModel.findAllByExpensesListID(arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_ID.value).toString())
         expenseViewModel.expenseListLiveData.observe(viewLifecycleOwner) { expenseList ->
             expenseAdapter.addItems(expenseList)
-            binding.speseNotFound.visibility = if(expenseList.isNotEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
+            binding.speseNotFound.visibility = if(expenseList.isNotEmpty()) View.INVISIBLE else View.VISIBLE
         }
 
         binding.listaSpese.layoutManager = LinearLayoutManager(context)
@@ -93,7 +91,7 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
 
                 //SCROLLING DOWN HIDES THE BUTTON
                 if(dy>0 && binding.addSpesaButton.isShown){
-                    binding.addSpesaButton.hide();
+                    binding.addSpesaButton.hide()
                 }
             }
         }

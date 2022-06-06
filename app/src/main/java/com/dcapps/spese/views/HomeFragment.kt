@@ -20,7 +20,6 @@ import com.squareup.picasso.Picasso
 class HomeFragment : Fragment(R.layout.home_fragment) {
 
     private var _binding: HomeFragmentBinding? = null
-    private val className = javaClass.simpleName
     private val binding get() = _binding!!
     private val loggedUser = DBUtils.getLoggedUser()
     private lateinit var userViewModel : UserViewModel

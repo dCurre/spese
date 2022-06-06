@@ -21,7 +21,6 @@ import com.dcapps.spese.views.login.LoginActivity
 class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
     private lateinit var binding: ActivitySplashBinding
     private lateinit var userViewModel : UserViewModel
-    private val className = javaClass.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

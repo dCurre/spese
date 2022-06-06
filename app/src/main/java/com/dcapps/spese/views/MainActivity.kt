@@ -43,7 +43,6 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var expensesListViewModel : ExpensesListViewModel
     private lateinit var userViewModel : UserViewModel
-    private val className = javaClass.simpleName
     private val requestExternalStorage = 1
     private val permissionStorage = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,

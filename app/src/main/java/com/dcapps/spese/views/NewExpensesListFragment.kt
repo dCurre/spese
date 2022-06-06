@@ -21,7 +21,6 @@ import java.util.*
 
 class NewExpensesListFragment : Fragment(R.layout.new_expenses_list) {
 
-    private val className = javaClass.simpleName
     private var _binding: NewExpensesListBinding? = null
     private val binding get() = _binding!!
     private val currentUser = DBUtils.getLoggedUser()

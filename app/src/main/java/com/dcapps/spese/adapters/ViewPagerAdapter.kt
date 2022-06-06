@@ -1,34 +1,35 @@
 package com.dcapps.spese.adapters
 
+import android.graphics.drawable.Drawable
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class ViewPagerAdapter(supportFragmentManager: FragmentManager) : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT){
+class ViewPagerAdapter(activity: FragmentActivity?) : FragmentStateAdapter(activity!!) {
 
     private val mFragmentList = ArrayList<Fragment>()
     private val mFragmentTitleList = ArrayList<String>()
-    private val mIconList = ArrayList<Int>()
+    private val mIconList = ArrayList<Drawable>()
 
-    override fun getCount(): Int {
+    override fun getItemCount(): Int {
         return mFragmentList.size
     }
 
-    override fun getItem(position: Int): Fragment {
-        return mFragmentList[position]
-    }
-
-    override fun getPageTitle(position: Int): String {
+    fun getTabTitle(position : Int): String{
         return mFragmentTitleList[position]
     }
 
-    fun getIcon(position: Int): Int{
+    fun getIcon(position: Int): Drawable{
         return mIconList[position]
     }
 
-    fun addFragment(fragment: Fragment, title: String, icon: Int){
+    override fun createFragment(position: Int): Fragment {
+        return mFragmentList[position]
+    }
+
+    fun addFragment(fragment: Fragment, title: String, icon: Drawable?){
         mFragmentList.add(fragment)
         mFragmentTitleList.add(title)
-        mIconList.add(icon)
+        mIconList.add(icon!!)
     }
 }

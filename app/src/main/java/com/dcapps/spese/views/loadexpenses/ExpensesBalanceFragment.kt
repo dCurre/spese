@@ -21,7 +21,6 @@ import android.view.View as View1
 class ExpensesBalanceFragment : Fragment(R.layout.load_spese_tab_saldo) {
 
     private var _binding: LoadSpeseTabSaldoBinding? = null
-    private val className = javaClass.simpleName
     private val binding get() = _binding!!
     private lateinit var balanceCategoryAdapter : BalanceCategoryAdapter
     private lateinit var spesaModel : ExpenseViewModel
