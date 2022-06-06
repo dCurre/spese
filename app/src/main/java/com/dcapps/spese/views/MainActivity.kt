@@ -165,12 +165,12 @@ open class MainActivity : AppCompatActivity() {
             //Update token
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Log.w(EditSpesaDialogFragment.TAG, "Fetching FCM registration token failed", task.exception)
+                    Log.e(EditSpesaDialogFragment.TAG, "Fetching FCM registration token failed", task.exception)
                     return@OnCompleteListener
                 }
 
                 if(task.result.equals(user.messagingToken)){
-                    Log.w(EditSpesaDialogFragment.TAG, "Message token already stored")
+                    Log.e(EditSpesaDialogFragment.TAG, "Message token already stored")
                     return@OnCompleteListener
                 }
 

@@ -33,7 +33,7 @@ class EditSpesaDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.edit_spesa_dialog, container, false)
+        val view = inflater.inflate(R.layout.edit_expense_dialog, container, false)
 
         expenseViewModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
 

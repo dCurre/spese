@@ -29,13 +29,10 @@ data class User (
                 )
 
             } catch (e: Exception) {
-                Log.i("$TAG.toUser()", "${e.message}")
-
+                Log.e("$TAG.toUser()", "${e.message}")
                 null
             }
         }
-
         private const val TAG = "User"
     }
-
 }

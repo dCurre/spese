@@ -28,7 +28,7 @@ data class ExpensesList(
                 )
 
             } catch (e: Exception) {
-                Log.i(TAG, "${e.message}")
+                Log.e(TAG, "${e.message}")
                 null
             }
         }

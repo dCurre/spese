@@ -3,16 +3,12 @@ package com.dcapps.spese.views.loadexpenses
 import android.app.AlertDialog
 import android.graphics.Canvas
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -182,20 +178,10 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
         listaSpeseModel.expensesListLiveData.observe(viewLifecycleOwner) { expensesList ->
             binding.addSpesaButton.visibility = if(expensesList?.paid == true) View.GONE else View.VISIBLE
             setupScrollListener(binding.listaSpese, expensesList?.paid == true)
-            Log.i("SCROLLO", "MINCHIA SE SCROLLO")
         }
 
         binding.addSpesaButton.setOnClickListener{
-            findNavController().navigate(
-                R.id.action_loadSpeseFragment_to_addSpesaFragment,
-                arguments,
-                NavOptions.Builder() //ANIMATION
-                    .setEnterAnim(R.anim.enter_to_top_left)
-                    .setExitAnim(R.anim.exit_to_bottom_right)
-                    .setPopEnterAnim(R.anim.enter_to_top_left)
-                    .setPopExitAnim(R.anim.exit_to_bottom_right)
-                    .build()
-            )
+            findNavController().navigate(R.id.action_loadSpeseFragment_to_addSpesaFragment,arguments)
         }
     }
 

@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.dcapps.spese.R
 import com.dcapps.spese.data.entities.ExpensesList
 import com.dcapps.spese.data.viewmodels.ExpensesListViewModel
-import com.dcapps.spese.databinding.AddListaSpeseBinding
+import com.dcapps.spese.databinding.NewExpensesListBinding
 import com.dcapps.spese.enums.table.TablesEnum
 import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.GenericUtils
@@ -19,10 +19,10 @@ import com.dcapps.spese.utils.SnackbarUtils
 import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
 
-class NewExpensesListFragment : Fragment(R.layout.add_lista_spese) {
+class NewExpensesListFragment : Fragment(R.layout.new_expenses_list) {
 
     private val className = javaClass.simpleName
-    private var _binding: AddListaSpeseBinding? = null
+    private var _binding: NewExpensesListBinding? = null
     private val binding get() = _binding!!
     private val currentUser = DBUtils.getLoggedUser()
 
@@ -31,7 +31,7 @@ class NewExpensesListFragment : Fragment(R.layout.add_lista_spese) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = AddListaSpeseBinding.inflate(inflater, container, false)
+        _binding = NewExpensesListBinding.inflate(inflater, container, false)
         return binding.root
     }
 

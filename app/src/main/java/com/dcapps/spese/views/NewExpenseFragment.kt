@@ -20,7 +20,7 @@ import com.dcapps.spese.data.entities.Expense
 import com.dcapps.spese.data.viewmodels.ExpenseViewModel
 import com.dcapps.spese.data.viewmodels.ExpensesListViewModel
 import com.dcapps.spese.data.viewmodels.UserViewModel
-import com.dcapps.spese.databinding.AddSpesaBinding
+import com.dcapps.spese.databinding.NewExpenseBinding
 import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
 import com.dcapps.spese.enums.table.TablesEnum
 import com.dcapps.spese.services.CustomFirebaseMessagingService
@@ -32,10 +32,9 @@ import com.dcapps.spese.utils.SnackbarUtils
 import java.util.*
 
 
-class NewExpenseFragment : Fragment(R.layout.add_spesa) {
+class NewExpenseFragment : Fragment(R.layout.new_expense) {
 
-    private val className = javaClass.simpleName
-    private var _binding: AddSpesaBinding? = null
+    private var _binding: NewExpenseBinding? = null
     private lateinit var userViewModel : UserViewModel
     private lateinit var expensesListViewModel : ExpensesListViewModel
     private lateinit var expenseViewModel: ExpenseViewModel
@@ -49,11 +48,10 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = AddSpesaBinding.inflate(inflater, container, false)
+        _binding = NewExpenseBinding.inflate(inflater, container, false)
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         expensesListViewModel = ViewModelProvider(this)[ExpensesListViewModel::class.java]
         expenseViewModel = ViewModelProvider(this)[ExpenseViewModel::class.java]
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         return binding.root
     }
 
@@ -70,15 +68,9 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
         setupAutocompleteInputs()
 
         setupButtons(view)
-
-
     }
 
     private fun setupButtons(view: View) {
-
-        binding.buttonCloseNewExpenseFragment.setOnClickListener{
-            findNavController().popBackStack()
-        }
 
         //On background click
         binding.addSpesaConstraintLayout.setOnClickListener {
@@ -150,7 +142,6 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         _binding = null
     }
 
@@ -166,8 +157,8 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
     private fun setupAutocompleteInputs() {
         val spesaText = binding.spesaSpesaText
         val pagatoreText = binding.spesaPagatoreText
-        val arrayAdapterSpese = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
-        val arrayAdapterPagatori = ArrayAdapter<String>(requireContext(), R.layout.add_spesa_custom_spinner)
+        val arrayAdapterSpese = ArrayAdapter<String>(requireContext(), R.layout.new_expense_custom_spinner)
+        val arrayAdapterPagatori = ArrayAdapter<String>(requireContext(), R.layout.new_expense_custom_spinner)
         val pagatoriList = ArrayList<String>()
 
         setupAutocompleteInputSpese(pagatoriList, arrayAdapterSpese, arrayAdapterPagatori)
@@ -231,7 +222,7 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
     }
 
     private fun setupToolbar() {
-        val titolo =  if(arguments == null) "Aggiungi una spesa" else "Aggiungi una spesa a ${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString()}"
+        val titolo =  if(arguments == null) "Aggiungi una spesa" else "Nuova spesa in ${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString()}"
 
         //Cambio il titolo della toolbar
         (activity as MainActivity).setToolbarTitle(titolo)

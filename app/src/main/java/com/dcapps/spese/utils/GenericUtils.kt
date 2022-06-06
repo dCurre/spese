@@ -9,8 +9,8 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.dcapps.spese.R
-import com.dcapps.spese.databinding.AddListaSpeseBinding
-import com.dcapps.spese.databinding.AddSpesaBinding
+import com.dcapps.spese.databinding.NewExpenseBinding
+import com.dcapps.spese.databinding.NewExpensesListBinding
 import com.dcapps.spese.enums.bundle.BundleArgumentsEnum
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
@@ -18,9 +18,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object GenericUtils {
-    private val className = javaClass.simpleName
 
-    fun clearTextViewFocus(binding: AddListaSpeseBinding) {
+    fun clearTextViewFocus(binding: NewExpensesListBinding) {
         binding.listaSpeseNome.clearFocus()
     }
 
@@ -72,7 +71,7 @@ object GenericUtils {
         switch.isChecked = isActive
     }
 
-    fun clearTextViewFocusAddSpesa(binding: AddSpesaBinding) {
+    fun clearTextViewFocusAddSpesa(binding: NewExpenseBinding) {
         binding.spesaSpesaText.clearFocus()
         binding.spesaImporto.clearFocus()
         binding.spesaPagatoreText.clearFocus()

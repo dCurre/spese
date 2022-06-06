@@ -33,14 +33,18 @@
         android:id="@+id/addSpesaFragment"
         android:name="com.dcapps.spese.views.NewExpenseFragment"
         android:label="@string/add_spesa_fragment_label"
-        tools:layout="@layout/add_spesa"/>
+        tools:layout="@layout/new_expense"/>
     <fragment
         android:id="@+id/loadSpeseFragment"
         android:name="com.dcapps.spese.views.loadexpenses.LoadExpensesFragment"
         android:label="Riepilogo spese">
         <action
             android:id="@+id/action_loadSpeseFragment_to_addSpesaFragment"
-            app:destination="@id/addSpesaFragment" />
+            app:destination="@id/addSpesaFragment"
+            app:enterAnim="@anim/enter_to_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_to_left"
+            app:popExitAnim="@anim/exit_to_right" />
         <action
             android:id="@+id/action_loadSpeseFragment_to_listaSettingsFragment"
             app:destination="@id/listaSettingsFragment"
@@ -52,7 +56,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.dcapps.spese.views.SettingsFragment"
-        android:label="Settings"
+        android:label="Account"
         tools:layout="@layout/settings_fragment" />
 
     <fragment
@@ -64,7 +68,7 @@
         android:id="@+id/addListaSpeseFragment"
         android:name="com.dcapps.spese.views.NewExpensesListFragment"
         android:label="@string/add_lista_spese_fragment_label"
-        tools:layout="@layout/add_lista_spese">
+        tools:layout="@layout/new_expenses_list">
         <action
             android:id="@+id/action_addListaSpeseFragment_to_homeFragment"
             app:destination="@id/homeFragment" />

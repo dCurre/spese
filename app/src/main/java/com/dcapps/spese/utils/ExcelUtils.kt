@@ -3,7 +3,6 @@ package com.dcapps.spese.utils
 import org.apache.poi.hssf.usermodel.HSSFCell
 import org.apache.poi.hssf.usermodel.HSSFRow
 import org.apache.poi.hssf.usermodel.HSSFSheet
-import org.apache.poi.ss.usermodel.CellType
 
 object ExcelUtils {
     private val className = javaClass.simpleName
@@ -45,7 +44,6 @@ object ExcelUtils {
 
     private fun createCellFormula(column: Int, text: String, hssfRow: HSSFRow) {
         val hssfCell: HSSFCell = hssfRow.createCell(column)
-        hssfCell.setCellType(CellType.FORMULA)
         hssfCell.cellFormula = text
     }
 }

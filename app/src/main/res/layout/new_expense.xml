@@ -120,18 +120,4 @@
             android:text="+10" />
 
     </RelativeLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_close_new_expense_fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:backgroundTint="?colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_close"
-        app:tint="@color/white"
-        app:useCompatPadding="true"
-        tools:ignore="ContentDescription" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

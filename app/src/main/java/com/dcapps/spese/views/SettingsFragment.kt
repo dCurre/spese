@@ -15,18 +15,15 @@ import com.dcapps.spese.utils.DBUtils
 import com.dcapps.spese.utils.GenericUtils
 import com.dcapps.spese.views.login.LoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
 
 class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
-    private val className = javaClass.simpleName
     private var _binding: SettingsFragmentBinding? = null
     private lateinit var currentUser : FirebaseUser
     private lateinit var userModel : UserViewModel
-    private lateinit var googleSignInClient: GoogleSignInClient
 
     private val binding get() = _binding!!
 
@@ -43,13 +40,6 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Configure Google Sign out
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
         //Setting up switches' status by retrieving data from firestore
         setupSwitches()
@@ -78,12 +68,25 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
             userModel.updateByField(currentUser.uid, UserFieldsEnum.HIDE_PAID_LISTS.value, bool)
         }
 
+        //Sign out on click
+        signOut()
+    }
+
+    private fun signOut() {
         //Logs the user out
         binding.signOutBtn.setOnClickListener {
+            //LOGIN Redirection
             startActivity(Intent(Intent(context, LoginActivity::class.java)))
             activity?.finish()
+
             DBUtils.getAuthentication().signOut()
-            googleSignInClient.signOut()
+
+            // Configure Google Sign out
+            GoogleSignIn.getClient(requireContext(), GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build())
+                .signOut()
         }
     }
 
