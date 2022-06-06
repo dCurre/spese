@@ -120,8 +120,7 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
 
                 if(direction == ItemTouchHelper.RIGHT){ //Se scorro verso destra modifico
                     if(!expensesList.paid){
-                        EditSpesaDialogFragment().newInstance(expenseAdapter.getItem(viewHolder.absoluteAdapterPosition)).show(childFragmentManager, EditSpesaDialogFragment.TAG)
-                        expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+                        EditSpesaDialogFragment().newInstance(expenseAdapter.getItem(viewHolder.absoluteAdapterPosition), expenseAdapter, viewHolder.absoluteAdapterPosition).show(childFragmentManager, EditSpesaDialogFragment.TAG)
                     } else {
                         SnackbarUtils.showSnackbarError("Non puoi modificare una spesa se la lista è saldata!", binding.loadSpeseTabConstraintLayout)
                         expenseAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
@@ -150,6 +149,7 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
                 }
             }
 
+            //DRAWING BACKGROUND
             override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
                 RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                         //LEFT
@@ -167,7 +167,7 @@ class ExpensesPrinterFragment : Fragment(R.layout.load_spese_tab_spese) {
                     .create()
                     .decorate()
 
-                super.onChildDraw(c, recyclerView, viewHolder,dX, dY, actionState, isCurrentlyActive)
+                super.onChildDraw(c, recyclerView, viewHolder,dX / 3, dY / 3, actionState, isCurrentlyActive)
             }
         }
 

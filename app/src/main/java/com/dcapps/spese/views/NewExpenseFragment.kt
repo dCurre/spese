@@ -231,7 +231,7 @@ class NewExpenseFragment : Fragment(R.layout.add_spesa) {
     }
 
     private fun setupToolbar() {
-        val titolo =  if(arguments == null) "Aggiungi una spesa" else "Aggiungi spesa a ${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString()}"
+        val titolo =  if(arguments == null) "Aggiungi una spesa" else "Aggiungi una spesa a ${arguments?.getString(BundleArgumentsEnum.EXPENSES_LIST_NAME.value).toString()}"
 
         //Cambio il titolo della toolbar
         (activity as MainActivity).setToolbarTitle(titolo)

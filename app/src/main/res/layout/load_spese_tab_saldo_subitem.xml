@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="10dp"
     android:paddingVertical="3dp"
+    android:clickable="true"
+    android:foreground="@drawable/foreground_ripple"
     >
 
     <TextView

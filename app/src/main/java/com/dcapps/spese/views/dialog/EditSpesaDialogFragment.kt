@@ -2,6 +2,7 @@ package com.dcapps.spese.views.dialog
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.dcapps.spese.R
+import com.dcapps.spese.adapters.ExpenseAdapter
 import com.dcapps.spese.data.entities.Expense
 import com.dcapps.spese.data.viewmodels.ExpenseViewModel
 import com.dcapps.spese.enums.entity.ExpenseFieldsEnum
@@ -18,10 +20,13 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
+import kotlin.properties.Delegates
 
 class EditSpesaDialogFragment : DialogFragment() {
 
     private lateinit var expenseViewModel : ExpenseViewModel
+    private lateinit var expenseAdapter : ExpenseAdapter
+    private var absoluteAdapterPosition by Delegates.notNull<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,6 +93,12 @@ class EditSpesaDialogFragment : DialogFragment() {
         exitButton.setOnClickListener { dismiss() }
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        //Resets the slider
+        expenseAdapter.notifyItemChanged(absoluteAdapterPosition)
+        super.onDismiss(dialog)
+    }
+
     private fun clearErrors(view: View) {
         view.findViewById<TextInputLayout>(R.id.edit_spesa_spesa_layout).error = null
         view.findViewById<TextInputLayout>(R.id.edit_spesa_importo_layout).error = null
@@ -100,7 +111,8 @@ class EditSpesaDialogFragment : DialogFragment() {
         view.findViewById<TextInputEditText>(R.id.edit_spesa_pagatore_text).setText(arguments?.getString("pagatore"))
     }
 
-    fun newInstance(expense: Expense): EditSpesaDialogFragment {
+    fun newInstance(expense: Expense, expenseAdapter: ExpenseAdapter, absoluteAdapterPosition: Int): EditSpesaDialogFragment {
+
         val bundle = Bundle()
         bundle.putString("id", expense.id)
         bundle.putString("spesa", expense.expense)
@@ -109,6 +121,8 @@ class EditSpesaDialogFragment : DialogFragment() {
         bundle.putString("pagatore", expense.buyer)
         val dialogFragment = EditSpesaDialogFragment()
         dialogFragment.arguments = bundle
+        dialogFragment.expenseAdapter = expenseAdapter
+        dialogFragment.absoluteAdapterPosition = absoluteAdapterPosition
         return dialogFragment
     }
 

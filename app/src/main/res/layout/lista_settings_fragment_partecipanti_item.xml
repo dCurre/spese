@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/partecipanti_list_item"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:layout_height="@dimen/text_view_height">
 
     <ImageView
         android:id="@+id/owner_icon"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginStart="20dp"
         android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
         android:layout_marginEnd="15dp"
         android:background="@drawable/ic_crown"
         android:backgroundTint="@color/yellow"
@@ -19,7 +21,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tw_partecipante"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/owner_icon"
         android:fontFamily="@font/montserrat_light"
@@ -28,6 +30,6 @@
         android:text="@string/partecipante"
         android:textColor="@color/textPrimary"
         android:textSize="9pt"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
 </RelativeLayout>

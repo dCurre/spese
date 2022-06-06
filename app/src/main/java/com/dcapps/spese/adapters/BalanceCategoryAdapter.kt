@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,9 @@ class BalanceCategoryAdapter(private val context: Context) : RecyclerView.Adapte
         val balanceCategory = balanceCategoryList[position]
         holder.buyerTextView.text = "${balanceCategory.buyer} ha speso:"
         holder.paidAmountTextView.text = balanceCategory.getPaidAmountAsEUR()
+        holder.categoryRelativeLayout.setOnClickListener {
+            holder.subItemsRecyclerView.visibility = if(holder.subItemsRecyclerView.visibility == View.GONE) View.VISIBLE else View.GONE
+        }
         setSublist(holder.subItemsRecyclerView, balanceCategoryList[position].amountsToReceive)
 
     }
@@ -51,6 +55,7 @@ class BalanceCategoryAdapter(private val context: Context) : RecyclerView.Adapte
 
         val buyerTextView: TextView = itemView.findViewById(R.id.load_spese_saldo_pagatore)
         val paidAmountTextView: TextView = itemView.findViewById(R.id.saldo_importo_totale_pagato)
+        val categoryRelativeLayout: RelativeLayout = itemView.findViewById(R.id.spesa_load_category_layout)
         val subItemsRecyclerView : RecyclerView = itemView.findViewById(R.id.lista_saldo_subitems)
     }
 }
